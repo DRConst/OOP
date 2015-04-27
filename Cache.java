@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class Cache
+public class Cache
 {
 	// Variáveis de Instância
 
