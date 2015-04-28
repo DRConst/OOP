@@ -1,5 +1,5 @@
 /** 
- * Classe que implementa uma classe abstrata, que vai servir
+ * Classe que implementa uma classe que vai servir
  * de generalização de qualquer tipo de cache
  * 
  * @version (2015.04.27)
