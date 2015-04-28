@@ -1,6 +1,8 @@
 import javax.print.DocFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.StringBuilder;
+import java.lang.System;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -79,7 +81,7 @@ public class Login
         if(this == o)
             return true;
 
-        if(o == NULL || this.getClass() != o.getClass() ) {
+        if(o == null || this.getClass() != o.getClass() ) {
             return false;
         }
         else
@@ -107,5 +109,33 @@ public class Login
         return salts;
     }
 
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Salts-");
+        for(Map.Entry<String, byte[]> entry : salts.entrySet())
+        {
+            sb.append(entry.getKey());
+	        sb.append(":");
+            sb.append(entry.getValue());
+	        sb.append(";");
+        }
+        sb.append("\nHashes-");
+        for(Map.Entry<String, byte[]> entry : hashes.entrySet())
+        {
+            sb.append(entry.getKey());
+            sb.append(":");
+            sb.append(entry.getValue());
+	        sb.append(";");
+        }
 
+        return sb.toString();
+    }
+
+	public Login clone(Login l)
+	{
+		return new Login(l);
+	}
 }
+
+
