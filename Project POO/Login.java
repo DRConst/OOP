@@ -36,6 +36,22 @@ public class Login
         registerPw(userName, hash);
     }
 
+    public boolean authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+
+        byte[] salt;
+        byte[] hash;
+
+        if(!salts.containsKey(userName) || !hashes.containsKey(userName))
+            return false;
+
+        salt = salts.get(userName);
+        hash = genHash(salt, password);
+
+        if(Arrays.equals(hashes.get(userName), hash))
+            return true;
+        else
+            return false;
+    }
     private void registerPw(String userName, byte[] hash)
     {
         /*TODO: decide policy on multiple registrations*/
