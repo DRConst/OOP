@@ -2,28 +2,25 @@
  * Classe que implementa uma classe que vai servir
  * de generalização de qualquer tipo de cache
  * 
- * @version (2015.04.27)
+ * @version (2015.04.29)
  */
 
-import java.util.TreeSet;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 public class Cache
 {
-	// Variáveis de Instância
-
 	private TreeSet<String> regBook;
 	private ArrayList<String> treasures;
 	private double latitude;
 	private double longitude;
 
-
-	/**
-     * Construtores parameterizado, vazio e de copia
-     */
-	public Cache() { this(new TreeSet<String>(), new ArrayList<String>(), 0.0, 0.0); }
+	public Cache() 
+	{ 
+		this.regBook = new TreeSet<String>();
+		this.treasures = new ArrayList<String>();
+		this.latitude = 0.0;
+		this.longitude = 0.0; 
+	}
 
 	public Cache(TreeSet<String> regBook, ArrayList<String> treasures, double latitude, double longitude)
 	{
@@ -40,9 +37,6 @@ public class Cache
 		this.latitude = c.getLatitude();
 		this.longitude = c.getLongitude();
 	}
-
-
-	// Getters e Setters
 
 	/**
 	 * Devolve o Livro de Registos da cache
@@ -95,6 +89,8 @@ public class Cache
      */
 	public void setRegBook(Collection<String> regBook)
 	{
+	    this.regBook.removeAll(this.regBook);
+	    
 		for (String s: regBook)
 			this.regBook.add(s);
 	}
@@ -106,6 +102,8 @@ public class Cache
      */
 	public void setTreasures(Collection<String> treasures)
 	{
+		this.treasures.removeAll(this.treasures);
+		
 		for (String s: treasures)
 			this.treasures.add(s);
 	}
@@ -123,9 +121,6 @@ public class Cache
      * @param longitude o valor de longitude a colocar na cache
      */
 	public void setLongitude(double longitude) { this.longitude = longitude; }
-
-
-	// Métodos de Instância
 
 	/**
      * Regista uma nova descoberta no livro de registos
@@ -186,6 +181,77 @@ public class Cache
 	{
 		Iterator<String> it = this.treasures.iterator();
 		return it;
+	}
+
+	/**
+     * Verifica se 2 caches são iguais
+     * 
+     * @param o objeto que queremos comparar
+     * @return true caso iguais, false caso contrário
+     */
+	public boolean equals(Object o)
+	{
+		if (this == o)
+			return true;
+		if (o==null || this.getClass() != o.getClass())
+			return false;
+		else
+		{
+			Cache c = (Cache) o;
+
+			for (String s : this.regBook)
+				if (!c.regBook.contains(s))
+					return false;
+
+			for (String s : this.treasures)
+				if (!c.treasures.contains(s))
+					return false;
+
+			if (this.latitude != c.latitude)
+				return false;
+
+			if (this.longitude != c.longitude)
+				return false;
+
+			return true;
+		}
+	}
+
+	/**
+	 * Passa o objeto para String
+	 *
+	 * @return String resultado
+	 */
+	public String toString()
+	{
+		StringBuilder s = new StringBuilder();
+
+		s.append("---------------Informações da Cache---------------");
+		s.append("Conteúdo do livro de Registos:\n");
+
+		for (String r : this.regBook)
+			s.append("\t" + r + "\n");
+
+		s.append("\nTesouros:\n");
+
+		for (String r : this.treasures)
+			s.append("\t" + r + "\n");
+
+		s.append("Localização: ");
+		s.append("\tLatitude: " + this.latitude);
+		s.append("\tLongitude: " + this.longitude);
+
+		return s.toString();
+	}
+
+	/**
+	 * Clona a cache
+	 *
+	 * @return novo clone
+	 */	
+	public Cache clone()
+	{
+		return new Cache(this);
 	}
 }
 
