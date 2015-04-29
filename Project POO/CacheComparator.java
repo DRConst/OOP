@@ -1,5 +1,5 @@
 /**
- * Classe que implementa um comparador de Caches
+ * Classe que implementa um comparador para a classe Cache
  *
  * @version (2015.04.29)
  */
