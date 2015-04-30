@@ -2,253 +2,140 @@
  * Classe que implementa uma classe que vai servir
  * de generalização de qualquer tipo de cache
  * 
- * @version (2015.04.29)
+ * @version (2015.04.30)
  */
 
 import java.util.*;
 
-public class Cache
+public class Cache 
 {
-	private TreeSet<String> regBook;
-	private ArrayList<String> treasures;
-	private double latitude;
-	private double longitude;
+	private static final byte easy = 1, medium_easy = 2, medium = 3, medium_hard = 4, hard = 5;
 
-	public Cache() 
-	{ 
-		this.regBook = new TreeSet<String>();
-		this.treasures = new ArrayList<String>();
-		this.latitude = 0.0;
-		this.longitude = 0.0; 
+	private String code, description, hints;
+	private TreeMap<String,Register> regBook;
+	private double defaultLatitude, defaultLongitude, currentLatitude, currentLongitude;
+	private GregorianCalendar date;
+	private byte difficulty;
+
+
+	public Cache()
+	{
+		this.code = this.description = this.hints = "";
+		this.regBook = new TreeMap<String,Register>();
+		this.defaultLatitude = this.defaultLongitude = this.currentLatitude = this.currentLongitude = 0.0;
+		this.date = new GregorianCalendar();
+		this.difficulty = easy;
 	}
 
-	public Cache(TreeSet<String> regBook, ArrayList<String> treasures, double latitude, double longitude)
+	public Cache(String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, byte difficulty)
 	{
-		this.setRegBook(regBook);
-		this.setTreasures(treasures);
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.code = code;
+		this.description = description;
+		this.hints = hints;
+		this.regBook = new TreeMap<String,Register>(regBook);
+		this.defaultLatitude = this.currentLatitude = defaultLatitude;
+		this.defaultLongitude = this.currentLongitude = defaultLongitude;
+		this.date = new GregorianCalendar(year, month, dayOfMonth);
+		this.difficulty = difficulty;
 	}
 
 	public Cache(Cache c)
 	{
-		this.setRegBook(c.getRegBook());
-		this.setTreasures(c.getTreasures());
-		this.latitude = c.getLatitude();
-		this.longitude = c.getLongitude();
+		this.code = c.getCode();
+		this.description = c.getDescription();
+		this.hints = c.getHints();
+		this.regBook = new TreeMap<String,Register>(c.getRegBook());
+		this.defaultLatitude = c.getDefaultLatitude();
+		this.defaultLongitude = c.getDefaultLongitude();
+		this.currentLatitude = c.getCurrentLatitude();
+		this.currentLongitude = c.getCurrentLongitude();
+		this.date = c.getDate();
+		this.difficulty = c.getDifficulty();
 	}
+
+
+	public String getCode() { return new String(this.code); }
+
+	public String getDescription() { return new String(this.description); }
+
+	public String getHints() { return new String(this.hints); }
 
 	/**
 	 * Devolve o Livro de Registos da cache
 	 *
-	 * @return regBook o livro de registos da cache
+	 * @return o livro de registos da cache
 	 */
-	public Collection<String> getRegBook()
-	{
-		TreeSet<String> regBook = new TreeSet<String>();
-
-		for (String s: this.regBook)
-			regBook.add(s);
-
-		return regBook;
-	}
+	public Map<String,Register> getRegBook() { return new TreeMap<String,Register>(this.regBook); }
 
 	/**
-	 * Devolve os tesouros presentes na cache
-	 *
-	 * @return treasures a lista com os tesouros
-	 */
-	public Collection<String> getTreasures()
-	{
-		ArrayList<String> treasures = new ArrayList<String>();
-
-		for (String s: this.treasures)
-			treasures.add(s);
-
-		return treasures;
-	}
-
-	/**
-     * Devolve o valor de latitude da cache
+     * Devolve o valor de defaultLatitude da cache
      * 
-     * @return a latitude da cache
+     * @return a latitude inicial da cache
      */
-	public double getLatitude() { return this.latitude; }
+	public double getDefaultLatitude() { return this.defaultLatitude; }
 
 	/**
-     * Devolve o valor da longitude da cache
+     * Devolve o valor da defaultLongitude da cache
      *
-     * @return a longitude da cache
+     * @return a longitude inicial da cache
      */
-	public double getLongitude() { return this.longitude; }
+	public double getDefaultLongitude() { return this.defaultLongitude; }
 
-	/**
-     * Coloca na cache um livro de registos passado como parametro
-     *
-     * @param regBook o livro de registos a colocar na cache
-     */
-	public void setRegBook(Collection<String> regBook)
-	{
-	    this.regBook.removeAll(this.regBook);
-	    
-		for (String s: regBook)
-			this.regBook.add(s);
-	}
+	public double getCurrentLatitude() { return this.currentLatitude; }
 
-	/**
-     * Coloca na cache um conjunto de tesouros passado como parametro
-     *
-     * @param regBook o conjunto de tesouros a colocar na cache
-     */
-	public void setTreasures(Collection<String> treasures)
-	{
-		this.treasures.removeAll(this.treasures);
-		
-		for (String s: treasures)
-			this.treasures.add(s);
-	}
+	public double getCurrentLongitude() { return this.currentLongitude; }
 
-	/**
-     * Coloca na cache um valor para a latitude passado como parametro
-     *
-     * @param latitude o valor de latitude a colocar na cache
-     */
-	public void setLatitude(double latitude) { this.latitude = latitude; }
+	public int getYear() { return this.date.get(Calendar.YEAR); }
 
-	/**
-     * Coloca na cache um valor de latitude passado como parametro
-     *
-     * @param longitude o valor de longitude a colocar na cache
-     */
-	public void setLongitude(double longitude) { this.longitude = longitude; }
+	public int getMonth() { return this.date.get(Calendar.MONTH); }
 
-	/**
-     * Regista uma nova descoberta no livro de registos
-     *
-     * @param register o registo a colocar no livro de registos
-     */
-	public void registerDescovery(String register) { this.regBook.add(register); }
+	public int getDayOfMonth() { return this.date.get(Calendar.DAY_OF_MONTH); }
 
-	/**
-     * Remove um dado registo passado como 
-     * parametro do livro de registos
-     *
-     * @param register o registo a remover do livro de registos
-     */
-	public void removeRegister(String register) { this.regBook.remove(register); }
+	public GregorianCalendar getDate() { return new GregorianCalendar(this.getYear(), this.getMonth(), this.getDayOfMonth()); }
 
-	/**
-     * Adiciona um tesouro à lista de tesouros da cache
-     *
-     * @param treaasure o tesouro a adicionar
-     */
-	public void addTreasure(String treasure) { this.treasures.add(treasure); }
+	public byte getDifficulty() { return this.difficulty; }
 
-	/**
-     * Remove um tesouro da lista de tesouros da cache
-     *
-     * @param treasure o tesouro a remover
-     */
-	public void removeTreasure(String treasure) { this.treasures.remove(treasure); }
 
-	/**
-     * Muda a localização de uma cache
-     *
-     * @param latitude o novo valor da latitude
-     * @param longitude o novo valor da longitude
-     */
+	public void setCode(String code) { this.code = code; }
+
+	public void setDescription(String description) { this.description = description; }
+
+	public void setHints(String hints) { this.hints = hints; }
+
+	public void setRegBook(Map<String,Register> regBook) { this.regBook = new TreeMap<String,Register>(regBook); }
+
+	private void setDefaultLatitude(double defaultLatitude) { this.defaultLatitude = defaultLatitude; }
+
+	private void setDefaultLongitude(double defaultLongitude) { this.defaultLongitude = defaultLongitude; }
+
+	public void setCurrentLatitude(double currentLatitude) { this.currentLatitude = currentLatitude; }  // adicionar verificador de distancia
+
+	public void setCurrentLongitude(double currentLongitude) { this.currentLongitude = currentLongitude; }  // adicionar verificador de distancia
+
+	private void setDate(int year, int month, int dayOfMonth) { this.date = new GregorianCalendar(year, month, dayOfMonth); }
+
+	public void setDifficulty(byte difficulty) { this.difficulty = difficulty; }
+
+
 	public void changeLocation(double latitude, double longitude) 
 	{
-		this.latitude = latitude;
-		this.longitude = longitude;
+		// adicionar verificador de distancia
+
+		this.setCurrentLatitude(latitude);
+		this.setCurrentLongitude(longitude);
 	}
 
-	/**
-     * Devolve um Iterator para que seja possível 
-     * percorrer o livro de registos
-     */
-	public Iterator<String> checkRegisters()
+	public void addRegister(Register reg)
 	{
-		Iterator<String> it = this.regBook.iterator();
-		return it;
+		this.regBook.put(reg.getUser(), reg.clone());
 	}
 
-	/**
-     * Devolve um Iterator para que seja possível 
-     * percorrer a lista de tesouros
-     */
-	public Iterator<String> checkTreasures()
+	public void removeRegister(Register reg)
 	{
-		Iterator<String> it = this.treasures.iterator();
-		return it;
+		this.regBook.remove(reg.getUser());
 	}
 
-	/**
-     * Verifica se 2 caches são iguais
-     * 
-     * @param o objeto que queremos comparar
-     * @return true caso iguais, false caso contrário
-     */
-	public boolean equals(Object o)
-	{
-		if (this == o)
-			return true;
-		if (o==null || this.getClass() != o.getClass())
-			return false;
-		else
-		{
-			Cache c = (Cache) o;
 
-			for (String s : this.regBook)
-				if (!c.regBook.contains(s))
-					return false;
-
-			for (String s : this.treasures)
-				if (!c.treasures.contains(s))
-					return false;
-
-			if (this.latitude != c.latitude)
-				return false;
-
-			if (this.longitude != c.longitude)
-				return false;
-
-			return true;
-		}
-	}
-
-	/**
-	 * Passa o objeto para String
-	 *
-	 * @return String resultado
-	 */
-	public String toString()
-	{
-		StringBuilder s = new StringBuilder();
-
-		s.append("---------------Informações da Cache---------------");
-		s.append("Conteúdo do livro de Registos:\n");
-
-		for (String r : this.regBook)
-			s.append("\t" + r + "\n");
-
-		s.append("\nTesouros:\n");
-
-		for (String r : this.treasures)
-			s.append("\t" + r + "\n");
-
-		s.append("Localização: ");
-		s.append("\tLatitude: " + this.latitude);
-		s.append("\tLongitude: " + this.longitude);
-
-		return s.toString();
-	}
-
-	/**
-	 * Clona a cache
-	 *
-	 * @return novo clone
-	 */	
 	public Cache clone()
 	{
 		return new Cache(this);

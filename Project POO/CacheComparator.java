@@ -20,16 +20,16 @@ public class CacheComparator implements Comparator<Cache>, Serializable
 	 */
 	public int compare(Cache c1, Cache c2)
 	{
-		if (c1.getLatitude() < c2.getLatitude())
+		if (c1.getCurrentLatitude() < c2.getCurrentLatitude())
 			return -1;
-		if (c1.getLatitude() > c2.getLatitude())
+		if (c1.getCurrentLatitude() > c2.getCurrentLatitude())
 			return 1;
 
 		else
 		{
-			if (c1.getLongitude() < c2.getLongitude())
+			if (c1.getCurrentLongitude() < c2.getCurrentLongitude())
 				return -1;
-			if (c1.getLongitude() > c2.getLongitude())
+			if (c1.getCurrentLongitude() > c2.getCurrentLongitude())
 				return 1;
 		}
 

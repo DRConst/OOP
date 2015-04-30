@@ -8,9 +8,8 @@ import java.util.*;
  */
 public class User {
 
-    /**
-     * Variáveis de Instância
-     */
+    //Variáveis de Instância
+
     private String email;
     private String password;
     private String name;
@@ -21,9 +20,8 @@ public class User {
     //private Statistics stats;
     private ArrayList<String> friends;
 
-    /**
-     * Construtor parameterizado e de copia
-     */
+    //Construtor parameterizado e de copia
+
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;
@@ -48,9 +46,9 @@ public class User {
         this.friends = u.getFriends();
     }
 
+    //Getters e Setters
+    
     /**
-     * Getters e Setters
-     *
      * Devolve o email do utilizador
      *
      * @return email
