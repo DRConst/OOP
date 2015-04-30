@@ -1,6 +1,6 @@
 /** 
- * Classe que implementa uma classe que vai servir
- * de generalização de qualquer tipo de cache
+ * Classe que implementa uma classe 
+ * generalização de qualquer tipo de cache
  * 
  * @version (2015.04.30)
  */
@@ -135,6 +135,56 @@ public class Cache
 		this.regBook.remove(reg.getUser());
 	}
 
+
+	public boolean equals(Object o)
+	{
+		if (this == o)
+			return true;
+		if (o == null || this.getClass() != o.getClass())
+			return false;
+		else
+		{
+			Cache c = (Cache) o;
+
+			if (!this.code.equals(c.getCode()))
+				return false;
+
+			for (String s : c.getRegBook.keySet())
+				if (!this.regBook.containsKey(s))
+					return false;
+
+			if (this.defaultLatitude != c.getDefaultLatitude() || this.defaultLongitude != c.getDefaultLongitude() || this.currentLatitude != c.getCurrentLatitude() || this.currentLongitude != c.getCurrentLongitude())
+				return false;
+
+			if (this.getYear() != c.getYear() || this.getMonth() != c.getMonth() || this.getDayOfMonth() != c.getDayOfMonth())
+				return false;
+
+			if (this.difficulty != r.getDifficulty())
+				return false;
+
+			return true;
+		}
+	}
+
+	public String toString()
+	{
+		StringBuilder s = new StringBuilder();
+
+		s.append("-----------------Cache-----------------\n\n");
+		s.append("\tCodigo: " + this.code);
+		s.append("\n\tRegistos:\n");
+
+		for (Register r : this.regBook.values())
+			s.append(r.toString() + "\n\n");
+
+		s.append("\tLocalização: (" + this.currentLatitude + "," + this.currentLongitude + ")\n");
+
+		s.append("\tData: " + this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth() + "\n");
+		s.append("\tDificuldade : " + this.comment);
+		s.append("\n-------------------------------------");
+
+		return s.toString();
+	}
 
 	public Cache clone()
 	{
