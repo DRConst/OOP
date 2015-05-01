@@ -1,21 +1,20 @@
 /** 
  * Classe que implementa uma generalização de qualquer tipo de cache
  * Vai ser o topo da hierarquia de caches
+ * É uma classe abstrata
  * 
  * @version (2015.04.30)
  */
 
 import java.util.*;
 
-public class Cache 
+public abstract class Cache 
 {
-	private static final byte easy = 1, medium_easy = 2, medium = 3, medium_hard = 4, hard = 5;
 	private String code, description, hints;
 	private TreeMap<String,Register> regBook;
 	private double defaultLatitude, defaultLongitude, currentLatitude, currentLongitude;
 	private GregorianCalendar date;
-	private byte difficulty;
-
+	private Difficulty difficulty;
 
 	public Cache()
 	{
@@ -23,10 +22,10 @@ public class Cache
 		this.regBook = new TreeMap<String,Register>();
 		this.defaultLatitude = this.defaultLongitude = this.currentLatitude = this.currentLongitude = 0.0;
 		this.date = new GregorianCalendar();
-		this.difficulty = easy;
+		this.difficulty = Difficulty.EASY;
 	}
 
-	public Cache(String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, byte difficulty)
+	public Cache(String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty)
 	{
 		this.code = code;
 		this.description = description;
@@ -38,7 +37,7 @@ public class Cache
 		this.difficulty = difficulty;
 	}
 
-	public Cache(String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, byte difficulty)
+	public Cache(String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty)
 	{
 		this.code = code;
 		this.description = description;
@@ -159,7 +158,7 @@ public class Cache
 	 *
 	 * @return a dificuldade da cache
 	 */
-	public byte getDifficulty() { return this.difficulty; }
+	public Difficulty getDifficulty() { return this.difficulty; }
 
 	/**
 	 * Muda o codigo da cache
@@ -237,7 +236,7 @@ public class Cache
 	 *
 	 * @param difficulty a dificuldade da cache
 	 */
-	public void setDifficulty(byte difficulty) { this.difficulty = difficulty; }
+	public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
 
 
 	/**
@@ -281,69 +280,20 @@ public class Cache
 	 *
 	 * @return true se iguais, false caso contrário
 	 */
-	public boolean equals(Object o)
-	{
-		if (this == o)
-			return true;
-		if (o == null || this.getClass() != o.getClass())
-			return false;
-		else
-		{
-			Cache c = (Cache) o;
-
-			if (!this.code.equals(c.getCode()))
-				return false;
-
-			for (String s : c.getRegBook().keySet())
-				if (!this.regBook.containsKey(s))
-					return false;
-
-			if (this.defaultLatitude != c.getDefaultLatitude() || this.defaultLongitude != c.getDefaultLongitude() || this.currentLatitude != c.getCurrentLatitude() || this.currentLongitude != c.getCurrentLongitude())
-				return false;
-
-			if (this.getYear() != c.getYear() || this.getMonth() != c.getMonth() || this.getDayOfMonth() != c.getDayOfMonth())
-				return false;
-
-			if (this.difficulty != c.getDifficulty())
-				return false;
-
-			return true;
-		}
-	}
+	public abstract boolean equals(Object o);
 
 	/**
 	 * Passa a informação da cache toda para string
 	 *
 	 * @return string resultado
 	 */
-	public String toString()
-	{
-		StringBuilder s = new StringBuilder();
-
-		s.append("-----------------Cache-----------------\n\n");
-		s.append("\tCodigo: " + this.code);
-		s.append("\n\tRegistos:\n");
-
-		for (Register r : this.regBook.values())
-			s.append(r.toString() + "\n\n");
-
-		s.append("\tLocalização: (" + this.currentLatitude + "," + this.currentLongitude + ")\n");
-
-		s.append("\tData: " + this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth() + "\n");
-		s.append("\tDificuldade : " + this.difficulty);
-		s.append("\n-------------------------------------");
-
-		return s.toString();
-	}
+	public abstract String toString();
 
 	/**
 	 * Clona uma cache
 	 *
 	 * @return clone da cache
 	 */
-	public Cache clone()
-	{
-		return new Cache(this);
-	}
+	public abstract Cache clone();
 }
 

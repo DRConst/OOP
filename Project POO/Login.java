@@ -1,3 +1,7 @@
+/**
+ * Created by Diogo on 27/04/2015.
+ */
+
 import javax.print.DocFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,9 +14,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Diogo on 27/04/2015.
- */
 public class Login
 {
     private HashMap<String, byte[]> hashes, salts;
@@ -153,5 +154,4 @@ public class Login
 		return new Login(l);
 	}
 }
-
 

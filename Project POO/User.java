@@ -1,11 +1,11 @@
-
-import java.util.*;
-
 /**
  * Classe Utilizador
  *
  * @version (a version number or a date)
  */
+
+import java.util.*;
+
 public class User {
 
     //Variáveis de Instância
