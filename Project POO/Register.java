@@ -147,6 +147,16 @@ public class Register
 	}
 
 	/**
+	 * Dá um código de hash para o registo
+	 *
+	 * @return hashcode do registo
+	 */
+	public int hashCode()
+	{
+		return (this.user.hashCode() + this.comment.hashCode());
+	}
+
+	/**
 	 * Clona o registo
 	 *
 	 * @return o clone do registo
