@@ -8,7 +8,7 @@
 
 import java.util.*;
 
-public abstract class Cache 
+public abstract class Cache
 {
 	private String code, description, hints;
 	private TreeMap<String,Register> regBook;
