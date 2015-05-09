@@ -1,3 +1,4 @@
+
 /**
  * Classe Utilizador
  *
@@ -9,7 +10,6 @@ import java.util.*;
 public class User {
 
     //Variáveis de Instância
-
     private String email;
     private String password;
     private String name;
@@ -17,11 +17,10 @@ public class User {
     private String address;
     private Calendar birth;
     private TreeSet<Cache> activities;
-    //private Statistics stats;
+    private Statistics stats;
     private ArrayList<String> friends;
 
     //Construtor parameterizado e de copia
-
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;
@@ -30,7 +29,7 @@ public class User {
         this.birth = birth;
         this.address = address;
         this.activities = new TreeSet<Cache>(new CacheComparator());
-        //this.stats = new Statistics();
+        this.stats = new Statistics();
         this.friends = new ArrayList<String>();
     }
 
@@ -47,7 +46,6 @@ public class User {
     }
 
     //Getters e Setters
-    
     /**
      * Devolve o email do utilizador
      *
@@ -131,8 +129,8 @@ public class User {
 
     /**
      * futuramente para devolver as estatísticas do utilizador
-     * 
-     * public Statistic getStatistics() { return stats.clone(); }
+     *
+     * public Statistics getStatistics() { return stats.clone(); }
      */
     
     /**
