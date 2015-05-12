@@ -18,7 +18,7 @@ public class User {
     private Calendar birth;
     private TreeSet<Cache> activities;
     //private Statistics stats;
-    private ArrayList<String> friends;
+    private ArrayList<User> friends;
 
     //Construtor parameterizado e de copia
 
@@ -31,7 +31,7 @@ public class User {
         this.address = address;
         this.activities = new TreeSet<Cache>(new CacheComparator());
         //this.stats = new Statistics();
-        this.friends = new ArrayList<String>();
+        this.friends = new ArrayList<User>();
     }
 
     public User(User u) {
@@ -107,10 +107,10 @@ public class User {
      *
      * @return friendsL lista de amigos
      */
-    public ArrayList<String> getFriends() {
-        ArrayList<String> friendsL = new ArrayList<String>();
-        for (String mail : friends) {
-            friendsL.add(mail);
+    public ArrayList<User> getFriends() {
+        ArrayList<User> friendsL = new ArrayList<User>();
+        for (User u : friends) {
+            friendsL.add(u);
         }
         return friendsL;
     }
@@ -156,10 +156,10 @@ public class User {
     /**
      * Adiciona um utilizador à lista de amigos
      *
-     * @param email do novo amigo utilizador
+     * @param usr do novo amigo utilizador
      */
-    public void addFriend(String email) {
-        friends.add(email);
+    public void addFriend(User usr) {
+        friends.add(usr);
     }
 
     /**
@@ -206,8 +206,8 @@ public class User {
 
     public String friendsToString() {
         StringBuilder s = new StringBuilder();
-        for (String mail : friends) {
-            s.append(mail);
+        for (User u : friends) {
+            s.append(u.getEmail());
             s.append("\n");
         }
         return s.toString();
@@ -261,8 +261,8 @@ public class User {
 
             return false;
         }
-        for (String s : friends) {
-            if (!u.getFriends().contains(s)) {
+        for (User usr : friends) {
+            if (!u.getFriends().contains(usr)) {
                 return false;
             }
         }
