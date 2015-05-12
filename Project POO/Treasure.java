@@ -19,7 +19,7 @@ public class Treasure {
         return this.nome;
     }
 
-    public void setCode(String nome) {
+    public void setName(String nome) {
         this.nome = nome;
     }
 
@@ -48,3 +48,4 @@ public class Treasure {
         return new Treasure(this);
     }
 }
+
