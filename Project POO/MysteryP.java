@@ -13,7 +13,7 @@ public class MysteryP extends Physical
     /**
      * Constructor for objects of class Physical_Mystery
      */
-    public Physical_Mystery()
+    public MysteryP()
     {
         // initialise instance variables
         x = 0;

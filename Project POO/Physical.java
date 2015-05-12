@@ -26,7 +26,7 @@ public abstract class Physical extends Cache
         this.treasures = new ArrayList<Treasure>(treasures);
     }
 
-    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
+    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
     {
         super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
@@ -36,7 +36,7 @@ public abstract class Physical extends Cache
     public Physical(Physical p)
     {
         super(p);
-        this.currentL = new Location(c.getCurrentLocation());
+        this.currentL = new Location(p.getCurrentLocation());
         this.treasures = new ArrayList<Treasure>(p.getTreasures());
     }
 
@@ -54,7 +54,7 @@ public abstract class Physical extends Cache
      *
      * @return a latitude no momento da cache
      */
-    public double getCurrentLatitude() { return this.currentL.getCurrentLatitude(); }
+    public double getCurrentLatitude() { return this.currentL.getLatitude(); }
 
     /**
      * Devolve o valor da longitude no momento da cache
@@ -63,7 +63,7 @@ public abstract class Physical extends Cache
      *
      * @return a longitude no momento da cache
      */
-    public double getCurrentLongitude() { return this.currentL.getCurrentLongitude(); }
+    public double getCurrentLongitude() { return this.currentL.getLongitude(); }
 
     /**
      * Devolve o máximo de tesouros permitidos na cache
@@ -92,8 +92,8 @@ public abstract class Physical extends Cache
     {
         // Adicionar verificador de distância
 
-        this.currentL.setCurrentLatitude(latitude);
-        this.currentL.setCurrentLongitude(longitude);
+        this.currentL.setLatitude(latitude);
+        this.currentL.setLongitude(longitude);
     }
 
     /**
@@ -122,10 +122,10 @@ public abstract class Physical extends Cache
      *
      * @param treasures o conjunto de tesouros a colocar na cache
      */
-    public void setTreasures(Collection<String> treasures)
+    public void setTreasures(Collection<Treasure> treasures)
     {
         if (treasures.size() <= this.size.getValue())
-            this.treasures = new ArrayList<String>(treasures);
+            this.treasures = new ArrayList<Treasure>(treasures);
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class Physical extends Cache
             if (!super.equals(p))
                 return false;
 
-            if (!this.currentL.equals(p.getCurrentLocation))
+            if (!this.currentL.equals(p.getCurrentLocation()))
                 return false;
 
             if (this.size.getValue() != p.getSize())
