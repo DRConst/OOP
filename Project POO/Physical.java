@@ -1,7 +1,6 @@
 /**
- * Abstract class Physical - write a description of the class here
+ * Classe que implementa um cache fisica
  * 
- * @author (your name here)
  * @version (version number or date here)
  */
 
@@ -10,30 +9,35 @@ import java.util.*;
 public abstract class Physical extends Cache
 {
     private Location currentL;
-    private TreeSet<Treasure> treasures;
+    private Size size;
+    private ArrayList<Treasure> treasures;
 
     public Physical() 
     { 
         super();
-        this(0.0, 0.0);
+        this.size = Size.MICRO;
+        this.treasures = new ArrayList<Treasure>();
     }
 
-    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude)
+    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
     {
         super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
+        this.treasures = new ArrayList<Treasure>(treasures);
     }
 
-    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, double currentLatitude, double currentLongitude)
+    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
     {
         super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
+        this.treasures = new ArrayList<Treasure>(treasures);
     }
 
     public Physical(Physical p)
     {
         super(p);
         this.currentL = new Location(c.getCurrentLocation());
+        this.treasures = new ArrayList<Treasure>(p.getTreasures());
     }
 
     /**
@@ -62,6 +66,37 @@ public abstract class Physical extends Cache
     public double getCurrentLongitude() { return this.currentL.getCurrentLongitude(); }
 
     /**
+     * Devolve o máximo de tesouros permitidos na cache
+     *
+     * @return treasures a lista com os tesouros
+     */
+    public int getSize() { return this.size.getValue(); }
+
+    /**
+     * Devolve os tesouros presentes na cache
+     *
+     * @return a lista com os tesouros
+     */
+    public Collection<Treasure> getTreasures() { return new ArrayList<Treasure>(this.treasures); }
+
+
+    /**
+     * Muda a localização no momento da cache
+     * Não pode estar distanciado mais de 10 metros
+     * da localização inicial da cache
+     *
+     * @param latitude a latitude no momento da cache
+     * @param longitude a longitude no momento da cache
+     */
+    public void setCurrentLocation(double latitude, double longitude)
+    {
+        // Adicionar verificador de distância
+
+        this.currentL.setCurrentLatitude(latitude);
+        this.currentL.setCurrentLongitude(longitude);
+    }
+
+    /**
      * Muda a latitude no momento da cache
      *
      * @param currentLatitude a latitude no momento da cache
@@ -76,7 +111,25 @@ public abstract class Physical extends Cache
     public void setCurrentLongitude(double currentLongitude) { this.currentL.setLongitude(currentLongitude); }  // adicionar verificador de distancia
 
     /**
-     * Verifica se 2 cache são iguais
+     * Coloca na cache o máximo de tesouros permitidos na cache
+     *
+     * @return size a constante com o tamanho
+     */
+    public void setSize(Size s) { this.size = size; }
+
+    /**
+     * Coloca na cache um conjunto de tesouros passado como parametro
+     *
+     * @param treasures o conjunto de tesouros a colocar na cache
+     */
+    public void setTreasures(Collection<String> treasures)
+    {
+        if (treasures.size() <= this.size.getValue())
+            this.treasures = new ArrayList<String>(treasures);
+    }
+
+    /**
+     * Verifica se 2 cache fisicas são iguais
      *
      * @return true se iguais, false caso contrário
      */
@@ -93,10 +146,22 @@ public abstract class Physical extends Cache
             if (!super.equals(p))
                 return false;
 
-            if (this.location.equals(p.getCurrentLocation))
+            if (!this.currentL.equals(p.getCurrentLocation))
+                return false;
+
+            if (this.size.getValue() != p.getSize())
+                return false;
+
+            for (Treasure t: p.getTreasures())
+                if (!this.treasures.contains(t))
+                    return false;
                 
             return true;
         }
     }
+
+    public abstract String toString();
+
+    public abstract Physical clone();
 }
 

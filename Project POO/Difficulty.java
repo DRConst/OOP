@@ -11,7 +11,9 @@ public enum Difficulty
 
     private Difficulty(int value) 
     {
-            this.value = value;
+		this.value = value;
     }
+
+    public int getValue() { return this.value; }
 }
 

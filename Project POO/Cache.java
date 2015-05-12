@@ -32,7 +32,7 @@ public abstract class Cache
 		this.description = description;
 		this.hints = hints;
 		this.regBook = new TreeMap<String,Register>(regBook);
-		this.defaultL = new Location(defaultLatitude, defaultLongitude)
+		this.defaultL = new Location(defaultLatitude, defaultLongitude);
 		this.date = new GregorianCalendar(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
 		this.difficulty = difficulty;
 	}
@@ -66,28 +66,28 @@ public abstract class Cache
 	 *
 	 * @return o nome
 	 */
-	public String getName() { return new String(this.name); }
+	public String getName() { return this.name; }
 
 	/**
 	 * Retorna o codigo da cache
 	 *
 	 * @return o codigo
 	 */
-	public String getCode() { return new String(this.code); }
+	public String getCode() { return this.code; }
 
 	/**
 	 * Retorna a descrição da cache
 	 *
 	 * @return descrição
 	 */
-	public String getDescription() { return new String(this.description); }
+	public String getDescription() { return this.description; }
 
 	/**
 	 * Retorna as dicas dadas na cache
 	 *
 	 * @return dicas
 	 */
-	public String getHints() { return new String(this.hints); }
+	public String getHints() { return this.hints; }
 
 	/**
 	 * Devolve o Livro de Registos da cache
@@ -225,23 +225,6 @@ public abstract class Cache
 	 */
 	public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
 
-
-	/**
-	 * Muda a localização no momento da cache
-	 * Não pode estar distanciado mais de 10 metros
-	 * da localização inicial da cache
-	 *
-	 * @param latitude a latitude no momento da cache
-	 * @param longitude a longitude no momento da cache
-	 */
-	public void changeLocation(double latitude, double longitude)
-	{
-		// Adicionar verificador de distância
-
-		this.location.setCurrentLatitude(latitude);
-		this.location.setCurrentLongitude(longitude);
-	}
-
 	/**
 	 * Adiciona um registo ao livro de registos da cache
 	 *
@@ -285,9 +268,6 @@ public abstract class Cache
 					return false;
 
 			if (!this.defaultL.equals(c.getDefaultLocation()))
-				return false;
-
-			if (!this.currentL.equals(c.getCurrentLocation()))
 				return false;
 
 			if (this.date.get(Calendar.YEAR) != c.getYear() || this.date.get(Calendar.MONTH) != c.getMonth() || this.date.get(Calendar.DAY_OF_MONTH) != c.getDayOfMonth())
