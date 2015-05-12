@@ -36,7 +36,7 @@ public class Location
      *
      * @return a longitude inicial da cache
      */
-	public double getLongitude() { return this.defaultLongitude; }
+	public double getLongitude() { return this.longitude; }
 
 	/**
 	 * Muda a latitude inicial da cache
@@ -54,7 +54,7 @@ public class Location
 	 *
 	 * @param longitude a longitude inicial da cache
 	 */
-	public void setLongitude(double defaultLongitude) { this.defaultLongitude = defaultLongitude; }
+	public void setLongitude(double longitude) { this.longitude = longitude; }
 
 	/**
 	 * Compara 2 localizações
@@ -71,7 +71,7 @@ public class Location
 		{
 			Location l = (Location) o;
 
-			return (this.latitude == l.getLatitude() && this.defaultLongitude == l.getLongitude());
+			return (this.latitude == l.getLatitude() && this.longitude == l.getLongitude());
 		}
 	}
 
@@ -82,7 +82,7 @@ public class Location
 		s.append("Latitude Inicial: ");
 		s.append(this.latitude);
 		s.append("\nLatitude Inicial: ");
-		s.append(this.defaultLongitude);
+		s.append(this.longitude);
 		s.append("\n\nLatitude Atual: ");
 		s.append(this.latitude);
 		s.append("\nLongitude Atual: ");
