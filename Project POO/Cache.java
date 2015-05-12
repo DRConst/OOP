@@ -12,7 +12,8 @@ public abstract class Cache
 {
 	private String code, description, hints;
 	private TreeMap<String,Register> regBook;
-	private Location location;
+	private Location default;
+	private Location current;
 	private GregorianCalendar date;
 	private Difficulty difficulty;
 
@@ -53,10 +54,7 @@ public abstract class Cache
 		this.description = c.getDescription();
 		this.hints = c.getHints();
 		this.regBook = new TreeMap<String,Register>(c.getRegBook());
-		this.defaultLatitude = c.getLocation().getDefaultLatitude();
-		this.defaultLongitude = c.getLocation().getDefaultLongitude();
-		this.currentLatitude = c.getLocation().getCurrentLatitude();
-		this.currentLongitude = c.getLocation().getCurrentLongitude();
+		this.location = c.getLocation();
 		this.date = c.getDate();
 		this.difficulty = c.getDifficulty();
 	}
@@ -305,11 +303,13 @@ public abstract class Cache
 			if (!this.location.equals(c.getLocation()))
 				return false;
 
-			if (this.get(Calendar.YEAR) != c.getYear() || this.get(Calendar.MONTH) != c.getMonth() || this.get(Calendar.DAY_OF_MONTH) != c.getDayOfMonth())
+			if (this.date.get(Calendar.YEAR) != c.getYear() || this.date.get(Calendar.MONTH) != c.getMonth() || this.date.get(Calendar.DAY_OF_MONTH) != c.getDayOfMonth())
 				return false;
 
 			if (this.difficulty.equals(c.getDifficulty()))
 				return false;
+				
+			return true;
 		}
 	}
 
