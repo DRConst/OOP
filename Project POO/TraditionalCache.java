@@ -94,20 +94,7 @@ public class TraditionalCache extends Cache
 		{
 			TraditionalCache c = (TraditionalCache) o;
 
-			if (!this.getCode().equals(c.getCode()))
-				return false;
-
-			for (String s : c.getRegBook().keySet())
-				if (!this.getRegBook().containsKey(s))
-					return false;
-
-			if (this.getDefaultLatitude() != c.getDefaultLatitude() || this.getDefaultLongitude() != c.getDefaultLongitude() || this.getCurrentLatitude() != c.getCurrentLatitude() || this.getCurrentLongitude() != c.getCurrentLongitude())
-				return false;
-
-			if (this.getYear() != c.getYear() || this.getMonth() != c.getMonth() || this.getDayOfMonth() != c.getDayOfMonth())
-				return false;
-
-			if (this.getDifficulty() != c.getDifficulty())
+			if (!super.equals(c))
 				return false;
 
 			for (String s : this.treasures)
