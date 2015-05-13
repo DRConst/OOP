@@ -16,15 +16,15 @@ public class Multi extends Physical
         this.intermidiateLocations = new ArrayList<FlexLocation>();
     }
 
-    public Multi(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> intermidiate)
+    public Multi(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> intermidiate)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, currentLatitude, currentLongitude, treasures);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, currentLatitude, currentLongitude, treasures);
         this.intermidiateLocations = new ArrayList<FlexLocation>(intermidiate);
     }
 
-    public Multi(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayofMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> intermidiate)
+    public Multi(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayofMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> intermidiate)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayofMonth, difficulty, currentLatitude, currentLongitude, treasures);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayofMonth, difficulty, currentLatitude, currentLongitude, treasures);
         this.intermidiateLocations = new ArrayList<FlexLocation>(intermidiate);
     }
 
@@ -74,8 +74,12 @@ public class Multi extends Physical
         StringBuilder s = new StringBuilder();
 
         s.append("-----------------Multi Cache-----------------\n\n");
-        s.append("Nome: ");
+        s.append("\nNome: ");
         s.append(this.getName());
+        s.append("\n");
+
+        s.append("\nDono: ");
+        s.append(this.getOwner().toString());
         s.append("\n");
 
         s.append("\nDescrição: ");
@@ -90,28 +94,26 @@ public class Multi extends Physical
         s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
         s.append("\n");
 
-        s.append("Conteúdo do livro de Registos:\n");
+        s.append("\nConteúdo do livro de Registos:\n");
 
         for (Register r : this.getRegBook().values())
         {
-            s.append("\t");
             s.append(r.toString());
             s.append("\n");
         }
 
-        s.append("Tesouros:\n");
+        s.append("\nTesouros:\n");
 
         for (Treasure t : this.getTreasures())
         {
-            s.append("\t");
             s.append(t.toString());
             s.append("\n");
         }
 
-        s.append("Localização:\n");
+        s.append("\nLocalização:\n");
         s.append(this.getCurrentLocation().toString());
 
-        s.append("Localizações Intermédias:\n");
+        s.append("\nLocalizações Intermédias:\n");
 
         for (FlexLocation l : this.intermidiateLocations)
         {

@@ -20,7 +20,8 @@ public class User {
     private Statistics stats;
     private ArrayList<String> friends;
 
-    //Construtor parameterizado e de copia
+    public User() { this("", "", "", "", "", new GregorianCalendar()); }
+    
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;

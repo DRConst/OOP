@@ -18,16 +18,16 @@ public class MysteryV extends Virtual
         this.locations = new ArrayList<Location>();
     }
 
-    public MysteryV(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question, Collection<String> questions, Collection<Location> locations)
+    public MysteryV(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question, Collection<String> questions, Collection<Location> locations)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, question);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, question);
         this.questions = new ArrayList<String>(questions);
         this.locations = new ArrayList<Location>(locations);
     }
 
-    public MysteryV(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question, Collection<String> questions, Collection<Location> locations)
+    public MysteryV(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question, Collection<String> questions, Collection<Location> locations)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty, question);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty, question);
         this.questions = new ArrayList<String>(questions);
         this.locations = new ArrayList<Location>(locations);
     }
@@ -46,6 +46,12 @@ public class MysteryV extends Virtual
     private void setQuestions(Collection<String> question) { this.questions = new ArrayList<String>(questions); }
 
     private void setLocations(Collection<Location> locations) { this.locations = new ArrayList<Location>(locations); }
+
+    public void addIntermidiatePoint(String question, Location location)
+    {
+        this.questions.add(question);
+        this.locations.add(location);
+    }
 
     public void changeIntermidiatePoints(Collection<String> questions, Collection<Location> locations)
     {
@@ -86,8 +92,12 @@ public class MysteryV extends Virtual
         StringBuilder s = new StringBuilder();
 
         s.append("-----------------Cache Misterio Virtual-----------------\n\n");
-        s.append("Nome: ");
+        s.append("\nNome: ");
         s.append(this.getName());
+        s.append("\n");
+
+        s.append("\nDono: ");
+        s.append(this.getOwner().toString());
         s.append("\n");
 
         s.append("\nDescrição: ");
@@ -102,25 +112,29 @@ public class MysteryV extends Virtual
         s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
         s.append("\n");
 
-        s.append("Conteúdo do livro de Registos:\n");
+        s.append("\nConteúdo do livro de Registos:\n");
 
         for (Register r : this.getRegBook().values())
-            s.append("\t" + r.toString() + "\n");
+        {
+            s.append(r.toString());
+            s.append("\n");
+        }
 
         s.append("\nPergunta Final:\n\t");
         s.append(this.getFinalQuestion());
 
-        s.append("\n\nPerguntas Intermédias:\n");
+        s.append("\nPerguntas Intermédias:\n");
 
         for (int i=0; i<this.questions.size(); i++)
         {
+            s.append("\nPergunta: ");
             s.append(this.questions.get(i));
             s.append("\n");
             s.append(this.locations.get(i).toString());
-            s.append("\n\n");
+            s.append("\n");
         }
 
-        s.append("Localização:\n");
+        s.append("\nLocalização:\n");
         s.append("\tLatitude: " + this.getDefaultLatitude());
         s.append("\tLongitude: " + this.getDefaultLongitude());
         s.append("--------------------------------------------------------");

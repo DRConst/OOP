@@ -21,14 +21,14 @@ public class Register
 		this.date = new GregorianCalendar();
 	}
 
-	public Register(String comment, String user, GregorianCalendar date)
+	public Register(String user, String comment, GregorianCalendar date)
 	{
 		this.user = user;
 		this.comment = comment;
 		this.date = new GregorianCalendar(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
 	}
 
-	public Register(String comment, String user, int year, int month, int dayOfMonth)
+	public Register(String user, String comment, int year, int month, int dayOfMonth)
 	{
 		this.user = user;
 		this.comment = comment;

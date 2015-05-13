@@ -13,14 +13,14 @@ public class TraditionalV extends Virtual
 		super();
 	}
 
-	public TraditionalV(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question)
+	public TraditionalV(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, question);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, question);
 	}
 
-	public TraditionalV(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question)
+	public TraditionalV(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty, question);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty, question);
     }
 
 	public TraditionalV(TraditionalV c)
@@ -61,8 +61,12 @@ public class TraditionalV extends Virtual
 		StringBuilder s = new StringBuilder();
 
 		s.append("-----------------Cache Tradicional Virtual-----------------\n\n");
-        s.append("Nome: ");
+        s.append("\nNome: ");
         s.append(this.getName());
+        s.append("\n");
+
+        s.append("\nDono: ");
+        s.append(this.getOwner().toString());
         s.append("\n");
 
         s.append("\nDescrição: ");
@@ -77,15 +81,18 @@ public class TraditionalV extends Virtual
         s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
         s.append("\n");
 
-		s.append("Conteúdo do livro de Registos:\n");
+		s.append("\nConteúdo do livro de Registos:\n");
 
 		for (Register r : this.getRegBook().values())
-			s.append("\t" + r.toString() + "\n");
+        {
+            s.append(r.toString());
+            s.append("\n");
+        }
 
 		s.append("\nPergunta:\n\t");
 		s.append(this.getFinalQuestion());
 
-		s.append("Localização:\n");
+		s.append("\nLocalização:\n");
 		s.append("\tLatitude: " + this.getDefaultLatitude());
 		s.append("\tLongitude: " + this.getDefaultLongitude());
 		s.append("-----------------------------------------------------------");

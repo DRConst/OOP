@@ -19,16 +19,16 @@ public abstract class Physical extends Cache
         this.treasures = new ArrayList<Treasure>();
     }
 
-    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
+    public Physical(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
         this.treasures = new ArrayList<Treasure>(treasures);
     }
 
-    public Physical(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
+    public Physical(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
     {
-        super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
         this.treasures = new ArrayList<Treasure>(treasures);
     }

@@ -10,6 +10,7 @@ import java.util.*;
 
 public abstract class Cache
 {
+	private User owner;
 	private String name, code, description, hints;
 	private TreeMap<String,Register> regBook;
 	private Location defaultL;
@@ -18,6 +19,7 @@ public abstract class Cache
 
 	public Cache()
 	{
+		this.owner = new User();
 		this.name = this.code = this.description = this.hints = "";
 		this.regBook = new TreeMap<String,Register>();
 		this.defaultL = new Location();
@@ -25,8 +27,9 @@ public abstract class Cache
 		this.difficulty = Difficulty.EASY;
 	}
 
-	public Cache(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty)
+	public Cache(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty)
 	{
+		this.owner = new User(owner);
 		this.name = name;
 		this.code = code;
 		this.description = description;
@@ -37,8 +40,9 @@ public abstract class Cache
 		this.difficulty = difficulty;
 	}
 
-	public Cache(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty)
+	public Cache(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty)
 	{
+		this.owner = new User(owner);
 		this.name = name;
 		this.code = code;
 		this.description = description;
@@ -51,6 +55,7 @@ public abstract class Cache
 
 	public Cache(Cache c)
 	{
+		this.owner = c.getOwner();
 		this.name = c.getName();
 		this.code = c.getCode();
 		this.description = c.getDescription();
@@ -60,6 +65,8 @@ public abstract class Cache
 		this.date = c.getDate();
 		this.difficulty = c.getDifficulty();
 	}
+
+	public User getOwner() { return new User(this.owner); }
 
 	/**
 	 * Retorna o nome da cache
