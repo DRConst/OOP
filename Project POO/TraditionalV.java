@@ -83,7 +83,7 @@ public class TraditionalV extends Virtual
 			s.append("\t" + r.toString() + "\n");
 
 		s.append("\nPergunta:\n\t");
-		s.append(this.getQuestion());
+		s.append(this.getFinalQuestion());
 
 		s.append("Localização:\n");
 		s.append("\tLatitude: " + this.getDefaultLatitude());

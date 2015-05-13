@@ -8,35 +8,35 @@ import java.util.*;
 
 public abstract class Virtual extends Cache
 {
-    private String question;
+    private String finalQuestion;
 
     public Virtual() 
     {
         super();
-        this.question = "";
+        this.finalQuestion = "";
     }
 
     public Virtual(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question)
     {
         super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
-        this.question = question;
+        this.finalQuestion = question;
     }
 
     public Virtual(String name, String code, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question)
     {
         super(name, code, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
-        this.question = question;
+        this.finalQuestion = question;
     }
 
     public Virtual(Virtual p)
     {
         super(p);
-        this.question = p.getQuestion();
+        this.finalQuestion = p.getFinalQuestion();
     }
 
-    public String getQuestion() { return this.question; }
+    public String getFinalQuestion() { return this.finalQuestion; }
 
-    public void setQuestion(String question) { this.question = question; }
+    public void setFinalQuestion(String question) { this.finalQuestion = question; }
 
     public boolean equals(Object o)
     {
@@ -51,7 +51,7 @@ public abstract class Virtual extends Cache
             if (!super.equals(v))
                 return false;
 
-            if (!this.question.equals(v.getQuestion()))
+            if (!this.finalQuestion.equals(v.getFinalQuestion()))
                 return false;
 
             return true;
