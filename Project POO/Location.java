@@ -79,13 +79,9 @@ public class Location
 	{
 		StringBuilder s = new StringBuilder();
 
-		s.append("Latitude Inicial: ");
+		s.append("Latitude: ");
 		s.append(this.latitude);
-		s.append("\nLatitude Inicial: ");
-		s.append(this.longitude);
-		s.append("\n\nLatitude Atual: ");
-		s.append(this.latitude);
-		s.append("\nLongitude Atual: ");
+		s.append("\nLongitude: ");
 		s.append(this.longitude);
 
 		return s.toString();
