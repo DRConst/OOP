@@ -30,9 +30,9 @@ public class Treasure {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         } else {
-            Cache c = (Cache) o;
+            Treasure t = (Treasure) o;
 
-            return this.nome.equals(c.getCode());
+            return this.nome.equals(t.getNome());
         }
     }
 
