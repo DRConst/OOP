@@ -26,7 +26,7 @@ public class Trackable extends Treasure {
         this.description = description;
         this.objective = objective;
     }
-    
+
     public Trackable(String name, User owner, int year, int month, int dayOfMonth, ArrayList<Location> trackHistory, String cod, String description, String objective) {
         super(name);
         this.owner = owner;
@@ -66,20 +66,20 @@ public class Trackable extends Treasure {
     public GregorianCalendar getDate() {
         return new GregorianCalendar(this.getYear(), this.getMonth(), this.getDayOfMonth());
     }
-    
-    public ArrayList<Location> getTrackHistory(){
-        return new ArrayList<>(this.trackHistory); 
+
+    public ArrayList<Location> getTrackHistory() {
+        return new ArrayList<>(this.trackHistory);
     }
-    
-    public String getCod(){
+
+    public String getCod() {
         return this.cod;
     }
-    
-    public String getDescription(){
+
+    public String getDescription() {
         return this.cod;
     }
-    
-    public String getObjective(){
+
+    public String getObjective() {
         return this.cod;
     }
 
@@ -87,30 +87,100 @@ public class Trackable extends Treasure {
         this.owner = owner;
     }
 
-    private void setDate(int year, int month, int dayOfMonth) { 
-        this.date = new GregorianCalendar(year, month, dayOfMonth); 
+    private void setDate(int year, int month, int dayOfMonth) {
+        this.date = new GregorianCalendar(year, month, dayOfMonth);
     }
-    
-    public void getTrackHistory(ArrayList<Location> trackHistory){
+
+    public void setTrackHistory(ArrayList<Location> trackHistory) {
         this.trackHistory = new ArrayList<>(trackHistory);
     }
-    
-    public void setTrackHistory(ArrayList<Location> trackHistory){
-        this.trackHistory = new ArrayList<>(trackHistory); 
-    }
-    
-    public void setCod(String cod){
+
+    public void setCod(String cod) {
         this.cod = cod;
     }
-    
-    public void setDescription(String description){
+
+    public void setDescription(String description) {
         this.description = description;
     }
-    
-    public void setObjective(String objective){
+
+    public void setObjective(String objective) {
         this.objective = objective;
     }
+
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        } else {
+            Trackable t = (Trackable) o;
+
+            if (this.date.get(Calendar.YEAR) != t.getYear() || this.date.get(Calendar.MONTH) != t.getMonth() || this.date.get(Calendar.DAY_OF_MONTH) != t.getDayOfMonth()) {
+                return false;
+            }
+
+            for (Location s : t.getTrackHistory()) {
+                if (!this.trackHistory.contains(s)) {
+                    return false;
+                }
+            }
+
+            if (!this.cod.equals(t.getCod())) {
+                return false;
+            }
+
+            if (!this.description.equals(t.getDescription())) {
+                return false;
+            }
+
+            if (!this.objective.equals(t.getObjective())) {
+                return false;
+            }
+
+            return true;
+        }
+    }
     
-    
+    public String toString()
+    {
+        StringBuilder s = new StringBuilder();
+
+        s.append("-----------------Trackable-----------------\n\n");
+        
+        
+        s.append("Dono: ");
+        s.append(this.getOwner().getName());
+        s.append("\n");
+
+        s.append("\nCódigo: ");
+        s.append(this.getCod());
+        s.append("\n");
+        
+        s.append("\nData de Criação: ");
+        s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
+        s.append("\n");
+        
+        s.append("\nDescrição: ");
+        s.append(this.getDescription());
+        s.append("\n");
+
+        s.append("\nObjective: ");
+        s.append(this.getObjective());
+        s.append("\n");
+
+        s.append("\n\nLocais Por Onde Passou:\n");
+        for (int i=0; i<this.trackHistory.size(); i++)
+        {
+            s.append(this.trackHistory.get(i));
+            s.append("\n");
+            s.append(this.trackHistory.get(i).toString());
+            s.append("\n\n");
+        }
+
+        return s.toString();
+    }
+
+    public Trackable clone() { return new Trackable(this); }
     
 }
