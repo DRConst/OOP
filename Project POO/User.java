@@ -4,9 +4,10 @@
  * @version (a version number or a date)
  */
 
+import java.io.Serializable;
 import java.util.*;
 
-public class User {
+public class User implements Serializable{
 
     //Variáveis de Instância
 
@@ -29,6 +30,11 @@ public class User {
         this.gender = gender;
         this.birth = birth;
         this.address = address;
+        this.activities = new TreeSet<Cache>(new CacheComparator());
+        //this.stats = new Statistics();
+        this.friends = new ArrayList<User>();
+    }
+    public User() {
         this.activities = new TreeSet<Cache>(new CacheComparator());
         //this.stats = new Statistics();
         this.friends = new ArrayList<User>();
@@ -131,7 +137,7 @@ public class User {
 
     /**
      * futuramente para devolver as estatísticas do utilizador
-     * 
+     *
      * public Statistic getStatistics() { return stats.clone(); }
      */
     

@@ -5,6 +5,7 @@
 import javax.print.DocFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.StringBuilder;
 import java.lang.System;
 import java.security.MessageDigest;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login
+public class Login implements Serializable
 {
     private HashMap<String, byte[]> hashes, salts;
     private HashMap<String, User> users;

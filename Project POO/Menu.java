@@ -194,6 +194,12 @@ public class Menu {
         }
     }
 
+    private void registerCache()
+    {
+        Cache toReg = new Multi();
+
+        cacheStorage.saveCache(toReg);
+    }
     public boolean menuLoop()/*Returns whether app should continue or not */
     {
         Scanner sc = new Scanner(System.in);
@@ -223,6 +229,9 @@ public class Menu {
         {
             case 1:
                 listActivities();
+                break;
+            case 2:
+                registerCache();
                 break;
             case 3:
                 registerDiscovery();

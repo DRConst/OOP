@@ -5,11 +5,11 @@ import java.io.*;
  */
 public class Serializer {
 
-	public void writeObject(Object o)
+	public static void writeObject(Object o)
 	{
 		try
 		{
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(o.getClass().getName()));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(o.getClass().getName() + ".saved"));
 			oos.writeObject(o);
 			oos.close();
 		} catch (Exception e) {
@@ -17,11 +17,11 @@ public class Serializer {
 		}
 	}
 
-	public Object readObject(String name)
+	public static Object readObject(String name)
 	{
 		Object toRet = null;
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name));
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(name + ".saved"));
 			toRet = ois.readObject();
 			ois.close();
 		} catch (Exception e) {
