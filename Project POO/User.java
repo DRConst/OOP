@@ -1,4 +1,3 @@
-
 /**
  * Classe Utilizador
  *
@@ -10,6 +9,7 @@ import java.util.*;
 public class User {
 
     //Variáveis de Instância
+
     private String email;
     private String password;
     private String name;
@@ -17,11 +17,11 @@ public class User {
     private String address;
     private Calendar birth;
     private TreeSet<Cache> activities;
-    private Statistics stats;
-    private ArrayList<String> friends;
+    //private Statistics stats;
+    private ArrayList<User> friends;
 
-    public User() { this("", "", "", "", "", new GregorianCalendar()); }
-    
+    //Construtor parameterizado e de copia
+
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;
@@ -30,8 +30,8 @@ public class User {
         this.birth = birth;
         this.address = address;
         this.activities = new TreeSet<Cache>(new CacheComparator());
-        this.stats = new Statistics();
-        this.friends = new ArrayList<String>();
+        //this.stats = new Statistics();
+        this.friends = new ArrayList<User>();
     }
 
     public User(User u) {
@@ -47,6 +47,7 @@ public class User {
     }
 
     //Getters e Setters
+    
     /**
      * Devolve o email do utilizador
      *
@@ -106,10 +107,10 @@ public class User {
      *
      * @return friendsL lista de amigos
      */
-    public ArrayList<String> getFriends() {
-        ArrayList<String> friendsL = new ArrayList<String>();
-        for (String mail : friends) {
-            friendsL.add(mail);
+    public ArrayList<User> getFriends() {
+        ArrayList<User> friendsL = new ArrayList<User>();
+        for (User u : friends) {
+            friendsL.add(u);
         }
         return friendsL;
     }
@@ -130,8 +131,8 @@ public class User {
 
     /**
      * futuramente para devolver as estatísticas do utilizador
-     *
-     * public Statistics getStatistics() { return stats.clone(); }
+     * 
+     * public Statistic getStatistics() { return stats.clone(); }
      */
     
     /**
@@ -155,10 +156,10 @@ public class User {
     /**
      * Adiciona um utilizador à lista de amigos
      *
-     * @param email do novo amigo utilizador
+     * @param usr do novo amigo utilizador
      */
-    public void addFriend(String email) {
-        friends.add(email);
+    public void addFriend(User usr) {
+        friends.add(usr);
     }
 
     /**
@@ -205,8 +206,8 @@ public class User {
 
     public String friendsToString() {
         StringBuilder s = new StringBuilder();
-        for (String mail : friends) {
-            s.append(mail);
+        for (User u : friends) {
+            s.append(u.getEmail());
             s.append("\n");
         }
         return s.toString();
@@ -260,8 +261,8 @@ public class User {
 
             return false;
         }
-        for (String s : friends) {
-            if (!u.getFriends().contains(s)) {
+        for (User usr : friends) {
+            if (!u.getFriends().contains(usr)) {
                 return false;
             }
         }
