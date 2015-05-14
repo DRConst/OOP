@@ -33,6 +33,11 @@ public class User {
         //this.stats = new Statistics();
         this.friends = new ArrayList<User>();
     }
+    public User() {
+        this.activities = new TreeSet<Cache>(new CacheComparator());
+        //this.stats = new Statistics();
+        this.friends = new ArrayList<User>();
+    }
 
     public User(User u) {
         this.email = u.getEmail();
@@ -131,7 +136,7 @@ public class User {
 
     /**
      * futuramente para devolver as estatísticas do utilizador
-     * 
+     *
      * public Statistic getStatistics() { return stats.clone(); }
      */
     
