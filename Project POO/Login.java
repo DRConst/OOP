@@ -1,3 +1,7 @@
+/**
+ * Created by Diogo on 27/04/2015.
+ */
+
 import javax.print.DocFlavor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,20 +11,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Diogo on 27/04/2015.
- */
 public class Login
 {
     private HashMap<String, byte[]> hashes, salts;
-
+    private HashMap<String, User> users;
     public Login()
     {
         hashes = new HashMap<String, byte[]>();
         salts = new HashMap<String, byte[]>();
+        users = new HashMap<String, User>();
     }
 
     public Login(Login l)
@@ -29,11 +32,38 @@ public class Login
         salts = l.getSalts();
     }
 
-    public void registerUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+    public void registerUser(String userName, String password, String name, String gender, String address, Calendar birth) throws IOException, NoSuchAlgorithmException {
         byte[] salt = genSalt();
         byte[] hash = genHash(salt, password);
         registerSalt(userName, salt);
         registerPw(userName, hash);
+        users.put(userName, new User(userName, password, name, gender, address, birth));
+    }
+
+    public boolean checkRegistration(String userName, String password) throws IOException, NoSuchAlgorithmException {
+
+        byte[] salt;
+        byte[] hash, hash2;
+
+        if(!salts.containsKey(userName) || !hashes.containsKey(userName))
+            return false;
+
+        salt = salts.get(userName);
+        hash = genHash(salt, password);
+        hash2 = hashes.get(userName);
+        if(Arrays.equals(hash2, hash))
+            return true;
+        else
+            return false;
+    }
+
+    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+        User usr = null;
+        if(checkRegistration(userName, password)) {
+            usr =  users.get(userName);
+        }
+
+        return usr;
     }
 
     private void registerPw(String userName, byte[] hash)
@@ -116,9 +146,9 @@ public class Login
         for(Map.Entry<String, byte[]> entry : salts.entrySet())
         {
             sb.append(entry.getKey());
-	        sb.append(":");
+            sb.append(":");
             sb.append(entry.getValue());
-	        sb.append(";");
+            sb.append(";");
         }
         sb.append("\nHashes-");
         for(Map.Entry<String, byte[]> entry : hashes.entrySet())
@@ -126,16 +156,14 @@ public class Login
             sb.append(entry.getKey());
             sb.append(":");
             sb.append(entry.getValue());
-	        sb.append(";");
+            sb.append(";");
         }
 
         return sb.toString();
     }
 
-	public Login clone(Login l)
-	{
-		return new Login(l);
-	}
+    public Login clone(Login l)
+    {
+        return new Login(l);
+    }
 }
-
-
