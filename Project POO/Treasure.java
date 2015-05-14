@@ -1,4 +1,6 @@
 
+import java.util.Arrays;
+
 public class Treasure {
 
     private String nome;
@@ -21,6 +23,10 @@ public class Treasure {
 
     public void setName(String nome) {
         this.nome = nome;
+    }
+
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{nome});
     }
 
     public boolean equals(Object o) {
@@ -48,4 +54,3 @@ public class Treasure {
         return new Treasure(this);
     }
 }
-

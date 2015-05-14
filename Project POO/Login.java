@@ -2,11 +2,9 @@
  * Created by Diogo on 27/04/2015.
  */
 
-import javax.print.DocFlavor;
+import javax.print.DocFlavor; //não sei se o professor vai gostar deste import
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.StringBuilder;
-import java.lang.System;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

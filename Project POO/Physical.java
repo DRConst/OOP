@@ -1,43 +1,39 @@
+
 /**
  * Classe que implementa um cache fisica
- * 
+ *
  * @version (version number or date here)
  */
-
 import java.util.*;
 
-public abstract class Physical extends Cache
-{
+public abstract class Physical extends Cache {
+
     private Location currentL;
     private Size size;
     private ArrayList<Treasure> treasures;
 
-    public Physical() 
-    { 
+    public Physical() {
         super();
         this.size = Size.MICRO;
-        this.treasures = new ArrayList<Treasure>();
+        this.treasures = new ArrayList<>();
     }
 
-    public Physical(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
-    {
+    public Physical(String name, String code, User owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
-        this.treasures = new ArrayList<Treasure>(treasures);
+        this.treasures = new ArrayList<>(treasures);
     }
 
-    public Physical(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures)
-    {
+    public Physical(String name, String code, User owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
-        this.treasures = new ArrayList<Treasure>(treasures);
+        this.treasures = new ArrayList<>(treasures);
     }
 
-    public Physical(Physical p)
-    {
+    public Physical(Physical p) {
         super(p);
         this.currentL = new Location(p.getCurrentLocation());
-        this.treasures = new ArrayList<Treasure>(p.getTreasures());
+        this.treasures = new ArrayList<>(p.getTreasures());
     }
 
     /**
@@ -45,51 +41,56 @@ public abstract class Physical extends Cache
      *
      * @return a localização atual da cache
      */
-    public Location getCurrentLocation() { return this.currentL.clone(); }
+    public Location getCurrentLocation() {
+        return this.currentL.clone();
+    }
 
     /**
-     * Devolve o valor da latitude no momento da cache
-     * Não pode estar distanciada mais de 10 metros da
-     * localização inicial
+     * Devolve o valor da latitude no momento da cache Não pode estar
+     * distanciada mais de 10 metros da localização inicial
      *
      * @return a latitude no momento da cache
      */
-    public double getCurrentLatitude() { return this.currentL.getLatitude(); }
+    public double getCurrentLatitude() {
+        return this.currentL.getLatitude();
+    }
 
     /**
-     * Devolve o valor da longitude no momento da cache
-     * Não pode estar distanciada mais de 10 metros da
-     * localização inicial
+     * Devolve o valor da longitude no momento da cache Não pode estar
+     * distanciada mais de 10 metros da localização inicial
      *
      * @return a longitude no momento da cache
      */
-    public double getCurrentLongitude() { return this.currentL.getLongitude(); }
+    public double getCurrentLongitude() {
+        return this.currentL.getLongitude();
+    }
 
     /**
      * Devolve o máximo de tesouros permitidos na cache
      *
      * @return treasures a lista com os tesouros
      */
-    public int getSize() { return this.size.getValue(); }
+    public int getSize() {
+        return this.size.getValue();
+    }
 
     /**
      * Devolve os tesouros presentes na cache
      *
      * @return a lista com os tesouros
      */
-    public Collection<Treasure> getTreasures() { return new ArrayList<Treasure>(this.treasures); }
-
+    public Collection<Treasure> getTreasures() {
+        return new ArrayList<>(this.treasures);
+    }
 
     /**
-     * Muda a localização no momento da cache
-     * Não pode estar distanciado mais de 10 metros
-     * da localização inicial da cache
+     * Muda a localização no momento da cache Não pode estar distanciado mais de
+     * 10 metros da localização inicial da cache
      *
      * @param latitude a latitude no momento da cache
      * @param longitude a longitude no momento da cache
      */
-    public void setCurrentLocation(double latitude, double longitude)
-    {
+    public void setCurrentLocation(double latitude, double longitude) {
         // Adicionar verificador de distância
 
         this.currentL.setLatitude(latitude);
@@ -101,31 +102,41 @@ public abstract class Physical extends Cache
      *
      * @param currentLatitude a latitude no momento da cache
      */
-    public void setCurrentLatitude(double currentLatitude) { this.currentL.setLatitude(currentLatitude); }  // adicionar verificador de distancia
+    public void setCurrentLatitude(double currentLatitude) {
+        this.currentL.setLatitude(currentLatitude);
+    }  // adicionar verificador de distancia
 
     /**
      * Muda a longitude no momento da cache
      *
      * @param currentLongitude a longitude no momento da cache
      */
-    public void setCurrentLongitude(double currentLongitude) { this.currentL.setLongitude(currentLongitude); }  // adicionar verificador de distancia
+    public void setCurrentLongitude(double currentLongitude) {
+        this.currentL.setLongitude(currentLongitude);
+    }  // adicionar verificador de distancia
 
     /**
      * Coloca na cache o máximo de tesouros permitidos na cache
      *
-     * @return size a constante com o tamanho
+     * @param s size a constante com o tamanho
      */
-    public void setSize(Size s) { this.size = size; }
+    public void setSize(Size s) {
+        this.size = s;
+    }
 
     /**
      * Coloca na cache um conjunto de tesouros passado como parametro
      *
      * @param treasures o conjunto de tesouros a colocar na cache
      */
-    public void setTreasures(Collection<Treasure> treasures)
-    {
-        if (treasures.size() <= this.size.getValue())
-            this.treasures = new ArrayList<Treasure>(treasures);
+    public void setTreasures(Collection<Treasure> treasures) {
+        if (treasures.size() <= this.size.getValue()) {
+            this.treasures = new ArrayList<>(treasures);
+        }
+    }
+
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{super.hashCode(), currentL.hashCode(), size, treasures.hashCode()});
     }
 
     /**
@@ -133,29 +144,33 @@ public abstract class Physical extends Cache
      *
      * @return true se iguais, false caso contrário
      */
-    public boolean equals(Object o)
-    {
-        if (this == o)
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
-        if (o == null || this.getClass() != o.getClass())
+        }
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
-        else
-        {
+        } else {
             Physical p = (Physical) o;
 
-            if (!super.equals(p))
+            if (!super.equals(p)) {
                 return false;
+            }
 
-            if (!this.currentL.equals(p.getCurrentLocation()))
+            if (!this.currentL.equals(p.getCurrentLocation())) {
                 return false;
+            }
 
-            if (this.size.getValue() != p.getSize())
+            if (this.size.getValue() != p.getSize()) {
                 return false;
+            }
 
-            for (Treasure t: p.getTreasures())
-                if (!this.treasures.contains(t))
+            for (Treasure t : p.getTreasures()) {
+                if (!this.treasures.contains(t)) {
                     return false;
-                
+                }
+            }
+
             return true;
         }
     }
@@ -164,4 +179,3 @@ public abstract class Physical extends Cache
 
     public abstract Physical clone();
 }
-

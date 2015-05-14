@@ -17,11 +17,15 @@ public class User {
     private String address;
     private Calendar birth;
     private TreeSet<Cache> activities;
-    //private Statistics stats;
     private ArrayList<User> friends;
 
     //Construtor parameterizado e de copia
 
+        public User() {
+        this.activities = new TreeSet<>(new CacheComparator());
+        this.friends = new ArrayList<>();
+    }
+    
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;
@@ -29,14 +33,8 @@ public class User {
         this.gender = gender;
         this.birth = birth;
         this.address = address;
-        this.activities = new TreeSet<Cache>(new CacheComparator());
-        //this.stats = new Statistics();
-        this.friends = new ArrayList<User>();
-    }
-    public User() {
-        this.activities = new TreeSet<Cache>(new CacheComparator());
-        //this.stats = new Statistics();
-        this.friends = new ArrayList<User>();
+        this.activities = new TreeSet<>(new CacheComparator());
+        this.friends = new ArrayList<>();
     }
 
     public User(User u) {
@@ -47,7 +45,6 @@ public class User {
         this.address = u.getAddress();
         this.birth = u.getBirth();
         this.activities = u.getActivities();
-        //this.stats = u.getStatistics();
         this.friends = u.getFriends();
     }
 
@@ -133,12 +130,6 @@ public class User {
         }
         return activitiesL;
     }
-
-    /**
-     * futuramente para devolver as estatísticas do utilizador
-     *
-     * public Statistic getStatistics() { return stats.clone(); }
-     */
     
     /**
      * Altera a password do utilizador pelo parâmetro passado
@@ -221,7 +212,6 @@ public class User {
     /**
      * HashCode para a classe User
      */
-    @Override
     public int hashCode() {
         return Arrays.hashCode(new Object[]{email, password, name, gender, address,
             /* stats.hashCode(),*/ activities.hashCode(), birth.get(Calendar.YEAR),
@@ -254,7 +244,7 @@ public class User {
         }
 
         if (!(email.equals(u.getEmail()) && name.equals(u.getName()) && gender.equals(u.getGender())
-                && address.equals(u.getAddress()) && birth.equals(u.getBirth()) /* && stats.equals(u.getStatistics())*/)) {
+                && address.equals(u.getAddress()) && birth.equals(u.getBirth()))) {
             return false;
         }
         if (!(birth.get(Calendar.YEAR) == u.getBirth().get(Calendar.YEAR)

@@ -1,94 +1,116 @@
+
 /**
  * Classe que implementa uma Cache Misterio Physical
- * 
+ *
  * @version (a version number or a date)
  */
 
 import java.util.*;
 
-public class MysteryP extends Physical
-{
+public class MysteryP extends Physical {
+
     private ArrayList<String> questions;
     private ArrayList<FlexLocation> locations;
 
-    public MysteryP()
-    {
+    public MysteryP() {
         super();
-        this.questions = new ArrayList<String>();
-        this.locations = new ArrayList<FlexLocation>();
+        this.questions = new ArrayList<>();
+        this.locations = new ArrayList<>();
     }
 
-    public MysteryP(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<String> questions, Collection<FlexLocation> locations)
-    {
-        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty, currentLatitude, currentLongitude, treasures);
-        this.questions = new ArrayList<String>(questions);
-        this.locations = new ArrayList<FlexLocation>(locations);
+    public MysteryP(String name, String code, User owner, String description, String hints, 
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
+            GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, 
+            Collection<Treasure> treasures, Collection<String> questions, Collection<FlexLocation> locations) {
+        
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
+                date, difficulty, currentLatitude, currentLongitude, treasures);
+        
+        this.questions = new ArrayList<>(questions);
+        this.locations = new ArrayList<>(locations);
     }
 
-    public MysteryP(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<String> questions, Collection<FlexLocation> locations)
-    {
-        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty, currentLatitude, currentLongitude, treasures);
-        this.questions = new ArrayList<String>(questions);
-        this.locations = new ArrayList<FlexLocation>(locations);
+    public MysteryP(String name, String code, User owner, String description, String hints, 
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
+            int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, 
+            double currentLongitude, Collection<Treasure> treasures, Collection<String> questions, 
+            Collection<FlexLocation> locations) {
+        
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
+                year, month, dayOfMonth, difficulty, currentLatitude, currentLongitude, treasures);
+        
+        this.questions = new ArrayList<>(questions);
+        this.locations = new ArrayList<>(locations);
     }
 
-    public MysteryP(MysteryP m)
-    {
+    public MysteryP(MysteryP m) {
         super(m);
-        this.questions = new ArrayList<String>(m.getQuestions());
-        this.locations = new ArrayList<FlexLocation>(m.getLocations());
+        this.questions = new ArrayList<>(m.getQuestions());
+        this.locations = new ArrayList<>(m.getLocations());
     }
 
-    public Collection<String> getQuestions() { return new ArrayList<String>(this.questions); }
+    public Collection<String> getQuestions() {
+        return new ArrayList<>(this.questions);
+    }
 
-    public Collection<FlexLocation> getLocations() { return new ArrayList<FlexLocation>(this.locations); }
+    public Collection<FlexLocation> getLocations() {
+        return new ArrayList<>(this.locations);
+    }
 
-    private void setQuestions(Collection<String> question) { this.questions = new ArrayList<String>(questions); }
+    private void setQuestions(Collection<String> questions) {
+        this.questions = new ArrayList<>(questions);
+    }
 
-    private void setLocations(Collection<FlexLocation> locations) { this.locations = new ArrayList<FlexLocation>(locations); }
+    private void setLocations(Collection<FlexLocation> locations) {
+        this.locations = new ArrayList<>(locations);
+    }
 
-    public void addIntermidiatePoint(String question, FlexLocation location)
-    {
+    public void addIntermidiatePoint(String question, FlexLocation location) {
         this.questions.add(question);
         this.locations.add(location);
     }
 
-    public void changeIntermidiatePoints(Collection<String> questions, Collection<FlexLocation> locations)
-    {
-        if (questions.size() == locations.size())
-        {
+    public void changeIntermidiatePoints(Collection<String> questions, Collection<FlexLocation> locations) {
+        if (questions.size() == locations.size()) {
             this.setQuestions(questions);
             this.setLocations(locations);
         }
     }
 
-    public boolean equals(Object o)
-    {
-        if (this == o)
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{super.hashCode(), locations.hashCode()});
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
-        if (o==null || this.getClass() != o.getClass())
+        }
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
-        else
-        {
+        } else {
             MysteryP m = (MysteryP) o;
 
-            if (!super.equals(m))
+            if (!super.equals(m)) {
                 return false;
+            }
 
-            for (String s : m.getQuestions())
-                if (!this.questions.contains(s))
+            for (String s : m.getQuestions()) {
+                if (!this.questions.contains(s)) {
                     return false;
+                }
+            }
 
-            for (FlexLocation s : m.getLocations())
-                if (!this.locations.contains(s))
+            for (FlexLocation s : m.getLocations()) {
+                if (!this.locations.contains(s)) {
                     return false;
+                }
+            }
 
             return true;
         }
     }
 
-    public String toString()
-    {
+    public String toString() {
         StringBuilder s = new StringBuilder();
 
         s.append("-----------------Cache Misterio Fisica-----------------\n\n");
@@ -109,29 +131,26 @@ public class MysteryP extends Physical
         s.append("\n");
 
         s.append("\nData: ");
-        s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
+        s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
 
         s.append("\nConteúdo do livro de Registos:\n");
 
-        for (Register r : this.getRegBook().values())
-        {
+        for (Register r : this.getRegBook().values()) {
             s.append(r.toString());
             s.append("\n");
         }
 
         s.append("\nTesouros:\n");
 
-        for (Treasure t : this.getTreasures())
-        {
+        for (Treasure t : this.getTreasures()) {
             s.append(t.toString());
             s.append("\n");
         }
 
         s.append("\nPerguntas Intermédias:\n");
 
-        for (int i=0; i<this.questions.size(); i++)
-        {
+        for (int i = 0; i < this.questions.size(); i++) {
             s.append("\nPergunta: ");
             s.append(this.questions.get(i));
             s.append("\nLatitude: ");
@@ -142,13 +161,14 @@ public class MysteryP extends Physical
         }
 
         s.append("\nLocalização:\n");
-        s.append("\tLatitude: " + this.getDefaultLatitude());
-        s.append("\tLongitude: " + this.getDefaultLongitude());
+        s.append("\tLatitude: ").append(this.getDefaultLatitude());
+        s.append("\tLongitude: ").append(this.getDefaultLongitude());
         s.append("-------------------------------------------------------");
 
         return s.toString();
     }
 
-    public MysteryP clone() { return new MysteryP(this); }
+    public MysteryP clone() {
+        return new MysteryP(this);
+    }
 }
-

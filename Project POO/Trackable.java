@@ -107,6 +107,12 @@ public class Trackable extends Treasure {
         this.objective = objective;
     }
 
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{super.hashCode(), owner.hashCode(),
+            date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH),
+            trackHistory.hashCode(), cod, description, objective});
+    }
+
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -141,14 +147,12 @@ public class Trackable extends Treasure {
             return true;
         }
     }
-    
-    public String toString()
-    {
+
+    public String toString() {
         StringBuilder s = new StringBuilder();
 
         s.append("-----------------Trackable-----------------\n\n");
-        
-        
+
         s.append("Dono: ");
         s.append(this.getOwner().getName());
         s.append("\n");
@@ -156,11 +160,11 @@ public class Trackable extends Treasure {
         s.append("\nCódigo: ");
         s.append(this.getCod());
         s.append("\n");
-        
+
         s.append("\nData de Criação: ");
         s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
-        
+
         s.append("\nDescrição: ");
         s.append(this.getDescription());
         s.append("\n");
@@ -170,17 +174,18 @@ public class Trackable extends Treasure {
         s.append("\n");
 
         s.append("\n\nLocais Por Onde Passou:\n");
-        for (int i=0; i<this.trackHistory.size(); i++)
-        {
-            s.append(this.trackHistory.get(i));
+        for (Location tH : this.trackHistory) {
+            s.append(tH);
             s.append("\n");
-            s.append(this.trackHistory.get(i).toString());
+            s.append(tH.toString());
             s.append("\n\n");
         }
 
         return s.toString();
     }
 
-    public Trackable clone() { return new Trackable(this); }
-    
+    public Trackable clone() {
+        return new Trackable(this);
+    }
+
 }
