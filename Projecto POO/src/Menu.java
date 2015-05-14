@@ -10,12 +10,16 @@ public class Menu {
     private Login loginManager;
     private boolean isAuth = false;
     private User activeUser;
-    private TreeMap<String, Cache> storedCaches;
+    private CacheStorage cacheStorage;
+    private Serializer s;
     public Menu()
     {
-        loginManager = new Login();
+        if((loginManager = (Login)s.readObject(Login.class.getName())) == null)
+            loginManager = new Login();
         activeUser = null;
-        storedCaches = new TreeMap<String, Cache>();
+        if((cacheStorage = (CacheStorage)s.readObject(CacheStorage.class.getName())) == null)
+            cacheStorage = new CacheStorage();
+
     }
     private void clearScreen()
     {
@@ -177,12 +181,12 @@ public class Menu {
         System.out.println("Insira o Codigo da Cache: ");
         try {
             answer = input.readLine();
-            if(!storedCaches.containsKey(answer))
+            if(cacheStorage.getCache(answer) == null)
             {
                 System.out.println("C?digo Inexistente");
             }else
             {
-                activeUser.addActivity(storedCaches.get(input));
+                activeUser.addActivity(cacheStorage.getCache(answer));
                 System.out.println("Descoberta Registada");
             }
         } catch (IOException e) {
@@ -236,6 +240,10 @@ public class Menu {
         {
 
         }
+
+        menu.s.writeObject(menu.loginManager);
+        menu.s.writeObject(menu.cacheStorage);
+
     }
 }
 
