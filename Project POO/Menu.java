@@ -12,6 +12,7 @@ public class Menu {
     private User activeUser;
     private CacheStorage cacheStorage;
     private Serializer s;
+    private ReportDB reportDB;
     public Menu()
     {
         if((loginManager = (Login)s.readObject(Login.class.getName())) == null)
@@ -19,6 +20,8 @@ public class Menu {
         activeUser = null;
         if((cacheStorage = (CacheStorage)s.readObject(CacheStorage.class.getName())) == null)
             cacheStorage = new CacheStorage();
+        if((reportDB = (ReportDB)s.readObject(ReportDB.class.getName())) == null)
+            reportDB = new ReportDB();
 
     }
     private void clearScreen()
@@ -74,7 +77,7 @@ public class Menu {
                 System.out.println("Data de Nascimento: ");
                 System.out.print("Dia: ");
                 day = sc.nextInt();
-                System.out.print("M?s: ");
+                System.out.print("Mes: ");
                 month = sc.nextInt();
                 System.out.print("Ano: ");
                 year  = sc.nextInt();
@@ -112,7 +115,7 @@ public class Menu {
 
 
     }
-
+    /*TODO: Fix Seg Fault, Null Active User*/
     private void listUsersActivities(User user)
     {
         TreeSet<Cache> activities;
@@ -183,7 +186,7 @@ public class Menu {
             answer = input.readLine();
             if(cacheStorage.getCache(answer) == null)
             {
-                System.out.println("C?digo Inexistente");
+                System.out.println("Codigo Inexistente");
             }else
             {
                 activeUser.addActivity(cacheStorage.getCache(answer));
@@ -196,15 +199,120 @@ public class Menu {
 
     private void registerCache()
     {
-        Cache toReg = new Multi();
+        Cache toReg;
 
-        cacheStorage.saveCache(toReg);
+        System.out.println("Escolha o Tipo de Cache:");
+        System.out.println("1 - Virtual");
+        System.out.println("2 - Fisica");
+
+        //cacheStorage.saveCache(toReg);
     }
+
+    private void reportCache()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String answer;
+        Report r;
+        StringBuilder sb ;
+        Cache c;
+        System.out.print("Insira o Codigo da Cache a Reportar: ");
+        try {
+            answer = input.readLine();
+            System.out.println();
+            if((c = cacheStorage.getCache(answer)) == null)
+            {
+                System.out.println("Cache nao Existente");
+                return;
+            }
+            if((r = reportDB.getReport(answer)) != null)
+            {
+                System.out.println("Registo ja existente:");
+                System.out.println(r.getDesc());
+                System.out.println("Deseja Adicionar um Novo Registo? (y/n)");
+                if(input.readLine() == "y" )
+                {
+                    sb = new StringBuilder();
+                    System.out.println("Insira a Descricao: (Escreva \"END\" para Terminar");
+                    while((answer = input.readLine()) != "END")
+                    {
+                        sb.append(answer);
+                    }
+                    reportDB.addReport(c, sb.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro de IO");
+        }
+
+    }
+
+    public void displayActivities(User u)
+    {
+        TreeSet<Cache>  acts = u.getActivities();
+        int cnt = 10;
+        if(acts == null)
+        {
+            System.out.println("Nao Existem Actividades Registadas");
+            return;
+        }else {
+            Iterator<Cache> it = acts.iterator();
+            while(it.hasNext() && cnt-- > 0)
+            {
+                System.out.println(it.next().toString());/*TODO: Beautify*/
+            }
+        }
+    }
+
+    private void manageFriends()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String answer;
+        User usr = null;
+        System.out.println("Escolha uma opcao: ");
+        System.out.println("1 - Remover Amigo");
+        System.out.println("2 - Adicionar Amigo");
+
+        try {
+            answer = input.readLine();
+            if(answer == "1")
+            {
+                System.out.println("Insira o Email do Amigo: ");
+                answer = input.readLine();
+                usr = activeUser.getFriend(answer);
+                if(usr == null)
+                {
+                    System.out.println("Utilizador Nao Pertence a Lista de Amigos ");
+                    return;
+                }else if(activeUser.removeFriend(usr) == true)
+                {
+                    System.out.println("Amigo Apagado");
+                    return;
+                }
+            }
+            if(answer == "2")
+            {
+                System.out.println("Insira o Email do Amigo: ");
+                answer = input.readLine();
+                usr = loginManager.getRegisteredUser(answer);
+                if(usr == null)
+                {
+                    System.out.println("Utilizador Nao Existe");
+                    return;
+                }else activeUser.addFriend(usr);/*TODO: Force A Need For Requests??*/
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public boolean menuLoop()/*Returns whether app should continue or not */
     {
         Scanner sc = new Scanner(System.in);
         int input;
-        if(!isAuth)
+        if(activeUser == null || !isAuth)
         {
             System.out.println("Nenhum Utilizador Activo, deseja fazer login/registar (1) ou sair (2) : ");
             input = sc.nextInt();
@@ -221,6 +329,11 @@ public class Menu {
         System.out.println("1 - Visualizar Ultimas Acividades");
         System.out.println("2 - Registar Uma Nova Cache");
         System.out.println("3 - Registar Descoberta de uma Cache");
+        System.out.println("4 - Invalidar uma Cache");/*TODO*/
+        System.out.println("5 - Reportar uma Cache");
+        System.out.println("6 - Consultar Actividades de Descoberta");
+        System.out.println("7 - Consultar Estatisticas");
+        System.out.println("8 - Gerir Amigos");
 
 
         input = sc.nextInt();
@@ -235,6 +348,19 @@ public class Menu {
                 break;
             case 3:
                 registerDiscovery();
+                break;
+            case 4:
+                break;
+            case 5:
+                reportCache();
+                break;
+            case 6:
+                displayActivities(activeUser);
+                break;
+            case 7:
+                break;
+            case 8:
+                manageFriends();
                 break;
         }
 
@@ -252,6 +378,7 @@ public class Menu {
 
         menu.s.writeObject(menu.loginManager);
         menu.s.writeObject(menu.cacheStorage);
+        menu.s.writeObject(menu.reportDB);
 
     }
 }
