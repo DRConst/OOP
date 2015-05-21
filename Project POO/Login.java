@@ -67,6 +67,11 @@ public class Login implements Serializable
         return usr;
     }
 
+    public User getRegisteredUser(String userName)
+    {
+        return users.get(userName);
+    }
+
     private void registerPw(String userName, byte[] hash)
     {
         /*TODO: decide policy on multiple registrations*/

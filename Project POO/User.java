@@ -168,6 +168,26 @@ public class User implements Serializable{
         friends.add(usr);
     }
 
+    public boolean removeFriend(User usr) { return friends.remove(usr);}
+
+    public boolean hasFriend(String userName)
+    {
+        for (User user : friends) {
+            if(user.getEmail() == userName)
+                return true;
+        }
+        return false;
+    }
+
+    public User getFriend(String userName)
+    {
+
+        for (User user : friends) {
+            if(user.getEmail() == userName)
+                return user;
+        }
+        return null;
+    }
     /**
      * Adiciona uma cache à lista de atividades
      *
