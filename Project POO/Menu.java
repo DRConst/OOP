@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Created by Diogo on 06/05/2015.
@@ -15,13 +16,37 @@ public class Menu {
     private ReportDB reportDB;
     public Menu()
     {
-        if((loginManager = (Login)s.readObject(Login.class.getName())) == null)
+
+        try {
+            loginManager = (Login)s.readObject(Login.class.getName());
+
+        } catch (IOException e) {
+            System.out.println("Logins Nao Encontrados");
             loginManager = new Login();
+        } catch (ClassNotFoundException e) {/**/
+            e.printStackTrace();
+            loginManager = new Login();
+        }
+
         activeUser = null;
-        if((cacheStorage = (CacheStorage)s.readObject(CacheStorage.class.getName())) == null)
+
+        try {
+            cacheStorage = (CacheStorage)s.readObject(CacheStorage.class.getName());
+        } catch (IOException e) {
+            System.out.println("Caches Nao Encontradas");
             cacheStorage = new CacheStorage();
-        if((reportDB = (ReportDB)s.readObject(ReportDB.class.getName())) == null)
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+           reportDB = (ReportDB)s.readObject(ReportDB.class.getName());
+        } catch (IOException e) {
+            System.out.println("Reports Nao Encontrados");
             reportDB = new ReportDB();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
     private void clearScreen()
@@ -58,7 +83,7 @@ public class Menu {
 
         if(answer == '1')
         {
-            String email, password, name, gender, adress;
+            String email, password, name, gender, adress, admin;
             int day, month, year;
             GregorianCalendar DoB;
             clearScreen();
@@ -83,7 +108,19 @@ public class Menu {
                 year  = sc.nextInt();
                 DoB = new GregorianCalendar(year, month, day);
                 loginManager.registerUser(email,password, name, gender, adress, DoB);
-            }catch (Exception e){}
+                if(loginManager.getHashes().size() == 1 || (activeUser != null && activeUser.isAdmin()))
+                {
+                    System.out.println("Tornar Administrador? (y/n)");
+                    admin = input.readLine();
+                    activeUser = loginManager.authenticateUser(email, password);
+                    if(admin.equals("y"))
+                        activeUser.setAdmin(true);
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
         else if(answer == '2')
@@ -115,7 +152,6 @@ public class Menu {
 
 
     }
-    /*TODO: Fix Seg Fault, Null Active User*/
     private void listUsersActivities(User user)
     {
         TreeSet<Cache> activities;
@@ -197,15 +233,17 @@ public class Menu {
         }
     }
 
-    private void registerCache()
+    private void registerCache()/*TODO: Finish Cache Types and Adapt*/
     {
-        Cache toReg;
-
+        Cache toReg = new Multi("asd", "asd", activeUser, "desc", "", new HashMap<String, Register>(),0.0,0.0,new GregorianCalendar(), Difficulty.EASY, 0.0,0.0,
+                new HashSet<Treasure>(), new HashSet<FlexLocation>());
+        toReg.setCode("asd");
+        /*
         System.out.println("Escolha o Tipo de Cache:");
         System.out.println("1 - Virtual");
         System.out.println("2 - Fisica");
-
-        //cacheStorage.saveCache(toReg);
+        */
+        cacheStorage.saveCache(toReg);
     }
 
     private void reportCache()
@@ -229,7 +267,7 @@ public class Menu {
                 System.out.println("Registo ja existente:");
                 System.out.println(r.getDesc());
                 System.out.println("Deseja Adicionar um Novo Registo? (y/n)");
-                if(input.readLine() == "y" )
+                if(input.readLine().equals("y") )
                 {
                     sb = new StringBuilder();
                     System.out.println("Insira a Descricao: (Escreva \"END\" para Terminar");
@@ -239,6 +277,15 @@ public class Menu {
                     }
                     reportDB.addReport(c, sb.toString());
                 }
+            }else
+            {
+                sb = new StringBuilder();
+                System.out.println("Insira a Descricao: (Escreva \"END\" para Terminar");
+                while(!(answer = input.readLine()).equals("END"))
+                {
+                    sb.append(answer);
+                }
+                reportDB.addReport(c, sb.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -308,11 +355,91 @@ public class Menu {
 
     }
 
+    private void listReports()
+    {
+        int cnt = 0;
+        Scanner sc = new Scanner(System.in);
+        int input;
+        Iterator<Report> it = reportDB.getReports().values().iterator();
+        clearScreen();
+        while(cnt < 10 && it.hasNext())
+        {
+            System.out.println(it.next().toString());
+            if(++cnt == 10)
+            {
+                System.out.println("Escolha uma opcao: ");
+                System.out.println("1 - Listar Mais Relatorios");
+                System.out.println("0 - Sair");
+
+                input = sc.nextInt();
+
+                switch (input)
+                {
+                    case 0:
+                        return;
+                    case 1:
+                        clearScreen();
+                        return;
+                }
+            }
+        }
+        System.out.println("Escolha uma opcao: ");
+        System.out.println("0 - Sair");
+
+        input = sc.nextInt();
+
+        return;
+    }
+
+    private void manageReport()
+    {
+
+    }
+
+    public void manageReports()
+    {
+        Scanner sc = new Scanner(System.in);
+        int input;
+        int cnt;
+        Iterator<Report> it;
+        if(!activeUser.isAdmin())
+            return;
+        cnt  = reportDB.getReportCount();
+        System.out.println("Existem " + cnt + " Relatorios");
+
+        System.out.println("Escolha uma opcao: ");
+        if(cnt > 0) {
+            System.out.println("1 - Listar Relatorios");
+            System.out.println("2 - Gerir Relatorio");
+        }
+        System.out.println("0 - Sair");
+        input = sc.nextInt();
+
+        switch (input)
+        {
+
+            case 0:
+                return;
+            case 1:
+                if(cnt > 0)
+                 listReports();
+                break;
+            case 2:
+                if(cnt > 0)
+                    manageReport();
+                break;
+
+            default:
+                break;
+
+        }
+
+    }
     public boolean menuLoop()/*Returns whether app should continue or not */
     {
         Scanner sc = new Scanner(System.in);
         int input;
-        if(activeUser == null || !isAuth)
+        if(activeUser == null && !isAuth)
         {
             System.out.println("Nenhum Utilizador Activo, deseja fazer login/registar (1) ou sair (2) : ");
             input = sc.nextInt();
@@ -327,7 +454,7 @@ public class Menu {
         clearScreen();
         System.out.println("Escolha uma opcao: ");
         System.out.println("1 - Visualizar Ultimas Acividades");
-        System.out.println("2 - Registar Uma Nova Cache");
+        System.out.println("2 - Registar Uma Nova Cache");/*TODO*/
         System.out.println("3 - Registar Descoberta de uma Cache");
         System.out.println("4 - Invalidar uma Cache");/*TODO*/
         System.out.println("5 - Reportar uma Cache");
@@ -335,7 +462,10 @@ public class Menu {
         System.out.println("7 - Consultar Estatisticas");
         System.out.println("8 - Gerir Amigos");
 
+        if(activeUser.isAdmin())
+            System.out.println("9 - Gerir Reports");
 
+        System.out.println("0 - Sair");
         input = sc.nextInt();
 
         switch (input)
@@ -362,10 +492,16 @@ public class Menu {
             case 8:
                 manageFriends();
                 break;
+            case 9:
+                manageReports();
+                break;
+
+            default:
+                return false;
         }
 
 
-        return false;
+        return true;
     }
 
     public static void main(String[] args) {
@@ -376,9 +512,14 @@ public class Menu {
 
         }
 
-        menu.s.writeObject(menu.loginManager);
-        menu.s.writeObject(menu.cacheStorage);
-        menu.s.writeObject(menu.reportDB);
+        try {
+            menu.s.writeObject(menu.loginManager);
+            menu.s.writeObject(menu.cacheStorage);
+            menu.s.writeObject(menu.reportDB);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
