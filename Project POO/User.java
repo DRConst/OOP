@@ -20,6 +20,7 @@ public class User implements Serializable{
     private TreeSet<Cache> activities;
     //private Statistics stats;
     private ArrayList<User> friends;
+    private boolean admin;
 
     //Construtor parameterizado e de copia
 
@@ -50,10 +51,20 @@ public class User implements Serializable{
         this.activities = u.getActivities();
         //this.stats = u.getStatistics();
         this.friends = u.getFriends();
+        this.admin = u.isAdmin();
     }
 
     //Getters e Setters
-    
+
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
     /**
      * Devolve o email do utilizador
      *
