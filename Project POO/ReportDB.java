@@ -1,43 +1,69 @@
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Diogo on 21/05/2015.
  */
 public class ReportDB implements Serializable {
-    private HashMap<String, Report> reportedCaches;
+
+    private HashMap<String, Report> reports;
 
     public ReportDB()
     {
-        reportedCaches = new HashMap<>();
+        reports = new HashMap<>();
     }
 
     public ReportDB(HashMap<String, Report> db)
     {
-        reportedCaches = new HashMap<>();
+        reports = new HashMap<>();
         for(Report r : db.values())
         {
-            reportedCaches.put(r.getCache().getCode(), r.clone());
+            reports.put(r.getCache().getCode(), r.clone());
         }
     }
 
     public void addReport(Cache c, String desc)
     {
         Report r = new Report();
-        if(reportedCaches.containsKey(c.getCode()))
+        if(reports.containsKey(c.getCode()))
         {
-            r = reportedCaches.get(c.getCode());
+            r = reports.get(c.getCode());
             r.setDesc(r.getDesc() + "\n " + desc);
         }else
         {
             r = new Report(c, desc);
-            reportedCaches.put(c.getCode(), r);
+            reports.put(c.getCode(), r);
         }
+        r.setNumReports(r.getNumReports() + 1);
     }
 
+    public boolean removeReport(String code)
+    {
+        return reports.remove(code) != null;
+    }
     public Report getReport(String code)
     {
-        return reportedCaches.get(code);
+        return reports.get(code);
+    }
+
+    public int getReportCount()
+    {
+        return reports.size();
+    }
+    public HashMap<String, Report> getReports()
+    {
+        HashMap<String, Report> toRet = new HashMap<>(reports.size());
+        for(Report rep : reports.values())
+        {
+            toRet.put(rep.getCache().getCode(), rep.clone());
+        }
+        return toRet;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportDB{" +
+                "reports=" + reports +
+                '}';
     }
 }
