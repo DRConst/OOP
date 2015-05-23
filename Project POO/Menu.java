@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * Created by Diogo on 06/05/2015.
@@ -12,13 +11,12 @@ public class Menu {
     private boolean isAuth = false;
     private User activeUser;
     private CacheStorage cacheStorage;
-    private Serializer s;
     private ReportDB reportDB;
     public Menu()
     {
 
         try {
-            loginManager = (Login)s.readObject(Login.class.getName());
+            loginManager = (Login) Serializer.readObject(Login.class.getName());
 
         } catch (IOException e) {
             System.out.println("Logins Nao Encontrados");
@@ -31,7 +29,7 @@ public class Menu {
         activeUser = null;
 
         try {
-            cacheStorage = (CacheStorage)s.readObject(CacheStorage.class.getName());
+            cacheStorage = (CacheStorage) Serializer.readObject(CacheStorage.class.getName());
         } catch (IOException e) {
             System.out.println("Caches Nao Encontradas");
             cacheStorage = new CacheStorage();
@@ -40,7 +38,7 @@ public class Menu {
         }
 
         try {
-           reportDB = (ReportDB)s.readObject(ReportDB.class.getName());
+           reportDB = (ReportDB) Serializer.readObject(ReportDB.class.getName());
         } catch (IOException e) {
             System.out.println("Reports Nao Encontrados");
             reportDB = new ReportDB();
@@ -145,6 +143,7 @@ public class Menu {
         }
         else if(answer == 3)
         {
+            //noinspection UnnecessaryReturnStatement
             return;
         }
         else
@@ -166,7 +165,7 @@ public class Menu {
         }
         else{
             it = activities.iterator();
-            while(it.hasNext() && cnt < 10)
+            while(it.hasNext() && cnt++ < 10)
             {
                 c = it.next();
                 System.out.println(c.toString());/*Temp*/
@@ -271,7 +270,7 @@ public class Menu {
                 {
                     sb = new StringBuilder();
                     System.out.println("Insira a Descricao: (Escreva \"END\" para Terminar");
-                    while((answer = input.readLine()) != "END")
+                    while((answer = input.readLine()).equals("END"))
                     {
                         sb.append(answer);
                     }
@@ -301,7 +300,6 @@ public class Menu {
         if(acts == null)
         {
             System.out.println("Nao Existem Actividades Registadas");
-            return;
         }else {
             Iterator<Cache> it = acts.iterator();
             while(it.hasNext() && cnt-- > 0)
@@ -315,14 +313,14 @@ public class Menu {
     {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String answer;
-        User usr = null;
+        User usr;
         System.out.println("Escolha uma opcao: ");
         System.out.println("1 - Remover Amigo");
         System.out.println("2 - Adicionar Amigo");
 
         try {
             answer = input.readLine();
-            if(answer == "1")
+            if(answer.equals("1"))
             {
                 System.out.println("Insira o Email do Amigo: ");
                 answer = input.readLine();
@@ -331,13 +329,13 @@ public class Menu {
                 {
                     System.out.println("Utilizador Nao Pertence a Lista de Amigos ");
                     return;
-                }else if(activeUser.removeFriend(usr) == true)
+                }else if(activeUser.removeFriend(usr))
                 {
                     System.out.println("Amigo Apagado");
                     return;
                 }
             }
-            if(answer == "2")
+            if(answer.equals("2"))
             {
                 System.out.println("Insira o Email do Amigo: ");
                 answer = input.readLine();
@@ -386,9 +384,7 @@ public class Menu {
         System.out.println("Escolha uma opcao: ");
         System.out.println("0 - Sair");
 
-        input = sc.nextInt();
-
-        return;
+        sc.nextInt();
     }
 
     private void manageReport()
@@ -401,7 +397,6 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
         int input;
         int cnt;
-        Iterator<Report> it;
         if(!activeUser.isAdmin())
             return;
         cnt  = reportDB.getReportCount();
@@ -445,10 +440,7 @@ public class Menu {
             input = sc.nextInt();
             if(input == 1)
                 loginDialog();
-            else if(input == 2)
-                return false;
-            else
-                return true;
+            else return input != 2;
         }
 
         clearScreen();
@@ -513,9 +505,9 @@ public class Menu {
         }
 
         try {
-            menu.s.writeObject(menu.loginManager);
-            menu.s.writeObject(menu.cacheStorage);
-            menu.s.writeObject(menu.reportDB);
+            Serializer.writeObject(menu.loginManager);
+            Serializer.writeObject(menu.cacheStorage);
+            Serializer.writeObject(menu.reportDB);
         } catch (IOException e) {
             e.printStackTrace();
         }
