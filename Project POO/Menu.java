@@ -159,7 +159,7 @@ public class Menu {
         Iterator<Cache> it;
         clearScreen();
         activities = user.getActivities();
-        if(activities == null)
+        if(activities == null || activities.size() == 0)
         {
             System.out.println("O utilizador nao tem actividades registadas");
         }
