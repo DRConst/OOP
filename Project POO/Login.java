@@ -1,25 +1,24 @@
-/**
- * Created by Diogo on 27/04/2015.
- */
 
-import javax.print.DocFlavor; //não sei se o professor vai gostar deste import
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login
+public class Login implements Serializable
 {
     private HashMap<String, byte[]> hashes, salts;
-
+    private HashMap<String, User> users;
     public Login()
     {
         hashes = new HashMap<String, byte[]>();
         salts = new HashMap<String, byte[]>();
+        users = new HashMap<String, User>();
     }
 
     public Login(Login l)
@@ -28,29 +27,45 @@ public class Login
         salts = l.getSalts();
     }
 
-    public void registerUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+    public void registerUser(String userName, String password, String name, String gender, String address, Calendar birth) throws IOException, NoSuchAlgorithmException {
         byte[] salt = genSalt();
         byte[] hash = genHash(salt, password);
         registerSalt(userName, salt);
         registerPw(userName, hash);
+        users.put(userName, new User(userName, password, name, gender, address, birth));
     }
 
-    public boolean authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+    public boolean checkRegistration(String userName, String password) throws IOException, NoSuchAlgorithmException {
 
         byte[] salt;
-        byte[] hash;
+        byte[] hash, hash2;
 
         if(!salts.containsKey(userName) || !hashes.containsKey(userName))
             return false;
 
         salt = salts.get(userName);
         hash = genHash(salt, password);
-
-        if(Arrays.equals(hashes.get(userName), hash))
+        hash2 = hashes.get(userName);
+        if(Arrays.equals(hash2, hash))
             return true;
         else
             return false;
     }
+
+    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
+        User usr = null;
+        if(checkRegistration(userName, password)) {
+            usr =  users.get(userName);
+        }
+
+        return usr;
+    }
+
+    public User getRegisteredUser(String userName)
+    {
+        return users.get(userName);
+    }
+
     private void registerPw(String userName, byte[] hash)
     {
         /*TODO: decide policy on multiple registrations*/
@@ -131,9 +146,9 @@ public class Login
         for(Map.Entry<String, byte[]> entry : salts.entrySet())
         {
             sb.append(entry.getKey());
-	        sb.append(":");
+            sb.append(":");
             sb.append(entry.getValue());
-	        sb.append(";");
+            sb.append(";");
         }
         sb.append("\nHashes-");
         for(Map.Entry<String, byte[]> entry : hashes.entrySet())
@@ -141,15 +156,14 @@ public class Login
             sb.append(entry.getKey());
             sb.append(":");
             sb.append(entry.getValue());
-	        sb.append(";");
+            sb.append(";");
         }
 
         return sb.toString();
     }
 
-	public Login clone(Login l)
-	{
-		return new Login(l);
-	}
+    public Login clone(Login l)
+    {
+        return new Login(l);
+    }
 }
-

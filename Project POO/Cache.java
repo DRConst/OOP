@@ -1,13 +1,13 @@
-
 /**
  * Classe que implementa uma generalização de qualquer tipo de cache Vai ser o
  * topo da hierarquia de caches É uma classe abstrata
  *
  * @version (2015.04.30)
  */
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class Cache {
+public abstract class Cache implements Serializable{
 
     private User owner;
     private String name, code, description, hints;

@@ -4,9 +4,10 @@
  * @version (a version number or a date)
  */
 
+import java.io.Serializable;
 import java.util.*;
 
-public class User {
+public class User implements Serializable {
 
     //Variáveis de Instância
 
@@ -18,6 +19,7 @@ public class User {
     private Calendar birth;
     private TreeSet<Cache> activities;
     private ArrayList<User> friends;
+    private boolean admin;
 
     //Construtor parameterizado e de copia
 
@@ -25,7 +27,8 @@ public class User {
         this.activities = new TreeSet<>(new CacheComparator());
         this.friends = new ArrayList<>();
     }
-    
+
+
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
         this.password = password;
@@ -49,6 +52,14 @@ public class User {
     }
 
     //Getters e Setters
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
     
     /**
      * Devolve o email do utilizador
@@ -207,6 +218,27 @@ public class User {
             s.append("\n");
         }
         return s.toString();
+    }
+
+    public boolean removeFriend(User usr) { return friends.remove(usr);}
+
+    public boolean hasFriend(String userName)
+    {
+        for (User user : friends) {
+            if(user.getEmail() == userName)
+                return true;
+        }
+        return false;
+    }
+
+    public User getFriend(String userName)
+    {
+
+        for (User user : friends) {
+            if(user.getEmail() == userName)
+                return user;
+        }
+        return null;
     }
 
     /**

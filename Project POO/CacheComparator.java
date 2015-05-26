@@ -5,8 +5,8 @@
  * @version (2015.04.29)
  */
 
-import java.util.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class CacheComparator implements Comparator<Cache>, Serializable {
 

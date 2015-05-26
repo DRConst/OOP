@@ -4,7 +4,8 @@
  * @version (version number or date here)
  */
 
-import java.util.*;
+import java.util.GregorianCalendar;
+import java.util.Map;
 
 public abstract class Virtual extends Cache
 {
