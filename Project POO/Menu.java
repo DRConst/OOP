@@ -154,7 +154,7 @@ public class Menu {
         Iterator<Cache> it;
         clearScreen();
         activities = user.getActivities();
-        if (activities == null || activities.size() == 0) {
+        if (activities == null || activities.isEmpty()) {
             System.out.println("O utilizador nao tem actividades registadas");
         } else {
             it = activities.iterator();
@@ -217,7 +217,8 @@ public class Menu {
     }
 
     private void registerCache()/*TODO: Finish Cache Types and Adapt*/ {
-        Cache toReg = new Multi("asd", "asd", activeUser.getEmail(), "desc", "", new HashMap<String, Register>(), 0.0, 0.0, new GregorianCalendar(), Difficulty.EASY, 0.0, 0.0,
+        Cache toReg = new Multi("asd", "asd", activeUser.getEmail(), "desc", "", 
+                new HashMap<String, Register>(), 0.0, 0.0, new GregorianCalendar(), Difficulty.EASY, 0.0, 0.0,
                 new HashSet<Treasure>(), new HashSet<FlexLocation>());
         toReg.setCode("asd");
         /*
@@ -449,7 +450,6 @@ public class Menu {
             default:
                 return false;
         }
-
 
         return true;
     }

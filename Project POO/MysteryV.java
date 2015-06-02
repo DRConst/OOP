@@ -143,7 +143,7 @@ public class MysteryV extends Virtual implements Serializable
         s.append("\n");
 
         s.append("\nDono: ");
-        s.append(this.getOwner().toString());
+        s.append(this.getOwner());
         s.append("\n");
 
         s.append("\nDescrição: ");
