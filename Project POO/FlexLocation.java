@@ -1,30 +1,32 @@
-
-import java.util.Arrays;
-
-
 /**
  * Classe que implementa uma Localização Flexivel
  *
  * @version (a version number or a date)
  */
-public class FlexLocation extends Location {
 
+import java.util.Arrays;
+
+public class FlexLocation extends Location 
+{
     private double currentLatitude;
     private double currentLongitude;
 
-    public FlexLocation() {
+    public FlexLocation() 
+    {
         super();
         this.currentLatitude = 0.0;
         this.currentLongitude = 0.0;
     }
 
-    public FlexLocation(double la, double lo, double cla, double clo) {
+    public FlexLocation(double la, double lo, double cla, double clo) 
+    {
         super(la, lo);
         this.currentLatitude = cla;
         this.currentLongitude = clo;
     }
 
-    public FlexLocation(FlexLocation f) {
+    public FlexLocation(FlexLocation f) 
+    {
         super(f);
         this.currentLatitude = f.getCurrentLatitude();
         this.currentLongitude = f.getCurrentLongitude();
@@ -55,24 +57,25 @@ public class FlexLocation extends Location {
         return Arrays.hashCode(new Object[]{super.hashCode(),currentLatitude,currentLongitude});
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o) 
+    {
+        if (this == o)
             return true;
-        }
-        if (o == null || this.getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass())
             return false;
-        } else {
+        else 
+        {
             FlexLocation f = (FlexLocation) o;
 
-            if (!super.equals(f)) {
+            if (!super.equals(f))
                 return false;
-            }
 
             return (this.currentLatitude == f.getCurrentLatitude() && this.currentLongitude == f.getCurrentLongitude());
         }
     }
 
-    public String toString() {
+    public String toString() 
+    {
         StringBuilder s = new StringBuilder();
 
         s.append(super.toString());
@@ -89,3 +92,4 @@ public class FlexLocation extends Location {
         return new FlexLocation(this);
     }
 }
+

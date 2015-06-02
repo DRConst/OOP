@@ -1,39 +1,48 @@
-
 /**
  * Classe que implementa um cache fisica
  *
  * @version (version number or date here)
  */
+
 import java.util.*;
+import java.io.Serializable;
 
-public abstract class Physical extends Cache {
-
+public abstract class Physical extends Cache implements Serializable
+{
     private Location currentL;
     private Size size;
     private ArrayList<Treasure> treasures;
 
-    public Physical() {
+    public Physical() 
+    {
         super();
         this.size = Size.MICRO;
         this.treasures = new ArrayList<>();
     }
 
-    public Physical(String name, String code, User owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
+    public Physical(String name, String code, String owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
         this.treasures = new ArrayList<>(treasures);
     }
 
-    public Physical(String name, String code, User owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
+    public Physical(String name, String code, String owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
         this.treasures = new ArrayList<>(treasures);
     }
 
-    public Physical(Physical p) {
+    public Physical(Physical p) 
+    {
         super(p);
         this.currentL = new Location(p.getCurrentLocation());
-        this.treasures = new ArrayList<>(p.getTreasures());
+
+        this.treasures = new ArrayList<>();
+
+        for (Treasure t : p.getTreasures())
+            this.treasures.add(t.clone());
     }
 
     /**
@@ -79,8 +88,14 @@ public abstract class Physical extends Cache {
      *
      * @return a lista com os tesouros
      */
-    public Collection<Treasure> getTreasures() {
-        return new ArrayList<>(this.treasures);
+    public Collection<Treasure> getTreasures() 
+    {
+        ArrayList<Treasure> aux = new ArrayList<>();
+
+        for (Treasure t : this.treasures)
+            aux.add(t.clone());
+
+        return aux;
     }
 
     /**
@@ -90,7 +105,8 @@ public abstract class Physical extends Cache {
      * @param latitude a latitude no momento da cache
      * @param longitude a longitude no momento da cache
      */
-    public void setCurrentLocation(double latitude, double longitude) {
+    public void setCurrentLocation(double latitude, double longitude) 
+    {
         // Adicionar verificador de distância
 
         this.currentL.setLatitude(latitude);
@@ -129,9 +145,13 @@ public abstract class Physical extends Cache {
      *
      * @param treasures o conjunto de tesouros a colocar na cache
      */
-    public void setTreasures(Collection<Treasure> treasures) {
+    public void setTreasures(Collection<Treasure> treasures) 
+    {
         if (treasures.size() <= this.size.getValue()) {
-            this.treasures = new ArrayList<>(treasures);
+            this.treasures = new ArrayList<>();
+
+            for (Treasure t : treasures)
+                this.treasures.add(t.clone());
         }
     }
 
@@ -144,13 +164,16 @@ public abstract class Physical extends Cache {
      *
      * @return true se iguais, false caso contrário
      */
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) {
             return true;
         }
         if (o == null || this.getClass() != o.getClass()) {
             return false;
-        } else {
+        } 
+        else 
+        {
             Physical p = (Physical) o;
 
             if (!super.equals(p)) {
@@ -179,3 +202,4 @@ public abstract class Physical extends Cache {
 
     public abstract Physical clone();
 }
+

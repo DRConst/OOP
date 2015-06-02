@@ -1,75 +1,99 @@
-
 /**
  * Classe que implementa uma Cache Misterio Virtual
  *
  * @version (a version number or a date)
  */
+
 import java.util.*;
 
-public class MysteryV extends Virtual {
-
+public class MysteryV extends Virtual 
+{
     private ArrayList<String> questions;
     private ArrayList<Location> locations;
 
-    public MysteryV() {
+    public MysteryV() 
+    {
         super();
         this.questions = new ArrayList<>();
         this.locations = new ArrayList<>();
     }
 
-    public MysteryV(String name, String code, User owner, String description, String hints,
+    public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
             GregorianCalendar date, Difficulty difficulty, String question, Collection<String> questions,
-            Collection<Location> locations) {
-
+            Collection<Location> locations) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 date, difficulty, question);
 
         this.questions = new ArrayList<>(questions);
-        this.locations = new ArrayList<>(locations);
+        this.locations = new ArrayList<>();
+
+        for (Location l : locations)
+            this.locations.add(l.clone());
     }
 
-    public MysteryV(String name, String code, User owner, String description, String hints,
+    public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
             int year, int month, int dayOfMonth, Difficulty difficulty, String question,
-            Collection<String> questions, Collection<Location> locations) {
-
+            Collection<String> questions, Collection<Location> locations) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayOfMonth, difficulty, question);
 
         this.questions = new ArrayList<>(questions);
-        this.locations = new ArrayList<>(locations);
+        this.locations = new ArrayList<>();
+
+        for (Location l : locations)
+            this.locations.add(l.clone());
     }
 
-    public MysteryV(MysteryV m) {
+    public MysteryV(MysteryV m) 
+    {
         super(m);
         this.questions = new ArrayList<>(m.getQuestions());
-        this.locations = new ArrayList<>(m.getLocations());
+        this.locations = new ArrayList<>();
+
+        for (Location l : m.getLocations())
+            this.locations.add(l.clone());
     }
 
     public Collection<String> getQuestions() {
         return new ArrayList<>(this.questions);
     }
 
-    public Collection<Location> getLocations() {
-        return new ArrayList<>(this.locations);
+    public Collection<Location> getLocations() 
+    {    
+        ArrayList<Location> aux = new ArrayList<>();
+
+        for (Location l : this.locations)
+            aux.add(l.clone());
+
+        return aux;
     }
 
     private void setQuestions(Collection<String> questions) {
         this.questions = new ArrayList<>(questions);
     }
 
-    private void setLocations(Collection<Location> locations) {
-        this.locations = new ArrayList<>(locations);
+    private void setLocations(Collection<Location> locations) 
+    {
+        this.locations = new ArrayList<>();
+
+        for (Location l : locations)
+            this.locations.add(l.clone());
     }
 
-    public void addIntermidiatePoint(String question, Location location) {
+    public void addIntermidiatePoint(String question, Location location) 
+    {
         this.questions.add(question);
         this.locations.add(location);
     }
 
-    public void changeIntermidiatePoints(Collection<String> questions, Collection<Location> locations) {
-        if (questions.size() == locations.size()) {
+    public void changeIntermidiatePoints(Collection<String> questions, Collection<Location> locations) 
+    {
+        if (questions.size() == locations.size()) 
+        {
             this.setQuestions(questions);
             this.setLocations(locations);
         }
@@ -79,7 +103,8 @@ public class MysteryV extends Virtual {
         return Arrays.hashCode(new Object[]{super.hashCode(), locations.hashCode()});
     }
 
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) {
             return true;
         }

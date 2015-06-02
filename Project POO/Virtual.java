@@ -17,13 +17,13 @@ public abstract class Virtual extends Cache
         this.finalQuestion = "";
     }
 
-    public Virtual(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question)
+    public Virtual(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.finalQuestion = question;
     }
 
-    public Virtual(String name, String code, User owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question)
+    public Virtual(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.finalQuestion = question;

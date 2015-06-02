@@ -1,26 +1,27 @@
-
-import java.util.Arrays;
-
-
 /**
  * Classe que contem as informações de localização
  *
  * @version (2015.04.30)
  */
-public class Location {
 
+import java.util.Arrays;
+
+public class Location 
+{
     private double latitude, longitude;
 
     public Location() {
         this(0.0, 0.0);
     }
 
-    public Location(double la, double lo) {
+    public Location(double la, double lo) 
+    {
         latitude = la;
         longitude = lo;
     }
 
-    public Location(Location l) {
+    public Location(Location l) 
+    {
         this.latitude = l.getLatitude();
         this.longitude = l.getLongitude();
     }
@@ -72,20 +73,22 @@ public class Location {
         return Arrays.hashCode(new Object[]{latitude,longitude});
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o) 
+    {
+        if (this == o)
             return true;
-        }
-        if (o == null || this.getClass() == o.getClass()) {
+        if (o == null || this.getClass() == o.getClass())
             return false;
-        } else {
+        else 
+        {
             Location l = (Location) o;
 
             return (this.latitude == l.getLatitude() && this.longitude == l.getLongitude());
         }
     }
 
-    public String toString() {
+    public String toString() 
+    {
         StringBuilder s = new StringBuilder();
 
         s.append("Latitude: ");
@@ -100,3 +103,4 @@ public class Location {
         return new Location(this);
     }
 }
+

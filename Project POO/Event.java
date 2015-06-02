@@ -2,8 +2,8 @@
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class Event {
-
+public class Event 
+{
     private String nameEvent;
     private String cacheType;
     private int nLimit;
@@ -12,3 +12,4 @@ public class Event {
     private String weather;
     private int points;
 }
+

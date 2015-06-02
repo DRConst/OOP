@@ -1,29 +1,29 @@
-
 /**
  * Classe que implementa uma cache tradicional
  *
  * @version (2015.04.30)
  */
+
 import java.util.*;
 
-public class TraditionalV extends Virtual {
-
+public class TraditionalV extends Virtual 
+{
     public TraditionalV() {
         super();
     }
 
-    public TraditionalV(String name, String code, User owner, String description,
+    public TraditionalV(String name, String code, String owner, String description,
             String hints, Map<String, Register> regBook, double defaultLatitude,
-            double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question) {
-
+            double defaultLongitude, GregorianCalendar date, Difficulty difficulty, String question) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude,
                 defaultLongitude, date, difficulty, question);
     }
 
-    public TraditionalV(String name, String code, User owner, String description,
+    public TraditionalV(String name, String code, String owner, String description,
             String hints, Map<String, Register> regBook, double defaultLatitude,
-            double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question) {
-
+            double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, String question) 
+    {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayOfMonth, difficulty, question);
     }
@@ -42,7 +42,8 @@ public class TraditionalV extends Virtual {
      * @param o objeto que queremos comparar
      * @return true caso iguais, false caso contrário
      */
-    public boolean equals(Object o) {
+    public boolean equals(Object o) 
+    {
         if (this == o) {
             return true;
         }
@@ -64,7 +65,8 @@ public class TraditionalV extends Virtual {
      *
      * @return String resultado
      */
-    public String toString() {
+    public String toString() 
+    {
         StringBuilder s = new StringBuilder();
 
         s.append("-----------------Cache Tradicional Virtual-----------------\n\n");
@@ -115,3 +117,4 @@ public class TraditionalV extends Virtual {
         return new TraditionalV(this);
     }
 }
+

@@ -1,4 +1,3 @@
-
 /**
  * Classe que implementa uma cache tradicional
  *
@@ -7,26 +6,27 @@
 
 import java.util.*;
 
-public class TraditionalP extends Physical {
-
-    public TraditionalP() {
+public class TraditionalP extends Physical 
+{
+    public TraditionalP() 
+    {
         super();
     }
 
-    public TraditionalP(String name, String code, User owner, String description,
+    public TraditionalP(String name, String code, String owner, String description,
             String hints, Map<String, Register> regBook, double defaultLatitude,
             double defaultLongitude, GregorianCalendar date, Difficulty difficulty,
-            double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
-        
+            double currentLatitude, double currentLongitude, Collection<Treasure> treasures) 
+    {    
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
                 date, difficulty, currentLatitude, currentLongitude, treasures);
     }
 
-    public TraditionalP(String name, String code, User owner, String description, 
+    public TraditionalP(String name, String code, String owner, String description, 
             String hints, Map<String, Register> regBook, double defaultLatitude, 
             double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, 
-            double currentLatitude, double currentLongitude, Collection<Treasure> treasures) {
-        
+            double currentLatitude, double currentLongitude, Collection<Treasure> treasures) 
+    {    
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
                 year, month, dayOfMonth, difficulty, currentLatitude, currentLongitude, treasures);
     }

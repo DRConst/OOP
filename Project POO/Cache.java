@@ -4,20 +4,31 @@
  *
  * @version (2015.04.30)
  */
+<<<<<<< e4d37020ad46c4768b66a77fb60a13840825493d
 import java.io.Serializable;
+=======
+
+>>>>>>> fa62c75ee924b5b9d428b2b3cb8866b676cf2352
 import java.util.*;
+import java.io.Serializable;
 
+<<<<<<< e4d37020ad46c4768b66a77fb60a13840825493d
 public abstract class Cache implements Serializable{
+=======
+public abstract class Cache implements Serializable 
+{
+>>>>>>> fa62c75ee924b5b9d428b2b3cb8866b676cf2352
 
-    private User owner;
+    private String owner;
     private String name, code, description, hints;
     private TreeMap<String, Register> regBook;
     private Location defaultL;
     private GregorianCalendar date;
     private Difficulty difficulty;
 
-    public Cache() {
-        this.owner = new User();
+    public Cache() 
+    {
+        this.owner = "";
         this.name = this.code = this.description = this.hints = "";
         this.regBook = new TreeMap<>();
         this.defaultL = new Location();
@@ -25,11 +36,11 @@ public abstract class Cache implements Serializable{
         this.difficulty = Difficulty.EASY;
     }
 
-    public Cache(String name, String code, User owner, String description, String hints,
+    public Cache(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            GregorianCalendar date, Difficulty difficulty) {
-
-        this.owner = new User(owner);
+            GregorianCalendar date, Difficulty difficulty) 
+    {
+        this.owner = owner;
         this.name = name;
         this.code = code;
         this.description = description;
@@ -41,11 +52,11 @@ public abstract class Cache implements Serializable{
         this.difficulty = difficulty;
     }
 
-    public Cache(String name, String code, User owner, String description, String hints,
+    public Cache(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            int year, int month, int dayOfMonth, Difficulty difficulty) {
-
-        this.owner = new User(owner);
+            int year, int month, int dayOfMonth, Difficulty difficulty) 
+    {
+        this.owner = owner;
         this.name = name;
         this.code = code;
         this.description = description;
@@ -56,7 +67,8 @@ public abstract class Cache implements Serializable{
         this.difficulty = difficulty;
     }
 
-    public Cache(Cache c) {
+    public Cache(Cache c) 
+    {
         this.owner = c.getOwner();
         this.name = c.getName();
         this.code = c.getCode();
@@ -68,8 +80,8 @@ public abstract class Cache implements Serializable{
         this.difficulty = c.getDifficulty();
     }
 
-    public User getOwner() {
-        return new User(this.owner);
+    public String getOwner() {
+        return this.owner;
     }
 
     /**
@@ -304,37 +316,32 @@ public abstract class Cache implements Serializable{
             defaultL.hashCode(), date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH)});
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o) 
+    {
+        if (this == o)
             return true;
-        }
-        if (o == null || this.getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass())
             return false;
-        } else {
+        else 
+        {
             Cache c = (Cache) o;
 
-            if (!this.code.equals(c.getCode())) {
+            if (!this.code.equals(c.getCode()))
                 return false;
-            }
 
-            for (String s : c.getRegBook().keySet()) {
-                if (!this.regBook.containsKey(s)) {
+            for (String s : c.getRegBook().keySet())
+                if (!this.regBook.containsKey(s))
                     return false;
-                }
-            }
 
-            if (!this.defaultL.equals(c.getDefaultLocation())) {
+            if (!this.defaultL.equals(c.getDefaultLocation()))
                 return false;
-            }
 
             if (this.date.get(Calendar.YEAR) != c.getYear() || this.date.get(Calendar.MONTH) != c.getMonth()
-                    || this.date.get(Calendar.DAY_OF_MONTH) != c.getDayOfMonth()) {
+                    || this.date.get(Calendar.DAY_OF_MONTH) != c.getDayOfMonth())
                 return false;
-            }
 
-            if (this.difficulty.equals(c.getDifficulty())) {
+            if (this.difficulty.equals(c.getDifficulty()))
                 return false;
-            }
 
             return true;
         }
@@ -354,3 +361,4 @@ public abstract class Cache implements Serializable{
      */
     public abstract Cache clone();
 }
+
