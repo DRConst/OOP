@@ -3,13 +3,6 @@
  *
  * @version (2015.05.01)
  */
-<<<<<<< e4d37020ad46c4768b66a77fb60a13840825493d
-
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-=======
->>>>>>> fa62c75ee924b5b9d428b2b3cb8866b676cf2352
 
 import java.util.*;
 

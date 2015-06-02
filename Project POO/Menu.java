@@ -217,7 +217,7 @@ public class Menu {
     }
 
     private void registerCache()/*TODO: Finish Cache Types and Adapt*/ {
-        Cache toReg = new Multi("asd", "asd", activeUser, "desc", "", new HashMap<String, Register>(), 0.0, 0.0, new GregorianCalendar(), Difficulty.EASY, 0.0, 0.0,
+        Cache toReg = new Multi("asd", "asd", activeUser.getEmail(), "desc", "", new HashMap<String, Register>(), 0.0, 0.0, new GregorianCalendar(), Difficulty.EASY, 0.0, 0.0,
                 new HashSet<Treasure>(), new HashSet<FlexLocation>());
         toReg.setCode("asd");
         /*
