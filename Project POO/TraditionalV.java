@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class TraditionalV extends Virtual 
+public class TraditionalV extends Virtual implements Serializable
 {
     public TraditionalV() {
         super();

@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class MysteryV extends Virtual 
+public class MysteryV extends Virtual implements Serializable
 {
     private ArrayList<String> questions;
     private ArrayList<Location> locations;

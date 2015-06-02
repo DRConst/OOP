@@ -6,8 +6,9 @@
 
 import java.util.GregorianCalendar;
 import java.util.Map;
+import java.io.Serializable;
 
-public abstract class Virtual extends Cache
+public abstract class Virtual extends Cache implements Serializable
 {
     private String finalQuestion;
 

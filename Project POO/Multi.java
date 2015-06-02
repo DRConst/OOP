@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class Multi extends Physical 
+public class Multi extends Physical implements Serializable 
 {
     private ArrayList<FlexLocation> intermidiateLocations;
 

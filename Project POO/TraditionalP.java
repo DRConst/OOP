@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class TraditionalP extends Physical 
+public class TraditionalP extends Physical implements Serializable 
 {
     public TraditionalP() 
     {

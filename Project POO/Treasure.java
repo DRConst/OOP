@@ -1,8 +1,9 @@
 
 import java.util.Arrays;
+import java.io.Serializable;
 
-public class Treasure {
-
+public class Treasure implements Serializable
+{
     private String nome;
 
     public Treasure() {

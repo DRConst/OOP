@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class MysteryP extends Physical 
+public class MysteryP extends Physical implements Serializable 
 {
     private ArrayList<String> questions;
     private ArrayList<FlexLocation> locations;

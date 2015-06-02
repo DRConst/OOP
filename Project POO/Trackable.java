@@ -1,8 +1,9 @@
 
 import java.util.*;
+import java.io.Serializable;
 
-public class Trackable extends Treasure {
-
+public class Trackable extends Treasure implements Serializable 
+{
     //private int kmTotal;
     private User owner;
     private GregorianCalendar date;
