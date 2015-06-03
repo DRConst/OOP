@@ -265,7 +265,7 @@ public abstract class Cache implements Serializable
      * @param month o mes da data
      * @param dayOfMonth o dia da data
      */
-    private void setDate(int year, int month, int dayOfMonth) {
+    public void setDate(int year, int month, int dayOfMonth) {
         this.date = new GregorianCalendar(year, month, dayOfMonth);
     }
 

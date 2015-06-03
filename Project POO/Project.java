@@ -9,18 +9,18 @@ import java.io.Serializable;
 
 public class Project extends Cache implements Serializable
 {
-    private TreeSet<Cache> project;
+    private ArrayList<Cache> project;
 
     public Project()
     {
         super();
-        this.project = new TreeSet<Cache>();
+        this.project = new ArrayList<Cache>();
     }
 
     public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<Cache> caches)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);        
-        this.project = new TreeSet<>();
+        this.project = new ArrayList<>();
 
         for (Cache c : caches)
             this.project.add(c.clone());
@@ -29,7 +29,7 @@ public class Project extends Cache implements Serializable
     public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<Cache> caches)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
-        this.project = new TreeSet<>();
+        this.project = new ArrayList<>();
 
         for (Cache c : caches)
             this.project.add(c.clone());
@@ -38,18 +38,18 @@ public class Project extends Cache implements Serializable
     public Project(Project p)
     {
         super(p);  
-        this.project = new TreeSet<>();
+        this.project = new ArrayList<>();
 
         for (Cache c : p.getCaches())
             this.project.add(c.clone());
     }
 
     public Collection<Cache> getCaches() { 
-        return new TreeSet<Cache>(this.project); 
+        return new ArrayList<Cache>(this.project); 
     }
 
     public void setCaches(Collection<Cache> caches) { 
-        this.project = new TreeSet<Cache>(caches); 
+        this.project = new ArrayList<Cache>(caches); 
     }
 
     public boolean equals(Object o)
