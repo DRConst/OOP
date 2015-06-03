@@ -155,36 +155,61 @@ public class Event implements Serializable
     	this.active = false;
     }
 
-    public void registerParticipant(String user) 
+    public void registerParticipant(String user) throws NotActiveEventException
     {
-    	if (!this.participants.contains(user))
+    	if (this.isActive() && !this.participants.contains(user))
     		this.participants.add(user);
+        else
+            throw new NotActiveEventException("Evento já está arquivado");
     }
 
-    public void registerParticipant(User user)
+    public void registerParticipant(User user) throws NotActiveEventException
     {
-    	if (!this.participants.contains(user.getEmail()))
-    		this.participants.add(user.getEmail());
+    	if (this.isActive() && !this.participants.contains(user.getEmail()))
+    		this.participants.add(user.getEmail()); 
+        else
+            throw new NotActiveEventException("Evento já está arquivado");
     }
 
-    public String simulateWinner()
+    public String simulateRandomWinner() throws NotActiveEventException
     {
-        int i=0;
-        int item = new Random().nextInt(this.participants.size());
-        Iterator<String> it = this.participants.iterator();
-        String user = null;
-
-        while(i<item && it.hasNext())
+        if (this.isActive())
         {
-            user = it.next();
+            int i=0;
+            int item = new Random().nextInt(this.participants.size());
+            Iterator<String> it = this.participants.iterator();
+            String winner = null;
 
-            if (i==item)
-                break;
+            while(i<item && it.hasNext())
+            {
+                winner = it.next();
 
-            i++;
+                if (i==item)
+                    break;
+
+                i++;
+            }
+            
+            return winner;
         }
-        
-        return user;
+        else
+            throw new NotActiveEventException("Evento já está arquivado");
+    }
+
+    public String simulateStatisticWinner() throws NotActiveEventException
+    {
+        String winner = null;
+
+        if (!this.isActive())
+        {
+            // ...
+            // adicionar verificação de estatísticas
+            // ...
+
+            return winner;
+        }
+        else
+            throw new NotActiveEventException("Evento já está arquivado");
     }
 
     public boolean equals(Object o)
