@@ -9,95 +9,69 @@ import java.io.Serializable;
 
 public class MysteryV extends Virtual implements Serializable
 {
-    private ArrayList<String> questions;
-    private ArrayList<Location> locations;
+    private HashMap<Location,String> tips;
 
     public MysteryV() 
     {
         super();
-        this.questions = new ArrayList<>();
-        this.locations = new ArrayList<>();
+        this.questions = new HashMap<>();
     }
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            GregorianCalendar date, Difficulty difficulty, String question, Collection<String> questions,
-            Collection<Location> locations) 
+            GregorianCalendar date, Difficulty difficulty, String question, Map<Location,String> tips) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 date, difficulty, question);
+        this.tips = new HashMap<>();
 
-        this.questions = new ArrayList<>(questions);
-        this.locations = new ArrayList<>();
-
-        for (Location l : locations)
-            this.locations.add(l.clone());
+        for (Map.Entry<Location,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
             int year, int month, int dayOfMonth, Difficulty difficulty, String question,
-            Collection<String> questions, Collection<Location> locations) 
+            Map<Location,String> tips) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayOfMonth, difficulty, question);
+        this.tips = new HashMap<>();
 
-        this.questions = new ArrayList<>(questions);
-        this.locations = new ArrayList<>();
-
-        for (Location l : locations)
-            this.locations.add(l.clone());
+        for (Map.Entry<Location,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public MysteryV(MysteryV m) 
     {
         super(m);
-        this.questions = new ArrayList<>(m.getQuestions());
-        this.locations = new ArrayList<>();
+        this.tips = new HashMap<>();
 
-        for (Location l : m.getLocations())
-            this.locations.add(l.clone());
+        for (Map.Entry<Location,String> t : tips.getTips().entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
-    public Collection<String> getQuestions() {
-        return new ArrayList<>(this.questions);
-    }
-
-    public Collection<Location> getLocations() 
+    public Map<Location,String> getTips() 
     {    
-        ArrayList<Location> aux = new ArrayList<>();
+        HashMap<Location,String> aux = new HashMap<>();
 
-        for (Location l : this.locations)
-            aux.add(l.clone());
+        for (Map.Entry<Location,String> t : this.tips.entrySet())
+            aux.put(t.getKey().clone(), t.getValue());
 
         return aux;
     }
 
-    private void setQuestions(Collection<String> questions) {
-        this.questions = new ArrayList<>(questions);
-    }
-
-    private void setLocations(Collection<Location> locations) 
+    private void setTips(Map<Location,String> tips)
     {
-        this.locations = new ArrayList<>();
+        this.tips = new HashMap<>();
 
-        for (Location l : locations)
-            this.locations.add(l.clone());
+        for (Map.Entry<Location,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public void addIntermidiatePoint(String question, Location location) 
     {
-        this.questions.add(question);
-        this.locations.add(location);
-    }
-
-    public void changeIntermidiatePoints(Collection<String> questions, Collection<Location> locations) 
-    {
-        if (questions.size() == locations.size()) 
-        {
-            this.setQuestions(questions);
-            this.setLocations(locations);
-        }
+        this.tips.put(location,question);
     }
 
     public int hashCode() {

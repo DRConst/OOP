@@ -24,21 +24,26 @@ public abstract class Physical extends Cache implements Serializable
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
-        this.treasures = new ArrayList<>(treasures);
+        this.treasures = new ArrayList<>(); 
+
+        for (Treasure t : treasures)
+            this.treasures.add(t);
     }
 
     public Physical(String name, String code, String owner, String description, String hints, Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.currentL = new Location(defaultLatitude, defaultLongitude);
-        this.treasures = new ArrayList<>(treasures);
+        this.treasures = new ArrayList<>(); 
+
+        for (Treasure t : treasures)
+            this.treasures.add(t);
     }
 
     public Physical(Physical p) 
     {
         super(p);
         this.currentL = new Location(p.getCurrentLocation());
-
         this.treasures = new ArrayList<>();
 
         for (Treasure t : p.getTreasures())

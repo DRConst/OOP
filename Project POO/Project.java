@@ -17,7 +17,7 @@ public class Project extends Cache implements Serializable
         this.project = new ArrayList<Cache>();
     }
 
-    public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<Cache> caches)
+    public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Cache> caches)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, date, difficulty);        
         this.project = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Project extends Cache implements Serializable
             this.project.add(c.clone());
     }
 
-    public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Treasure> treasures, Collection<Cache> caches)
+    public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Cache> caches)
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, year, month, dayOfMonth, difficulty);
         this.project = new ArrayList<>();

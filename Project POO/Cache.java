@@ -36,7 +36,11 @@ public abstract class Cache implements Serializable
         this.code = code;
         this.description = description;
         this.hints = hints;
-        this.regBook = new TreeMap<>(regBook);
+        this.regBook = new TreeMap<>();
+
+        for (Map.Entry<String,Register> r : regBook.entrySet())
+            this.regBook.put(r.getKey(), r.getValue().clone());
+
         this.defaultL = new Location(defaultLatitude, defaultLongitude);
         this.date = new GregorianCalendar(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
                 date.get(Calendar.DAY_OF_MONTH));
@@ -52,7 +56,11 @@ public abstract class Cache implements Serializable
         this.code = code;
         this.description = description;
         this.hints = hints;
-        this.regBook = new TreeMap<>(regBook);
+        this.regBook = new TreeMap<>();
+
+        for (Map.Entry<String,Register> r : regBook.entrySet())
+            this.regBook.put(r.getKey(), r.getValue().clone());
+
         this.defaultL = new Location(defaultLatitude, defaultLongitude);
         this.date = new GregorianCalendar(year, month, dayOfMonth);
         this.difficulty = difficulty;
@@ -65,12 +73,16 @@ public abstract class Cache implements Serializable
         this.code = c.getCode();
         this.description = c.getDescription();
         this.hints = c.getHints();
-        this.regBook = new TreeMap<>(c.getRegBook());
+        this.regBook = new TreeMap<>();
+
+        for (Map.Entry<String,Register> r : c.getRegBook().entrySet())
+            this.regBook.put(r.getKey(), r.getValue().clone());
+
         this.defaultL = new Location(c.getDefaultLocation());
         this.date = c.getDate();
         this.difficulty = c.getDifficulty();
     }
-
+    
     public String getOwner() {
         return this.owner;
     }

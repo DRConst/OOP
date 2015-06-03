@@ -24,8 +24,10 @@ public class Multi extends Physical implements Serializable
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 date, difficulty, currentLatitude, currentLongitude, treasures);
+        this.intermidiateLocations = new ArrayList<>();
 
-        this.intermidiateLocations = new ArrayList<>(intermidiate);
+        for (FlexLocation f : intermidiate)
+            this.intermidiateLocations.add(f.clone());
     }
 
     public Multi(String name, String code, String owner, String description, String hints,
@@ -35,14 +37,19 @@ public class Multi extends Physical implements Serializable
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayofMonth, difficulty, currentLatitude, currentLongitude, treasures);
+        this.intermidiateLocations = new ArrayList<>();
 
-        this.intermidiateLocations = new ArrayList<>(intermidiate);
+        for (FlexLocation f : intermidiate)
+            this.intermidiateLocations.add(f.clone());
     }
 
     public Multi(Multi m) 
     {
         super(m);
-        this.intermidiateLocations = new ArrayList<>(m.getIntermidiateLocations());
+        this.intermidiateLocations = new ArrayList<>();
+
+        for (FlexLocation f : m.getIntermidiateLocations())
+            this.intermidiateLocations.add(f.clone());
     }
 
     public Collection<FlexLocation> getIntermidiateLocations() {

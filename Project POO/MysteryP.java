@@ -9,94 +9,70 @@ import java.io.Serializable;
 
 public class MysteryP extends Physical implements Serializable 
 {
-    private ArrayList<String> questions;
-    private ArrayList<FlexLocation> locations;
+    private HashMap<Location,String> tips;
 
     public MysteryP() 
     {
         super();
-        this.questions = new ArrayList<>();
-        this.locations = new ArrayList<>();
+        this.questions = new HashMap<>();
     }
 
     public MysteryP(String name, String code, String owner, String description, String hints, 
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
             GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, 
-            Collection<Treasure> treasures, Collection<String> questions, Collection<FlexLocation> locations) 
+             Collection<Treasure> treasures, Map<FlexLocation,String> locations) 
     {    
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
                 date, difficulty, currentLatitude, currentLongitude, treasures);
-        
-        this.questions = new ArrayList<>(questions);
+        this.tips = new HashMap<>();
 
-        for (FlexLocation f : locations)
-            this.locations.add(f.clone());
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public MysteryP(String name, String code, String owner, String description, String hints, 
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
             int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, 
-            double currentLongitude, Collection<Treasure> treasures, Collection<String> questions, 
-            Collection<FlexLocation> locations) 
+            double currentLongitude, Collection<Treasure> treasures, Map<FlexLocation,String> locations) 
     {    
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
                 year, month, dayOfMonth, difficulty, currentLatitude, currentLongitude, treasures);
-        
-        this.questions = new ArrayList<>(questions);
-        this.locations = new ArrayList<>();
+        this.tips = new HashMap<>();
 
-        for (FlexLocation f : locations)
-            this.locations.add(f.clone());
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
-    public MysteryP(MysteryP m) {
-        super(m);
-
-        this.questions = new ArrayList<>(m.getQuestions());
-        this.locations = new ArrayList<>();
-
-        for (FlexLocation f : m.getLocations())
-            this.locations.add(f.clone());
-    }
-
-    public Collection<String> getQuestions() {
-        return new ArrayList<>(this.questions);
-    }
-
-    public Collection<FlexLocation> getLocations() 
+    public MysteryP(MysteryP m) 
     {
-        ArrayList<FlexLocation> aux = new ArrayList<>();
+        super(m);
+        this.tips = new HashMap<>();
 
-        for (FlexLocation l : this.locations)
-            aux.add(l.clone());
+        for (Map.Entry<FlexLocation,String> t : tips.getTips().entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
+    }
+
+    public Map<FlexLocation,String> getTips() 
+    {    
+        HashMap<FlexLocation,String> aux = new HashMap<>();
+
+        for (Map.Entry<FlexLocation,String> t : this.tips.entrySet())
+            aux.put(t.getKey().clone(), t.getValue());
 
         return aux;
     }
 
-    private void setQuestions(Collection<String> questions) {
-        this.questions = new ArrayList<>(questions);
+    private void setTips(Map<FlexLocation,String> tips)
+    {
+        this.tips = new HashMap<>();
+
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
+            this.tips.put(t.getKey().clone(), t.getValue());
     }
 
-    private void setLocations(Collection<FlexLocation> locations) 
+    public void addIntermidiatePoint(String question, FlexLocation FlexLocation) 
     {
-        this.locations = new ArrayList<>();
-
-        for (FlexLocation f : locations)
-            this.locations.add(f.clone());
-    }
-
-    public void addIntermidiatePoint(String question, FlexLocation location) 
-    {
-        this.questions.add(question);
-        this.locations.add(location);
-    }
-
-    public void changeIntermidiatePoints(Collection<String> questions, Collection<FlexLocation> locations) 
-    {
-        if (questions.size() == locations.size()) {
-            this.setQuestions(questions);
-            this.setLocations(locations);
-        }
+        this.tips.put(FlexLocation,question);
     }
 
     public int hashCode() {
