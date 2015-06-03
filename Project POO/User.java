@@ -198,6 +198,22 @@ public class User implements Serializable {
             i++;
         }
     }
+    
+    public Set<Cache> nCaches(GregorianCalendar lowerDate, GregorianCalendar topDate){
+	TreeSet<Cache> aux = new TreeSet<Cache>(new CacheComparatorByDate());
+	Set<Cache> res =  new TreeSet<Cache>( new CacheComparatorByDate());
+	aux.addAll(activities);
+	/*Actividades artificiais para efeitos de comparacao*/
+	Cache c1 = new TraditionalP(); 
+        c1.setDate(lowerDate);
+	Cache c2 = new TraditionalP(); 
+        c2.setDate(topDate);
+
+	res.addAll( aux.subSet(c1, true, c2, true));
+
+	return res;
+	
+    }
 
     /**
      * funções que convertem as listas em strings

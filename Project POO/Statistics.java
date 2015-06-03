@@ -1,85 +1,70 @@
 
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Statistics {
 
-    TreeMap<Integer, TreeMap<Month, Integer>> nOC; //numero de caches por mes e ano criadas
-    TreeMap<Integer, TreeMap<Month, Integer>> nDC; //numero de caches por mes e ano realizadas
-    TreeMap<String, Integer> nOCT; //numero de caches por tipo criadas
-    TreeMap<String, Integer> nDCT; //numero de caches por tipo realizadas
-    int nDays; //numero de dias desde a ultima vez que o utilizador fez uma cache
-
-    public Statistics() {
-        this.nOC = new TreeMap<>();
-        this.nDC = new TreeMap<>();
-        this.nOCT = new TreeMap<>();
-        this.nDCT = new TreeMap<>();
-        this.nDays = 0;
+    static public int getNCaches(User user, GregorianCalendar startDate, GregorianCalendar endDate) {
+        int totalCaches = 0;
+        for (Cache act : user.nCaches(startDate, endDate)) {
+            totalCaches++;
+        }
+        return totalCaches;
     }
 
-    public Statistics(TreeMap<Integer, TreeMap<Month, Integer>> nOC, TreeMap<Integer, TreeMap<Month, Integer>> nDC, TreeMap<String, Integer> nOCT, TreeMap<String, Integer> nDCT, int nDays) {
-        this.nOC = new TreeMap<>(nOC);
-        this.nDC = new TreeMap<>(nDC);
-        this.nOCT = new TreeMap<>(nOCT);
-        this.nDCT = new TreeMap<>(nDCT);
-        this.nDays = nDays;
+    static public long getNCaches(User user, GregorianCalendar startDate, GregorianCalendar endDate,TimeUnit timeUnit) {
+        int totalCaches = 0;
+        long cachesDay;
+        
+        for (Cache act : user.nCaches(startDate, endDate)) {
+            totalCaches++;
+        }
+
+        cachesDay = totalCaches / getDateDiff(startDate,endDate,timeUnit);
+        
+        return cachesDay;
     }
 
-    public Statistics(Statistics s) {
-        this.nOC = new TreeMap<>(s.getNOC());
-        this.nDC = new TreeMap<>(s.getNDC());
-        this.nOCT = new TreeMap<>(s.getNOCT());
-        this.nDCT = new TreeMap<>(s.getNDCT());
-        this.nDays = s.getNDays();
+    public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTimeInMillis() - date1.getTimeInMillis();
+        return timeUnit.convert(diffInMillies, timeUnit);
     }
 
-    public TreeMap<Integer, TreeMap<Month, Integer>> getNOC() {
-        return new TreeMap<>(this.nOC);
+    public static int[] getNTypeTotal(User user, GregorianCalendar startDate, GregorianCalendar endDate) {
+        int[] totalCaches = new int[7];
+        
+        for (Cache act : user.nCaches(startDate, endDate)) {
+            if(act instanceof TraditionalP) totalCaches[0]++;
+            if(act instanceof TraditionalV) totalCaches[1]++; 
+            if(act instanceof MysteryP) totalCaches[2]++; 
+            if(act instanceof MysteryV) totalCaches[3]++; 
+            if(act instanceof Multi) totalCaches[4]++; 
+            if(act instanceof HQ) totalCaches[5]++; 
+            if(act instanceof Project) totalCaches[6]++; 
+        }
+        return totalCaches;
     }
-
-    public TreeMap<Integer, TreeMap<Month, Integer>> getNDC() {
-        return new TreeMap<>(this.nDC);
+    
+    static public int getNType(User user, GregorianCalendar startDate, GregorianCalendar endDate,String type) {
+        int totalCaches = 0;
+        
+        for (Cache act : user.nCaches(startDate, endDate)) {
+            if(act.getClass().getSimpleName().equals(type)) totalCaches++;  
+        }
+        
+        return totalCaches;
     }
-
-    public TreeMap<String, Integer> getNOCT() {
-        return new TreeMap<>(this.nOCT);
+    
+    static public int getTop(User user, GregorianCalendar startDate, GregorianCalendar endDate) {
+        int[] totalCaches = new int[3];
+        totalCaches[0]=0;
+        totalCaches[1]=0;
+        totalCaches[2]=0;
+        
+        for (Cache act : user.nCaches(startDate, endDate)) {
+            
+        }
+        return totalCaches;
     }
-
-    public TreeMap<String, Integer> getNDCT() {
-        return new TreeMap<>(this.nDCT);
-    }
-
-    public int getNDays() {
-        return this.nDays;
-    }
-
-    public void setNOC(TreeMap<Integer, TreeMap<Month, Integer>> nOC) {
-        this.nOC = nOC;
-    }
-
-    public void setNDC(TreeMap<Integer, TreeMap<Month, Integer>> nDC) {
-        this.nDC = nDC;
-    }
-
-    public void setNOCT(TreeMap<String, Integer> nOCT) {
-        this.nOCT = nOCT;
-    }
-
-    public void setNDCT(TreeMap<String, Integer> nDCT) {
-        this.nDCT = nDCT;
-    }
-
-    public void setNDays(int nDays) {
-        this.nDays = nDays;
-    }
-
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-
-        s.append("-----------------Statistics-----------------\n\n");
-
-        s.append("Nº de Atividades ao longo do ano:\n");
-
-        return s.toString();
-    }
+    
 }

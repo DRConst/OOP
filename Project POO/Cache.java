@@ -281,6 +281,10 @@ public abstract class Cache implements Serializable
         this.date = new GregorianCalendar(year, month, dayOfMonth);
     }
 
+    public void setDate(GregorianCalendar date) {
+        this.date = new GregorianCalendar(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+                date.get(Calendar.DAY_OF_MONTH));
+    }
     /**
      * Muda a dificuldade da cache Usa as constantes definidas anteriormente
      * para a dificuldade
