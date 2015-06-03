@@ -14,7 +14,7 @@ public class MysteryV extends Virtual implements Serializable
     public MysteryV() 
     {
         super();
-        this.questions = new HashMap<>();
+        this.tips = new HashMap<>();
     }
 
     public MysteryV(String name, String code, String owner, String description, String hints,
@@ -42,12 +42,42 @@ public class MysteryV extends Virtual implements Serializable
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
+    public MysteryV(String name, String code, String owner, String description, String hints,
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
+            GregorianCalendar date, Difficulty difficulty, String question, Collection<Location> locations, Collection<String> questions) 
+    {
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
+                date, difficulty, question);
+        this.tips = new HashMap<>();
+
+        Iterator<Location> itl = locations.iterator();
+        Iterator<String> itq = questions.iterator();
+
+        while(itl.hasNext() && itq.hasNext())
+            this.tips.put(itl.next().clone(), itq.next());
+    }
+
+    public MysteryV(String name, String code, String owner, String description, String hints,
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
+            int year, int month, int dayOfMonth, Difficulty difficulty, String question, Collection<Location> locations, Collection<String> questions) 
+    {
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
+                year, month, dayOfMonth, difficulty, question);
+        this.tips = new HashMap<>();
+
+        Iterator<Location> itl = locations.iterator();
+        Iterator<String> itq = questions.iterator();
+
+        while(itl.hasNext() && itq.hasNext())
+            this.tips.put(itl.next().clone(), itq.next());
+    }
+
     public MysteryV(MysteryV m) 
     {
         super(m);
         this.tips = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : tips.getTips().entrySet())
+        for (Map.Entry<Location,String> t : m.getTips().entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
@@ -75,7 +105,7 @@ public class MysteryV extends Virtual implements Serializable
     }
 
     public int hashCode() {
-        return Arrays.hashCode(new Object[]{super.hashCode(), locations.hashCode()});
+        return Arrays.hashCode(new Object[]{super.hashCode(), tips.hashCode()});
     }
 
     public boolean equals(Object o) 
@@ -92,16 +122,14 @@ public class MysteryV extends Virtual implements Serializable
                 return false;
             }
 
-            for (String s : m.getQuestions()) {
-                if (!this.questions.contains(s)) {
+            for (Location l : m.getTips().keySet()) {
+                if (!this.tips.containsKey(l))
                     return false;
-                }
             }
-
-            for (Location s : m.getLocations()) {
-                if (!this.locations.contains(s)) {
+            
+            for (String s : m.getTips().values()) {
+                if (!this.tips.containsValue(s))
                     return false;
-                }
             }
 
             return true;
@@ -144,11 +172,11 @@ public class MysteryV extends Virtual implements Serializable
 
         s.append("\nPerguntas Intermédias:\n");
 
-        for (int i = 0; i < this.questions.size(); i++) {
+        Iterator<String> it = this.tips.values().iterator();
+        
+        for (int i = 0; it.hasNext(); i++) {
             s.append("\nPergunta: ");
-            s.append(this.questions.get(i));
-            s.append("\n");
-            s.append(this.locations.get(i).toString());
+            s.append(it.next());
             s.append("\n");
         }
 

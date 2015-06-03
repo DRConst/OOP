@@ -9,12 +9,12 @@ import java.io.Serializable;
 
 public class MysteryP extends Physical implements Serializable 
 {
-    private HashMap<Location,String> tips;
+    private HashMap<FlexLocation,String> tips;
 
     public MysteryP() 
     {
         super();
-        this.questions = new HashMap<>();
+        this.tips = new HashMap<>();
     }
 
     public MysteryP(String name, String code, String owner, String description, String hints, 
@@ -43,12 +43,44 @@ public class MysteryP extends Physical implements Serializable
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
+    public MysteryP(String name, String code, String owner, String description, String hints, 
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
+            GregorianCalendar date, Difficulty difficulty, double currentLatitude, 
+            double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> locations, Collection<String> questions) 
+    {    
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
+                date, difficulty, currentLatitude, currentLongitude, treasures);
+        this.tips = new HashMap<>();
+
+        Iterator<FlexLocation> itl = locations.iterator();
+        Iterator<String> itq = questions.iterator();
+
+        while(itl.hasNext() && itq.hasNext())
+            this.tips.put(itl.next().clone(), itq.next());
+    }
+
+    public MysteryP(String name, String code, String owner, String description, String hints, 
+            Map<String, Register> regBook, double defaultLatitude, double defaultLongitude, 
+            int year, int month, int dayOfMonth, Difficulty difficulty, double currentLatitude, 
+            double currentLongitude, Collection<Treasure> treasures, Collection<FlexLocation> locations, Collection<String> questions) 
+    {    
+        super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude, 
+                year, month, dayOfMonth, difficulty, currentLatitude, currentLongitude, treasures);
+        this.tips = new HashMap<>();
+
+        Iterator<FlexLocation> itl = locations.iterator();
+        Iterator<String> itq = questions.iterator();
+
+        while(itl.hasNext() && itq.hasNext())
+            this.tips.put(itl.next().clone(), itq.next());
+    }
+
     public MysteryP(MysteryP m) 
     {
         super(m);
         this.tips = new HashMap<>();
 
-        for (Map.Entry<FlexLocation,String> t : tips.getTips().entrySet())
+        for (Map.Entry<FlexLocation,String> t : m.getTips().entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
@@ -76,7 +108,7 @@ public class MysteryP extends Physical implements Serializable
     }
 
     public int hashCode() {
-        return Arrays.hashCode(new Object[]{super.hashCode(), locations.hashCode()});
+        return Arrays.hashCode(new Object[]{super.hashCode(), tips.hashCode()});
     }
 
     public boolean equals(Object o) 
@@ -92,13 +124,15 @@ public class MysteryP extends Physical implements Serializable
             if (!super.equals(m))
                 return false;
 
-            for (String s : m.getQuestions())
-                if (!this.questions.contains(s))
+            for (FlexLocation l : m.getTips().keySet()) {
+                if (!this.tips.containsKey(l))
                     return false;
-
-            for (FlexLocation s : m.getLocations())
-                if (!this.locations.contains(s))
+            }
+            
+            for (String s : m.getTips().values()) {
+                if (!this.tips.containsValue(s))
                     return false;
+            }
 
             return true;
         }
@@ -147,14 +181,12 @@ public class MysteryP extends Physical implements Serializable
 
         s.append("\nPerguntas Intermédias:\n");
 
-        for (int i = 0; i < this.questions.size(); i++) 
+        Iterator<String> it = this.tips.values().iterator();
+        
+        for (int i = 0; it.hasNext(); i++) 
         {
             s.append("\nPergunta: ");
-            s.append(this.questions.get(i));
-            s.append("\nLatitude: ");
-            s.append(this.locations.get(i).getCurrentLatitude());
-            s.append("\nLongitude: ");
-            s.append(this.locations.get(i).getCurrentLongitude());
+            s.append(it.next());
             s.append("\n");
         }
 

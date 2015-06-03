@@ -393,8 +393,8 @@ public class Menu {
                     break;
                 case 3:
                     toRet = (isPhysical == 1 ?
-                            new MysteryV(name, code, activeUser.getEmail(), desc, hints, regBook, lat,lon,date, d, mainQuestion, questions, locs) :
-                            new MysteryP(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures, questions, fLocs));
+                            new MysteryV(name, code, activeUser.getEmail(), desc, hints, regBook, lat,lon,date, d, mainQuestion, locs, questions) :
+                            new MysteryP(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures, fLocs, questions));
                 default:
                     return;
             }
