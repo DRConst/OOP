@@ -106,10 +106,11 @@ public class Menu {
                 year = sc.nextInt();
                 DoB = new GregorianCalendar(year, month, day);
                 loginManager.registerUser(email, password, name, gender, adress, DoB);
+                activeUser = loginManager.authenticateUser(email, password);
                 if (loginManager.getHashes().size() == 1 || (activeUser != null && activeUser.isAdmin())) {
                     System.out.println("Tornar Administrador? (y/n)");
                     admin = input.readLine();
-                    activeUser = loginManager.authenticateUser(email, password);
+
                     if (admin.equals("y"))
                         activeUser.setAdmin(true);
 
@@ -216,7 +217,12 @@ public class Menu {
         }
     }
 
-    private void registerTraditional(){
+    private void registerCommun(Cache c)
+    {
+
+    }
+
+    private void registerCache(){
         Scanner sc = new Scanner(System.in);
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -224,14 +230,29 @@ public class Menu {
         ArrayList<Treasure> treasures = new ArrayList<>();
         int day, month, year, isPhysical = 0;
         GregorianCalendar date;
-        double lat, lon;
+        double lat, lon, tLat, tLon;
         Cache toRet = null;
         Difficulty d;
         int answer;
-
-
+        int type;
+        int numLocks;
+        ArrayList<FlexLocation> fLocs = null;
+        ArrayList<Location> locs = null;
+        ArrayList<String> questions = null;
+        String mainQuestion = null;
+        HashMap<String, Register> regBook = new HashMap<>();
         clearScreen();
         try {
+
+            System.out.println("Escolha o Tipo de Cache:");
+            System.out.println("1 - Tradicional");
+            System.out.println("2 - Multi");
+            System.out.println("3 - Misterio");
+            System.out.println("0 - Sair");
+
+            type = sc.nextInt();
+
+
             System.out.println("Escolha o Tipo de Cache:");
             System.out.println("1 - Virtual");
             System.out.println("2 - Fisica");
@@ -313,14 +334,67 @@ public class Menu {
                 }
             }
 
-            switch (isPhysical)
+            if(type == 2)
+            {
+                System.out.println("Insira o Numero de Coordenadas Intermedias: ");
+                numLocks = sc.nextInt();
+                fLocs = new ArrayList<>(numLocks);
+
+                for(int i = 0; i < numLocks; i++)
+                {
+
+                    System.out.println("Latitude: ");
+                    tLat = sc.nextDouble();
+
+                    System.out.println("Longitude: ");
+                    tLon = sc.nextDouble();
+
+                    fLocs.add(new FlexLocation(tLat, tLon, tLat, tLon));
+                }
+
+            }
+
+            if(type == 3)
+            {
+
+                System.out.println("Insira a Pergunta: ");
+                mainQuestion = r.readLine();
+
+
+                System.out.println("Insira o Numero de Perguntas Secundarias: ");
+                numLocks = sc.nextInt();
+                locs = new ArrayList<>(numLocks);
+                questions = new ArrayList<>(numLocks + 1);
+
+                for(int i = 0; i < numLocks; i++)
+                {
+                    System.out.println("Pergunta: ");
+                    questions.add(r.readLine());
+
+                    System.out.println("Latitude: ");
+                    tLat = sc.nextDouble();
+
+                    System.out.println("Longitude: ");
+                    tLon = sc.nextDouble();
+
+                    locs.add(new Location(tLat, tLon));
+                }
+
+            }
+            switch (type)
             {
                 case 1:
-                    toRet = new TraditionalV(name, code, activeUser.getEmail(), desc, hints, new HashMap<String, Register>(), lat, lon, date, d, "");
+                    toRet = (isPhysical == 1 ?
+                            new TraditionalV(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, "") :
+                            new TraditionalP(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures) )                    ;
                     break;
                 case 2:
-                    toRet = new TraditionalP(name, code, activeUser.getEmail(), desc, hints, new HashMap<String, Register>(), lat, lon, date, d, lat, lon, treasures);
+                    toRet = new Multi(name,code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures, fLocs);
                     break;
+                case 3:
+                    toRet = (isPhysical == 1 ?
+                            new MysteryV(name, code, activeUser.getEmail(), desc, hints, regBook, lat,lon,date, d, mainQuestion, questions, locs) :
+                            new MysteryP(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures, questions, fLocs));
                 default:
                     return;
             }
@@ -332,33 +406,6 @@ public class Menu {
         }
     }
 
-    private void registerCache()/*TODO: Finish Cache Types and Adapt*/ {
-        Scanner sc = new Scanner(System.in);
-        int answer;
-
-        System.out.println("Escolha o Tipo de Cache:");
-        System.out.println("1 - Tradicional");
-        System.out.println("2 - Multi");
-        System.out.println("3 - Misterio");
-        System.out.println("0 - Sair");
-
-        answer = sc.nextInt();
-
-        switch (answer)
-        {
-            case 1:
-                registerTraditional();
-                break;
-            case 2:
-               // registerMulti();
-                break;
-            case 3:
-                //registerMystery();
-                break;
-            default:
-                return;
-        }
-    }
 
     private void reportCache() {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
