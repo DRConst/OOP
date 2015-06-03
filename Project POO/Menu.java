@@ -216,17 +216,148 @@ public class Menu {
         }
     }
 
+    private void registerTraditional(){
+        Scanner sc = new Scanner(System.in);
+        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        String name, code, desc, line, hints;
+        ArrayList<Treasure> treasures = new ArrayList<>();
+        int day, month, year, isPhysical = 0;
+        GregorianCalendar date;
+        double lat, lon;
+        Cache toRet = null;
+        Difficulty d;
+        int answer;
+
+
+        clearScreen();
+        try {
+            System.out.println("Escolha o Tipo de Cache:");
+            System.out.println("1 - Virtual");
+            System.out.println("2 - Fisica");
+
+            isPhysical = sc.nextInt();
+
+            clearScreen();
+
+            System.out.println("Detalhes:");
+            System.out.println("Nome:");
+
+            name = r.readLine();
+            code = new StringBuilder().append(name.hashCode()).toString();
+
+            System.out.println("Descricao ('END' Termina):");
+
+            while (true) {
+                line = r.readLine();
+                if (line.equals("END"))
+                    break;
+                sb.append(line);
+            }
+            desc = sb.toString();
+
+            sb.setLength(0);/*Clear Buffer*/
+
+            System.out.println("Pistas ('END' Termina):");
+
+            while (true) {
+                line = r.readLine();
+                if (line.equals("END"))
+                    break;
+                sb.append(line);
+            }
+
+            hints = sb.toString();
+            sc.next();/*Clear the Buffer*/
+            System.out.println("Latitude:");
+            lat = sc.nextDouble();
+            System.out.println("Longitude:");
+            lon = sc.nextDouble();
+            System.out.print("Dia: ");
+            day = sc.nextInt();
+            System.out.print("Mes: ");
+            month = sc.nextInt();
+            System.out.print("Ano: ");
+            year = sc.nextInt();
+            date = new GregorianCalendar(year, month, day);
+            System.out.print("Dificuldade: ");
+
+            System.out.print("1 - Facil: ");
+            System.out.print("2 - Media: ");
+            System.out.print("3 - Dificil: ");
+            answer = sc.nextInt();
+
+            switch (answer) {
+                case 1:
+                    d = Difficulty.EASY;
+                    break;
+                case 2:
+                    d = Difficulty.MEDIUM;
+                    break;
+                case 3:
+                    d = Difficulty.HARD;
+                    break;
+                default:
+                    System.out.println("Erro de Input, Cache nao registada");
+                    return;
+            }
+
+            if (isPhysical == 2) {
+                System.out.println("Tesouros ('END' Termina):");
+
+                while (true) {
+                    line = r.readLine();
+                    if (line.equals("END"))
+                        break;
+                    treasures.add(new Treasure(line));
+                }
+            }
+
+            switch (isPhysical)
+            {
+                case 1:
+                    toRet = new TraditionalV(name, code, activeUser.getEmail(), desc, hints, new HashMap<String, Register>(), lat, lon, date, d, "");
+                    break;
+                case 2:
+                    toRet = new TraditionalP(name, code, activeUser.getEmail(), desc, hints, new HashMap<String, Register>(), lat, lon, date, d, lat, lon, treasures);
+                    break;
+                default:
+                    return;
+            }
+            cacheStorage.saveCache(toRet);
+
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     private void registerCache()/*TODO: Finish Cache Types and Adapt*/ {
-        Cache toReg = new Multi("asd", "asd", activeUser.getEmail(), "desc", "", 
-                new HashMap<String, Register>(), 0.0, 0.0, new GregorianCalendar(), Difficulty.EASY, 0.0, 0.0,
-                new HashSet<Treasure>(), new HashSet<FlexLocation>());
-        toReg.setCode("asd");
-        /*
+        Scanner sc = new Scanner(System.in);
+        int answer;
+
         System.out.println("Escolha o Tipo de Cache:");
-        System.out.println("1 - src.Virtual");
-        System.out.println("2 - Fisica");
-        */
-        cacheStorage.saveCache(toReg);
+        System.out.println("1 - Tradicional");
+        System.out.println("2 - Multi");
+        System.out.println("3 - Misterio");
+        System.out.println("0 - Sair");
+
+        answer = sc.nextInt();
+
+        switch (answer)
+        {
+            case 1:
+                registerTraditional();
+                break;
+            case 2:
+               // registerMulti();
+                break;
+            case 3:
+                //registerMystery();
+                break;
+            default:
+                return;
+        }
     }
 
     private void reportCache() {
