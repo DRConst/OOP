@@ -60,7 +60,7 @@ public class Menu {
             e.printStackTrace();
         }*/
         for (int i = 0; i < 50; i++)
-            System.out.println();/*Stupid and need to be replaced by smelting proper*/
+            System.out.println();/*Stupid and in need to be replaced by something proper*/
     }
 
     private boolean loginDialog() {
@@ -215,11 +215,6 @@ public class Menu {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void registerCommun(Cache c)
-    {
-
     }
 
     private void registerCache(){
@@ -398,6 +393,7 @@ public class Menu {
                 default:
                     return;
             }
+            activeUser.registerCacheCreation(toRet);
             cacheStorage.saveCache(toRet);
 
         }catch (IOException e)
@@ -529,9 +525,44 @@ public class Menu {
         sc.nextInt();
     }
 
+    private void invalidateCaches() throws CacheNotFoundException {
+        TreeSet<Cache> caches = activeUser.getCreatedCaches();
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        int i = 1;
+        String answer;
+
+
+        clearScreen();
+
+        try {
+            for (Cache c : caches) {
+                i++;
+                System.out.println(i + " " + c.toString());
+                if (i == 11) {
+                    System.out.println("1 - Mostrar Mais Caches");
+                    System.out.println("2 - Escolher Cache");
+                    System.out.println("0 - Sair");
+                    answer = input.readLine();
+
+                    if(answer.equals("1"))
+                    {
+                        i = 1;
+                    }else if(answer.equals("2"))
+                    {
+                        cacheStorage.deleteCache(input.readLine());
+                    }else
+                    {
+                        break;
+                    }
+                }
+            }
+        }catch (IOException e){}
+    }
+
     private void manageReport() {
 
     }
+
 
     public void manageReports() {
         Scanner sc = new Scanner(System.in);
@@ -609,6 +640,11 @@ public class Menu {
                 registerDiscovery();
                 break;
             case 4:
+                try {
+                    invalidateCaches();
+                } catch (CacheNotFoundException e) {
+                    System.out.println("Cache " + e.getMessage() + " Not Found");
+                }
                 break;
             case 5:
                 reportCache();

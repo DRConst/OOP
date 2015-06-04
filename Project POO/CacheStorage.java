@@ -8,20 +8,22 @@ import java.util.TreeMap;
 public class CacheStorage implements Serializable {
 	private TreeMap<String, Cache> db;
 
-	public CacheStorage()
-	{
+	public CacheStorage() {
 		db = new TreeMap<>();
 	}
 
-	public CacheStorage(TreeMap<String, Cache> tM)
-	{
+	public CacheStorage(TreeMap<String, Cache> tM) {
 		db = new TreeMap<>();
-		for(Cache c : tM.values())
-		{
+		for (Cache c : tM.values()) {
 			db.put(c.getCode(), c);
 		}
 	}
 
+	public void deleteCache(String c) throws CacheNotFoundException
+	{
+		if((db.remove(c)) == null)
+			throw new CacheNotFoundException();
+	}
 
 	public void saveCache(Cache c)
 	{

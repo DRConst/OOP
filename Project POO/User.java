@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String address;
     private Calendar birth;
     private TreeSet<Cache> activities;
+    private TreeSet<Cache> createdCaches;
     private ArrayList<User> friends;
     private boolean admin;
 
@@ -25,6 +26,7 @@ public class User implements Serializable {
 
     public User() {
         this.activities = new TreeSet<>(new CacheComparator());
+        this.createdCaches = new TreeSet<>(new CacheComparator());
         this.friends = new ArrayList<>();
     }
 
@@ -36,6 +38,7 @@ public class User implements Serializable {
         this.birth = birth;
         this.address = address;
         this.activities = new TreeSet<>(new CacheComparator());
+        this.createdCaches = new TreeSet<>(new CacheComparator());
         this.friends = new ArrayList<>();
     }
 
@@ -47,6 +50,7 @@ public class User implements Serializable {
         this.address = u.getAddress();
         this.birth = u.getBirth();
         this.activities = u.getActivities();
+        this.createdCaches = u.getCreatedCaches();
         this.friends = u.getFriends();
     }
 
@@ -140,6 +144,21 @@ public class User implements Serializable {
         }
         return activitiesL;
     }
+
+    /**
+     * Devolve a Lista de Caches Criadas
+     *
+     * @return cCaches lista de atividades
+     */
+    public TreeSet<Cache> getCreatedCaches() {
+        TreeSet<Cache> cCaches = new TreeSet<Cache>(new CacheComparator());
+
+        for (Cache a : createdCaches) {
+            cCaches.add(a.clone());
+        }
+        return cCaches;
+    }
+
     
     /**
      * Altera a password do utilizador pelo parâmetro passado
@@ -198,6 +217,12 @@ public class User implements Serializable {
             }
             i++;
         }
+    }
+
+
+    public void registerCacheCreation(Cache c)
+    {
+        this.createdCaches.add(c);
     }
     
     public Set<Cache> nCaches(GregorianCalendar lowerDate, GregorianCalendar topDate){
