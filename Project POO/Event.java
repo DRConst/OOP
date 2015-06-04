@@ -16,7 +16,7 @@ public class Event implements Serializable
     private int nLimit;
     private Location location;
     private GregorianCalendar dateLimit;
-    private ArrayList<String> participants;
+    private ArrayList<User> participants;
 
     public Event()
     {
@@ -123,8 +123,14 @@ public class Event implements Serializable
         return this.dateLimit.get(Calendar.DAY_OF_MONTH);
     }
 
-    public Set<String> getParticipants() {
-        return new ArrayList<>(this.participants);
+    public List<User> getParticipants() 
+    {
+        ArrayList<User> aux = new ArrayList<>();
+
+        for (User u : this.participants)
+            aux.add(u.clone());
+
+        return aux;
     }
 
     public void setNameEvent(String nameEvent) {
@@ -155,12 +161,12 @@ public class Event implements Serializable
         this.dateLimit = new GregorianCalendar(year, month, dayOfMonth);
     }
 
-    public void setParticipants(Set<String> participants)
+    public void setParticipants(Set<User> participants)
     {
         this.participants = new ArrayList<>();
 
-        for (String s : this.participants)
-            this.participants.add(s);
+        for (User u : this.participants)
+            this.participants.add(u.clone());
     }
 
     public boolean isActive() {
@@ -171,18 +177,10 @@ public class Event implements Serializable
         this.active = false;
     }
 
-    public void registerParticipant(String user) throws NotActiveEventException
-    {
-        if (this.isActive() && !this.participants.contains(user))
-            this.participants.add(user);
-        else
-            throw new NotActiveEventException("Evento já está arquivado");
-    }
-
     public void registerParticipant(User user) throws NotActiveEventException
     {
-        if (this.isActive() && !this.participants.contains(user.getEmail()))
-            this.participants.add(user.getEmail()); 
+        if (this.isActive() && !this.participants.contains(user))
+            this.participants.add(user); 
         else
             throw new NotActiveEventException("Evento já está arquivado");
     }
@@ -194,16 +192,16 @@ public class Event implements Serializable
         if (this.isActive())
         {
             int i=0;
+            winner = null;
             int item = new Random().nextInt(this.participants.size());
-            Iterator<String> it = this.participants.iterator();
+            Iterator<User> it = this.participants.iterator();
 
             while(i<item && it.hasNext())
             {
-                winner = it.next();
+                winner = it.next().getEmail();
 
                 if (i==item)
                     break;
-
                 i++;
             }
             
@@ -213,37 +211,51 @@ public class Event implements Serializable
             throw new NotActiveEventException("Evento já está arquivado");
     }
 
-    public String simulateStatisticWinner(Statistics s) throws NotActiveEventException
+    public String simulateStatisticWinner() throws NotActiveEventException
     {
-        String winner;
-
         if (!this.isActive())
         {
-            // ...
-            // adicionar verificação de estatísticas
-            // ...
+            int i=0, imax;
+            int[] times = new int[this.participants.size()];
 
-            return winner;
+            for (User u : this.participants)
+            {
+                for (Cache c : this.caches)
+                    times[i] += u.calcEstimatedTime(c.getClass().getSimpleName());
+                i++;
+            }
+
+            imax=0;
+            for (i=1; i<this.participants.size(); i++)
+                if (times[i] > times[imax])
+                    imax = i;
+
+            return this.participants.get(imax).getEmail();
         }
         else
             throw new NotActiveEventException("Evento já está arquivado");
     }
 
-    public int[] simulatePunctuation(Statistics s) throws NotActiveEventException
+    public Map<String,Integer> simulateTimes() throws NotActiveEventException
     {
-        int[] points;
+        TreeMap<String,Integer> times;
 
         if (!this.isActive())
         {
             int i=0;
-            points = new int[this.participants.size()];
+            times = new TreeMap<>();
 
-            for (String p : this.participants)
+            for (User u : this.participants)
             {
-                s.
-            }
+                int time=0;
 
-            return points;
+                for (Cache c : this.caches)
+                    time += u.calcEstimatedTime(c.getClass().getSimpleName());
+
+                times.put(u.getEmail(), time);
+            }  
+
+            return times;          
         }
         else
             throw new NotActiveEventException("Evento já está arquivado");
@@ -277,8 +289,8 @@ public class Event implements Serializable
             if (!this.dateLimit.equals(e.getDateLimit()))
                 return false;
             
-            for (String s : e.getParticipants())
-                if (!this.participants.contains(s))
+            for (User u : e.getParticipants())
+                if (!this.participants.contains(u))
                     return false;
 
             return true;
@@ -318,10 +330,10 @@ public class Event implements Serializable
 
         s.append("Participantes:\n");
         
-        for (String p : this.participants)
+        for (User u : this.participants)
         {
             s.append("\t");
-            s.append(p);
+            s.append(u.getEmail());
             s.append("\n");
         }
 

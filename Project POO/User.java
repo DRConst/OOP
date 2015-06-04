@@ -275,12 +275,25 @@ public class User implements Serializable {
 
     public User getFriend(String userName)
     {
-
         for (User user : friends) {
             if(user.getEmail() == userName)
                 return user;
         }
         return null;
+    }
+
+    public int calcEstimatedTime(String s)
+    {
+        int time;
+        int nrCaches=0;
+
+        for (Cache c : this.activities)
+            if (c.getClass().getSimpleName().equals(s))
+                nrCaches++;
+
+        int fatRandom = new Random().nextInt(40) - 10;
+
+        return (120 - ((nrCaches)/120) + fatRandom);
     }
 
     /**
