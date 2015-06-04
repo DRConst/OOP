@@ -82,23 +82,64 @@ public class Statistics {
         cacheTypes.add("Multi");
         cacheTypes.add("HQ");
         cacheTypes.add("Project");
+        cacheTypes.add("None");
 
         return cacheTypes;
     }
-/*
-    public static HashMap<String,Integer> getTop(User user, GregorianCalendar startDate, GregorianCalendar endDate) {
-        HashMap<String,Integer> top = new HashMap<>();
-        ArrayList
-        int tTP, tTV, tMP, tMV, tM, tHQ, tP;
+
+    public static int[][] getTop(User user, GregorianCalendar startDate, GregorianCalendar endDate) {
+        ArrayList<String> types = getCacheTypes();
+        int t[] = new int[6];
+        int i;
         
-        tTP = tTV = tMP = tMV = tM = tHQ = tP = 0;
+        for(i=0 ;i<7; i++) t[i]=0;
         
         for (Cache act : user.nCaches(startDate, endDate)) {
-            if (act.getClass().getSimpleName().equals()) {
-                
-                totalCaches++;
+            if (act.getClass().getSimpleName().equals(types.get(0))) t[0]++;
+            if (act.getClass().getSimpleName().equals(types.get(1))) t[1]++;
+            if (act.getClass().getSimpleName().equals(types.get(2))) t[2]++;
+            if (act.getClass().getSimpleName().equals(types.get(3))) t[3]++;
+            if (act.getClass().getSimpleName().equals(types.get(4))) t[4]++;
+            if (act.getClass().getSimpleName().equals(types.get(5))) t[5]++;
+            if (act.getClass().getSimpleName().equals(types.get(6))) t[6]++;  
+        }
+        
+        int fst = 7;
+        int ifst = 0;
+        int snd = 7;
+        int isnd = 0;
+        int trd = 7;
+        int itrd = 0;
+        
+        for(i=0;i<7;i++){
+            if (ifst <= t[i]){
+                itrd = isnd;
+                trd = snd;
+                isnd = ifst;
+                snd = fst;
+                ifst = t[i];
+                fst = i;
+            }else if (isnd <= t[i]){
+                itrd = isnd;
+                trd = snd;
+                isnd = t[i];
+                snd = i;
+            }else{
+                itrd = t[i];
+                trd = i;
             }
         }
+        
+        int top[][] = new int [3][2];
+        
+        top[0][0]=fst;
+        top[0][1]=ifst;
+        top[0][0]=snd;
+        top[0][1]=isnd;
+        top[0][0]=trd;
+        top[0][1]=itrd;
+        
+        return top;
     }
-*/
+
 }
