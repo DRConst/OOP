@@ -23,11 +23,10 @@ public class User implements Serializable {
 
     //Construtor parameterizado e de copia
 
-        public User() {
+    public User() {
         this.activities = new TreeSet<>(new CacheComparator());
         this.friends = new ArrayList<>();
     }
-
 
     public User(String email, String password, String name, String gender, String address, Calendar birth) {
         this.email = email;
@@ -165,8 +164,10 @@ public class User implements Serializable {
      *
      * @param usr do novo amigo utilizador
      */
-    public void addFriend(User usr) {
+    public void addFriend(User usr, boolean goOn) {
         friends.add(usr);
+        if (goOn)
+            usr.addFriend(this, false);
     }
 
     /**

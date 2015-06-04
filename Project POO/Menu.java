@@ -490,7 +490,7 @@ public class Menu {
                 if (usr == null) {
                     System.out.println("Utilizador Nao Existe");
                     return;
-                } else activeUser.addFriend(usr);/*TODO: Force A Need For Requests??*/
+                } else activeUser.addFriend(usr, true);/*TODO: Force A Need For Requests??*/
             }
         } catch (IOException e) {
             e.printStackTrace();
