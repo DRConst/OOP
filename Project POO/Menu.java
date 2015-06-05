@@ -49,6 +49,20 @@ public class Menu {
 
     }
 
+    private String generateCode()
+    {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+
+        for (int i = 0; i < 6; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
     private void clearScreen() {
         /*try {
             if (System.getProperty("os.name").equals("Windows 8.1"))
@@ -144,7 +158,13 @@ public class Menu {
             return false;
         } else
             System.out.println("Input Invalido.");
-
+            
+            try {
+                System.in.read();
+            }
+            catch (IOException e) {
+                return false;
+            }
         return false;
     }
 
@@ -157,11 +177,25 @@ public class Menu {
         activities = user.getActivities();
         if (activities == null || activities.isEmpty()) {
             System.out.println("O utilizador nao tem actividades registadas");
+            System.out.println("\nPrima qualquer tecla para continuar...");
+            try {
+                System.in.read();
+            }
+            catch (IOException e) {
+                return;
+            }
         } else {
             it = activities.iterator();
             while (it.hasNext() && cnt++ < 10) {
                 c = it.next();
                 System.out.println(c.toString());/*Temp*/
+            }
+            System.out.println("\nPrima qualquer tecla para continuar...");
+            try {
+                System.in.read();
+            }
+            catch (IOException e) {
+                return;
             }
         }
     }
@@ -208,9 +242,23 @@ public class Menu {
             answer = input.readLine();
             if (cacheStorage.getCache(answer) == null) {
                 System.out.println("Codigo Inexistente");
+                System.out.println("\nPrima qualquer tecla para continuar...");
+                try {
+                    System.in.read();
+                }
+                catch (IOException e) {
+                    return;
+                }
             } else {
                 activeUser.addActivity(cacheStorage.getCache(answer));
                 System.out.println("Descoberta Registada");
+                System.out.println("\nPrima qualquer tecla para continuar...");
+                try {
+                    System.in.read();
+                }
+                catch (IOException e) {
+                    return;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -376,6 +424,7 @@ public class Menu {
                 }
 
             }
+            code = generateCode();
             switch (type)
             {
                 case 1:
@@ -395,13 +444,15 @@ public class Menu {
             }
             activeUser.registerCacheCreation(toRet);
             cacheStorage.saveCache(toRet);
-
-        }catch (IOException e)
-        {
+            System.out.println("O código da sua cache é " + code + "\n");
+            System.out.print("\nPrima qualquer tecla para continuar... ");
+            System.in.read();
+            System.in.read();
+        } 
+        catch (IOException e){
             e.printStackTrace();
         }
     }
-
 
     private void reportCache() {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));

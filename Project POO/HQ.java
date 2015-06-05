@@ -75,7 +75,7 @@ public class HQ extends Virtual implements Serializable
 		s.append("\nLocalização:\n");
 		s.append("\tLatitude: " + this.getDefaultLatitude());
 		s.append("\tLongitude: " + this.getDefaultLongitude());
-		s.append("----------------------------------------------------");
+		s.append("\n----------------------------------------------------");
 		
 		return s.toString();
     }

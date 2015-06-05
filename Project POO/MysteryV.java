@@ -183,7 +183,7 @@ public class MysteryV extends Virtual implements Serializable
         s.append("\nLocalização:\n");
         s.append("\tLatitude: ").append(this.getDefaultLatitude());
         s.append("\tLongitude: ").append(this.getDefaultLongitude());
-        s.append("--------------------------------------------------------");
+        s.append("\n--------------------------------------------------------");
 
         return s.toString();
     }

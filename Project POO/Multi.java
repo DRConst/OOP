@@ -145,7 +145,7 @@ public class Multi extends Physical implements Serializable
             s.append("\n");
         }
 
-        s.append("---------------------------------------------");
+        s.append("\n---------------------------------------------");
 
         return s.toString();
     }

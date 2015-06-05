@@ -110,7 +110,7 @@ public class TraditionalP extends Physical implements Serializable
 
         s.append("Localização:\n");
         s.append(this.getCurrentLocation().toString());
-        s.append("----------------------------------------------------------");
+        s.append("\n----------------------------------------------------------");
 
         return s.toString();
     }
