@@ -74,6 +74,10 @@ public class TraditionalV extends Virtual implements Serializable
         s.append("\nNome: ");
         s.append(this.getName());
         s.append("\n");
+        
+        s.append("\nCodigo: ");
+        s.append(this.getCode());
+        s.append("\n");
 
         s.append("\nDono: ");
         s.append(this.getOwner());

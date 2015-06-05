@@ -102,6 +102,10 @@ public class Multi extends Physical implements Serializable
         s.append(this.getName());
         s.append("\n");
 
+        s.append("\nCodigo: ");
+        s.append(this.getCode());
+        s.append("\n");
+        
         s.append("\nDono: ");
         s.append(this.getOwner());
         s.append("\n");
