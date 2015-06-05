@@ -64,20 +64,10 @@ public class Menu {
     }
 
     private void clearScreen() {
-        /*try {
-            if (System.getProperty("os.name").equals("Windows 8.1"))
-                Runtime.getRuntime().exec("cls");
-            else
-                Runtime.getRuntime().exec("clear");
-        }catch (IOException e)
-        {
-            e.printStackTrace();
-        }*/
-        for (int i = 0; i < 50; i++)
-            System.out.println();/*Stupid and in need to be replaced by something proper*/
+        System.out.print('\u000C');
     }
 
-    private boolean loginDialog() {
+    private int loginDialog() {
         int answer = 0;
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Scanner sc = new Scanner(System.in);
@@ -129,7 +119,7 @@ public class Menu {
                         activeUser.setAdmin(true);
 
                 }
-                return true;
+                return 1;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -148,24 +138,23 @@ public class Menu {
                 if (activeUser != null) {
                     System.out.printf("Utilizador %s autenticado;\n" +
                             "\tNome: %s", activeUser.getEmail(), activeUser.getName());
-                    return true;
+                    return 1;
                 }
-                else return false;
+                else return 2;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (answer == 3) {
-            return false;
+        } else if (answer == '3') {
+            return 3;
         } else
-            System.out.println("Input Invalido.");
             
             try {
                 System.in.read();
             }
             catch (IOException e) {
-                return false;
+                return 2;
             }
-        return false;
+        return 2;
     }
 
     private void listUsersActivities(User user) {
@@ -654,13 +643,30 @@ public class Menu {
 
     public boolean menuLoop()/*Returns whether app should continue or not */ {
         Scanner sc = new Scanner(System.in);
-        int input;
+        int input, r = 2;
         if (activeUser == null && !isAuth) {
             System.out.println("Nenhum Utilizador Activo, deseja fazer login/registar (1) ou sair (2) : ");
             input = sc.nextInt();
             if (input == 1)
-                while(!loginDialog());
-            else return input != 2;
+                while(r!=1){
+                    r = loginDialog();
+                    if(r == 3) 
+                        return true;
+                    if(r == 2){
+                        System.out.println("Input Invalido! Prima qualquer tecla para continuar...");
+                        try{
+                            System.in.read();
+                        }
+                        catch (IOException e) {
+                            return true;
+                        }
+                    }
+                }
+            else if (input == 2) return false;
+            else {
+                System.out.println("Input Invalido!");
+                return true;
+            }
         }
 
         clearScreen();
