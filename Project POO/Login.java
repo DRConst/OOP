@@ -27,12 +27,18 @@ public class Login implements Serializable
         salts = l.getSalts();
     }
 
-    public void registerUser(String userName, String password, String name, String gender, String address, Calendar birth) throws IOException, NoSuchAlgorithmException {
+    public void registerUser(String userName, String password, String name, String gender, String address, Calendar birth) throws IOException, NoSuchAlgorithmException, UserAlreadyRegisteredException {
         byte[] salt = genSalt();
         byte[] hash = genHash(salt, password);
-        registerSalt(userName, salt);
-        registerPw(userName, hash);
-        users.put(userName, new User(userName, password, name, gender, address, birth));
+        if(users.containsKey(userName))
+        {
+            throw new UserAlreadyRegisteredException("Utilizador " + userName + " ja esta registado");
+        }else
+        {
+            registerSalt(userName, salt);
+            registerPw(userName, hash);
+            users.put(userName, new User(userName, password, name, gender, address, birth));
+        }
     }
 
     public boolean checkRegistration(String userName, String password) throws IOException, NoSuchAlgorithmException {
@@ -52,13 +58,16 @@ public class Login implements Serializable
             return false;
     }
 
-    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException {
-        User usr = null;
+    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException, UserNotFoundException {
+        User usr;
         if(checkRegistration(userName, password)) {
             usr =  users.get(userName);
-        }
+            return usr;
 
-        return usr;
+        }else
+        {
+            throw  new UserNotFoundException("Utilizador " + userName + " nao encontrado");
+        }
     }
 
     public User getRegisteredUser(String userName)

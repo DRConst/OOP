@@ -1,7 +1,10 @@
 
+import com.sun.org.apache.xml.internal.security.algorithms.Algorithm;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -121,8 +124,15 @@ public class Menu {
                 }
                 return 1;
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
+            } catch (UserNotFoundException e) {
+                activeUser = null;
+                System.out.println(e.getMessage());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UserAlreadyRegisteredException e) {
+                System.out.println(e.getMessage());
             }
 
         } else if (answer == '2') {
@@ -141,9 +151,15 @@ public class Menu {
                     return 1;
                 }
                 else return 2;
-            } catch (Exception e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (UserNotFoundException e) {
+                activeUser = null;
+                System.out.println(e.getMessage());
+            } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
+            
         } else if (answer == '3') {
             return 3;
         } else
