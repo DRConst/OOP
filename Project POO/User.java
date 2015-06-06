@@ -137,7 +137,7 @@ public class User implements Serializable {
      * @return activitiesL lista de atividades
      */
     public TreeSet<Cache> getActivities() {
-        TreeSet<Cache> activitiesL = new TreeSet<Cache>(new CacheComparator());
+        TreeSet<Cache> activitiesL = new TreeSet<>(new CacheComparator());
 
         for (Cache a : activities) {
             activitiesL.add(a.clone());
@@ -151,7 +151,7 @@ public class User implements Serializable {
      * @return cCaches lista de atividades
      */
     public TreeSet<Cache> getCreatedCaches() {
-        TreeSet<Cache> cCaches = new TreeSet<Cache>(new CacheComparator());
+        TreeSet<Cache> cCaches = new TreeSet<>(new CacheComparator());
 
         for (Cache a : createdCaches) {
             cCaches.add(a.clone());
@@ -243,8 +243,8 @@ public class User implements Serializable {
     }
     
     public Set<Cache> nCaches(GregorianCalendar lowerDate, GregorianCalendar topDate){
-	TreeSet<Cache> aux = new TreeSet<Cache>(new CacheComparatorByDate());
-	Set<Cache> res =  new TreeSet<Cache>( new CacheComparatorByDate());
+	TreeSet<Cache> aux = new TreeSet<>(new CacheComparatorByDate());
+	Set<Cache> res =  new TreeSet<>( new CacheComparatorByDate());
 	aux.addAll(activities);
 	/*Actividades artificiais para efeitos de comparacao*/
 	Cache c1 = new TraditionalP(); 
@@ -284,7 +284,7 @@ public class User implements Serializable {
     public boolean hasFriend(String userName)
     {
         for (User user : friends) {
-            if(user.getEmail() == userName)
+            if(user.getEmail().equals(userName))
                 return true;
         }
         return false;

@@ -60,12 +60,12 @@ public class HQ extends Virtual implements Serializable
         s.append("\n");
 
         s.append("\nData: ");
-        s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
+        s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
 
 		s.append("\nLocalização:\n");
-		s.append("\tLatitude: " + this.getDefaultLatitude());
-		s.append("\tLongitude: " + this.getDefaultLongitude());
+		s.append("\tLatitude: ").append(this.getDefaultLatitude());
+		s.append("\tLongitude: ").append(this.getDefaultLongitude());
 		s.append("\n----------------------------------------------------");
 		
 		return s.toString();

@@ -16,7 +16,7 @@ public class Main {
         try {
             menu.saveState();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro na Gravação de Estado");
         }
     }
 }

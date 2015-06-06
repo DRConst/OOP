@@ -16,9 +16,9 @@ public class Login implements Serializable
     private HashMap<String, User> users;
     public Login()
     {
-        hashes = new HashMap<String, byte[]>();
-        salts = new HashMap<String, byte[]>();
-        users = new HashMap<String, User>();
+        hashes = new HashMap<>();
+        salts = new HashMap<>();
+        users = new HashMap<>();
     }
 
     public Login(Login l)

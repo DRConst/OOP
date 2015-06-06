@@ -14,7 +14,7 @@ public class Project extends Cache implements Serializable
     public Project()
     {
         super();
-        this.project = new ArrayList<Cache>();
+        this.project = new ArrayList<>();
     }
 
     public Project(String name, String code, String owner, String description, String hints, Map<String,Register> regBook, double defaultLatitude, double defaultLongitude, GregorianCalendar date, Difficulty difficulty, double currentLatitude, double currentLongitude, Collection<Cache> caches)
@@ -45,11 +45,11 @@ public class Project extends Cache implements Serializable
     }
 
     public Collection<Cache> getCaches() { 
-        return new ArrayList<Cache>(this.project); 
+        return new ArrayList<>(this.project); 
     }
 
     public void setCaches(Collection<Cache> caches) { 
-        this.project = new ArrayList<Cache>(caches); 
+        this.project = new ArrayList<>(caches); 
     }
 
     public boolean equals(Object o)
@@ -95,7 +95,7 @@ public class Project extends Cache implements Serializable
         s.append("\n");
 
         s.append("\nData: ");
-        s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
+        s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
 
         s.append("\nCaches do Projeto:\n");
