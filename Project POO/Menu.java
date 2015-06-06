@@ -1,5 +1,5 @@
 
-import com.sun.org.apache.xml.internal.security.algorithms.Algorithm;
+//import com.sun.org.apache.xml.internal.security.algorithms.Algorithm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -244,7 +244,7 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
         clearScreen();
         System.out.printf("Utilizador Activo: %s\n\n", (isAuth ? activeUser.getEmail() : "Nenhum"));
-        System.out.println("Escolha uma opcao: ");
+        System.out.println("\nEscolha uma opcao: ");
         System.out.println("1 - Registar um novo Utilizador");
         System.out.println("2 - Autenticar um Utilizador");
         System.out.println("3 - Voltar ao Menu");
@@ -273,8 +273,8 @@ public class Menu {
 
                 activeUser = loginManager.authenticateUser(email, password);
                 if (activeUser != null) {
-                    System.out.printf("Utilizador %s autenticado;\n" +
-                            "\tNome: %s", activeUser.getEmail(), activeUser.getName());
+                    System.out.printf("\nUtilizador %s autenticado;\n" +
+                            "\tNome: %s\n\n", activeUser.getEmail(), activeUser.getName());
                     return true;
                 }
                 else return false;
@@ -381,6 +381,7 @@ public class Menu {
                 }
             } else {
                 activeUser.addActivity(cacheStorage.getCache(answer));
+                cacheStorage.getCache(answer).addRegister(new Register(activeUser.getEmail(), "", new GregorianCalendar()));
                 System.out.println("Descoberta Registada");
                 System.out.println("\nPrima qualquer tecla para continuar...");
                 try {

@@ -5,8 +5,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class Register 
+public class Register implements Serializable
 {
     private String user;
     private String comment;
@@ -162,7 +163,6 @@ public class Register
         s.append("\tUtilizador: ").append(this.user);
         s.append("\tData: ").append(this.getYear()).append("/").append(this.getMonth())
                 .append("/").append(this.getDayOfMonth()).append("\n");
-        s.append("\tComentário:\n\n\t").append(this.comment);
         s.append("-------------------------------------");
 
         return s.toString();
@@ -177,3 +177,4 @@ public class Register
         return new Register(this);
     }
 }
+

@@ -96,14 +96,6 @@ public class TraditionalP extends Physical implements Serializable
         s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
 
-        s.append("Conteúdo do livro de Registos:\n");
-
-        for (Register r : this.getRegBook().values()) {
-            s.append("\t");
-            s.append(r.toString());
-            s.append("\n");
-        }
-
         s.append("Tesouros:\n");
 
         for (Treasure t : this.getTreasures()) {

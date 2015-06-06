@@ -95,13 +95,6 @@ public class TraditionalV extends Virtual implements Serializable
         s.append(this.getYear()).append("/").append(this.getMonth()).append("/").append(this.getDayOfMonth());
         s.append("\n");
 
-        s.append("\nConteúdo do livro de Registos:\n");
-
-        for (Register r : this.getRegBook().values()) {
-            s.append(r.toString());
-            s.append("\n");
-        }
-
         s.append("\nPergunta:\n\t");
         s.append(this.getFinalQuestion());
 

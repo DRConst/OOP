@@ -63,15 +63,6 @@ public class HQ extends Virtual implements Serializable
         s.append(this.getYear() + "/" + this.getMonth() + "/" + this.getDayOfMonth());
         s.append("\n");
 
-		s.append("\nConteúdo do livro de Registos:\n");
-
-		for (Register r : this.getRegBook().values())
-        {
-			s.append("\t");
-            s.append(r.toString());
-            s.append("\n");
-        }
-
 		s.append("\nLocalização:\n");
 		s.append("\tLatitude: " + this.getDefaultLatitude());
 		s.append("\tLongitude: " + this.getDefaultLongitude());
