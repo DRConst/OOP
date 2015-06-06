@@ -1,6 +1,6 @@
 /**
- * Classe que implementa uma generalização de qualquer tipo de cache Vai ser o
- * topo da hierarquia de caches É uma classe abstrata
+ * Classe que implementa uma generalizaﾃｧﾃ｣o de qualquer tipo de cache Vai ser o
+ * topo da hierarquia de caches ﾃ� uma classe abstrata
  *
  * @version (2015.04.30)
  */
@@ -106,9 +106,9 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Retorna a descrição da cache
+     * Retorna a descriﾃｧﾃ｣o da cache
      *
-     * @return descrição
+     * @return descriﾃｧﾃ｣o
      */
     public String getDescription() {
         return this.description;
@@ -133,9 +133,9 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Devolve a localização inicial da cache
+     * Devolve a localizaﾃｧﾃ｣o inicial da cache
      *
-     * @return a localização inicial da cache
+     * @return a localizaﾃｧﾃ｣o inicial da cache
      */
     public Location getDefaultLocation() {
         return this.defaultL.clone();
@@ -160,7 +160,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Devolve o ano da data que está na cache
+     * Devolve o ano da data que estﾃ｡ na cache
      *
      * @return ano da data
      */
@@ -169,7 +169,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Devolve o mes da data que está na cache
+     * Devolve o mes da data que estﾃ｡ na cache
      *
      * @return mes da data
      */
@@ -178,7 +178,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Devolve o dia da data que está na cache
+     * Devolve o dia da data que estﾃ｡ na cache
      *
      * @return dia da data
      */
@@ -187,7 +187,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Devolve a data completa que está na cache
+     * Devolve a data completa que estﾃ｡ na cache
      *
      * @return data
      */
@@ -224,9 +224,9 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Muda a descrição da cache
+     * Muda a descriﾃｧﾃ｣o da cache
      *
-     * @param description a string descrição da cache
+     * @param description a string descriﾃｧﾃ｣o da cache
      */
     public void setDescription(String description) {
         this.description = description;
@@ -251,8 +251,8 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Muda a latitude inicial da cache Como não se pode alterar a latitude
-     * inicial depois de criada a cache, o método é privado
+     * Muda a latitude inicial da cache Como nﾃ｣o se pode alterar a latitude
+     * inicial depois de criada a cache, o mﾃｩtodo ﾃｩ privado
      *
      * @param defaultLatitude a latitude inicial da cache
      */
@@ -261,8 +261,8 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Muda a longitude inicial da cache Como não se pode alterar a longitude
-     * inicial depois de criada a cache, o método é privado
+     * Muda a longitude inicial da cache Como nﾃ｣o se pode alterar a longitude
+     * inicial depois de criada a cache, o mﾃｩtodo ﾃｩ privado
      *
      * @param defaultLongitude a latitude inicial da cache
      */
@@ -271,7 +271,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Muda a data de criação da cache
+     * Muda a data de criaﾃｧﾃ｣o da cache
      *
      * @param year o ano da data
      * @param month o mes da data
@@ -314,9 +314,9 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Verifica se 2 cache são iguais
+     * Verifica se 2 cache sﾃ｣o iguais
      *
-     * @return true se iguais, false caso contrário
+     * @return true se iguais, false caso contrﾃ｡rio
      */
     public int hashCode() {
         return Arrays.hashCode(new Object[]{owner.hashCode(), name, code, regBook.hashCode(),
@@ -355,7 +355,7 @@ public abstract class Cache implements Serializable
     }
 
     /**
-     * Passa a informação da cache toda para string
+     * Passa a informaﾃｧﾃ｣o da cache toda para string
      *
      * @return string resultado
      */
@@ -367,5 +367,21 @@ public abstract class Cache implements Serializable
      * @return clone da cache
      */
     public abstract Cache clone();
+
+    /**
+     * Passa a informaﾃｧﾃ｣o da cache toda para string
+     *
+     * @return string resultado
+     */
+    public String toStringSmall() {
+        final StringBuilder sb = new StringBuilder("Cache{ ");
+        sb.append("Nome='").append(name).append('\'');
+        sb.append(", Codigo='").append(code).append('\'');
+        sb.append(", Descricao='").append(description).append('\'');
+        sb.append(", ").append(defaultL);
+        sb.append(", Dificuldade=").append(difficulty);
+        sb.append(" }");
+        return sb.toString();
+    }
 }
 

@@ -71,7 +71,7 @@ public class Login implements Serializable
     	}
     }
     
-    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException, UserNotFoundException {
+    public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException, UserNotFoundException, UserAuthenticationFailedException {
         User usr;
         if(checkRegistration(userName, password)) {
             usr =  users.get(userName);
@@ -79,7 +79,10 @@ public class Login implements Serializable
 
         }else
         {
-            throw  new UserNotFoundException("Utilizador " + userName + " nao encontrado");
+        	if(users.containsKey(userName))
+        		throw new UserNotFoundException("Utilizador " + userName + " nao encontrado");
+        	else
+        		throw new UserAuthenticationFailedException("Autenticacao Falhou");
         }
     }
 

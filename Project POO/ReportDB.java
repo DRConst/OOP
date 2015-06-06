@@ -38,10 +38,12 @@ public class ReportDB implements Serializable {
         r.setNumReports(r.getNumReports() + 1);
     }
 
-    public boolean removeReport(String code)
+    public void removeReport(String code) throws ReportNotFoundException
     {
-        return reports.remove(code) != null;
+        if(reports.remove(code) == null)
+        	throw new ReportNotFoundException("Relatorio " + code + " Nao Existe");
     }
+    
     public Report getReport(String code)
     {
         return reports.get(code);

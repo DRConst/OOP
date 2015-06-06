@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.sun.xml.internal.stream.buffer.stax.StreamReaderBufferCreator;
+
 /**
  * Created by Diogo on 06/05/2015.
  */
@@ -234,7 +236,9 @@ public class Menu {
 
         }catch (UserAlreadyRegisteredException | UserNotFoundException e) {
         	 System.out.println(e.getMessage());
-        } 
+        }catch (UserAuthenticationFailedException e) {
+       	 System.out.println(e.getMessage());
+        }
         catch (IOException | NoSuchAlgorithmException e) {
             System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
         }
@@ -322,7 +326,8 @@ public class Menu {
             it = activities.iterator();
             while (it.hasNext() && cnt++ < 10) {
                 c = it.next();
-                System.out.println(c.toString());/*Temp*/
+                //System.out.println(cnt + ":" + c.getCode() + ":" + c.getName() + "     " + c.getDescription());/*Temp*/
+                System.out.println(c.toStringSmall());
             }
             System.out.println("\nPrima qualquer tecla para continuar...");
             try {
@@ -633,6 +638,9 @@ public class Menu {
                 }
                 reportDB.addReport(c, sb.toString());
             }
+            
+            System.out.println("\nPrima qualquer tecla para continuar...");
+            System.in.read();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erro de IO");
@@ -738,7 +746,7 @@ public class Menu {
         try {
             for (Cache c : caches) {
                 i++;
-                System.out.println(i + " " + c.toString());
+                System.out.println(i + " " + c.toStringSmall());
                 if (i == 11) {
                     System.out.println("1 - Mostrar Mais Caches");
                     System.out.println("2 - Escolher Cache");
@@ -750,8 +758,9 @@ public class Menu {
                         i = 1;
                     }else if(answer.equals("2"))
                     {
-                        cacheStorage.deleteCache(input.readLine());
-                        activeUser.deleteCacheCreation(input.readLine());
+                    	String code = input.readLine();
+                    	cacheStorage.deleteCache(code);
+                    	activeUser.deleteCacheCreation(code);
                     }else
                     {
                         break;
@@ -766,8 +775,13 @@ public class Menu {
             if(answer.equals("1"))
             {
             	System.out.println("Insira o codigo da Cache");
-                cacheStorage.deleteCache(input.readLine());
-                activeUser.deleteCacheCreation(input.readLine());
+            	String code = input.readLine();
+                cacheStorage.deleteCache(code);
+                activeUser.deleteCacheCreation(code);
+                System.out.println("Cache Apagada");
+                
+                System.out.println("\nPrima qualquer tecla para continuar...");
+                System.in.read();
             }
             
             
@@ -775,6 +789,41 @@ public class Menu {
     }
 
     private void manageReport() {
+    	
+    	BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    	Report r;
+    	String answer, code;
+    	
+    	System.out.println("Escolha uma Opcao");
+    	System.out.println("1 - Apagar Relatorio");
+    	System.out.println("2 - Apagar Cache");
+    	
+    	
+    	
+    	try {			
+			answer = input.readLine();
+						
+    		System.out.println("Insira o Codigo do Relatorio");
+    		code = input.readLine();
+    		
+			r = reportDB.getReport(code);
+			if(answer.equals("1"))
+			{
+				reportDB.removeReport(code);
+			}else if(answer.equals("2"))
+			{
+				reportDB.removeReport(code);
+		        cacheStorage.deleteCache(code);
+		        activeUser.deleteCacheCreation(code);
+			}
+		} catch (IOException e) {
+			System.out.println("Por Favor Tente Novamente");
+		}
+    	catch (ReportNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (CacheNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 
     }
 
@@ -992,30 +1041,33 @@ public class Menu {
     {
     	Scanner sc = new Scanner(System.in);
     	int input;
-    	
-    	System.out.println("Escolha uma opcao: ");
-    	System.out.println("1 - Criar Utilizadores");
-    	System.out.println("2 - Apagar Utilizadores");
-    	System.out.println("3 - Gerir Relatorios");
-    	
-    	input = sc.nextInt();
-    	
-    	switch(input)
+    	while(1)
     	{
-    		case 1:
-    			registerUser();
-    			break;
-    		case 2:
-    			deleteUser();
-    			break;
-    		case 3:
-    			manageReports();
-    		default:
-    			break;
-    			
-    			
+    		System.out.println("Escolha uma opcao: ");
+        	System.out.println("1 - Criar Utilizadores");
+        	System.out.println("2 - Apagar Utilizadores");
+        	System.out.println("3 - Gerir Relatorios");
+        	
+        	input = sc.nextInt();
+        	
+        	switch(input)
+        	{
+        		case 1:
+        			registerUser();
+        			break;
+        		case 2:
+        			deleteUser();
+        			break;
+        		case 3:
+        			manageReports();
+        		default:
+        			return;
+        			
+        			
+        	}
+
     	}
-    }
+}
 
     public boolean menuLoop()/*Returns whether app should continue or not */ {
         Scanner sc = new Scanner(System.in);
@@ -1047,45 +1099,57 @@ public class Menu {
             System.out.println("9 - Menu de Administrador");
 
         System.out.println("0 - Sair");
-        input = sc.nextInt();
-
-        switch (input) {
-            case 1:
-                listActivities();
-                break;
-            case 2:
-                registerCache();
-                break;
-            case 3:
-                registerDiscovery();
-                break;
-            case 4:
-                try {
-                    invalidateCaches();
-                } catch (CacheNotFoundException e) {
-                    System.out.println("Cache " + e.getMessage() + " Not Found");
-                }
-                break;
-            case 5:
-                reportCache();
-                break;
-            case 6:
-                displayActivities(activeUser);
-                break;
-            case 7:
-            	showStats();
-                break;
-            case 8:
-                manageFriends();
-                break;
-            case 9:
-                adminMenu();
-                break;
-
-            default:
-                return false;
+        try{
+	        input = sc.nextInt();
+	
+	        switch (input) {
+	            case 1:
+	                listActivities();
+	                break;
+	            case 2:
+	                registerCache();
+	                break;
+	            case 3:
+	                registerDiscovery();
+	                break;
+	            case 4:
+	                try {
+	                    invalidateCaches();
+	                } catch (CacheNotFoundException e) {
+	                    System.out.println("Cache " + e.getMessage() + " Not Found");
+	                }
+	                break;
+	            case 5:
+	                reportCache();
+	                break;
+	            case 6:
+	                displayActivities(activeUser);
+	                break;
+	            case 7:
+	            	showStats();
+	                break;
+	            case 8:
+	                manageFriends();
+	                break;
+	            case 9:
+	                adminMenu();
+	                break;
+	
+	            default:
+	                return false;
+	        }
+        }catch(InputMismatchException e)
+        {
+        	System.out.println("So sao Aceitaveis Numeros");
+        	System.out.println("\nPrima qualquer tecla para continuar...");
+            try {
+                System.in.read();
+            }
+            catch (IOException e2) {
+                return true;
+            }
+        	
         }
-
         return true;
     }
 
