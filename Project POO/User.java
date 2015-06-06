@@ -293,7 +293,7 @@ public class User implements Serializable {
     public User getFriend(String userName)
     {
         for (User user : friends) {
-            if(user.getEmail() == userName)
+            if(user.getEmail().equals(userName))
                 return user;
         }
         return null;
