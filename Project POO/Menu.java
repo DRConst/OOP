@@ -232,7 +232,7 @@ public class Menu {
             //input.close();
             return;
 
-        }catch (UserNotFoundException e) {
+        }catch (UserAlreadyRegisteredException | UserNotFoundException e) {
         	 System.out.println(e.getMessage());
         } 
         catch (IOException | NoSuchAlgorithmException e) {
