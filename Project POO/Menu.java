@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Diogo on 06/05/2015.
@@ -182,11 +183,9 @@ public class Menu {
         try {
 			loginManager.deleteUser(input.readLine());			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erro IO");
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
         
     }
@@ -428,11 +427,19 @@ public class Menu {
 
             if(type == 0)
             	return;
-            System.out.println("Escolha o Tipo de Cache:");
-            System.out.println("1 - Virtual");
-            System.out.println("2 - Fisica");
+            
+            if(type != 2)
+            {
 
-            isPhysical = sc.nextInt();
+                System.out.println("Escolha o Tipo de Cache:");
+                System.out.println("1 - Virtual");
+                System.out.println("2 - Fisica");
+                isPhysical = sc.nextInt();
+            }else
+            {
+            	isPhysical = 2;
+            }
+
 
             clearScreen();
 
@@ -806,12 +813,140 @@ public class Menu {
     private void showUserStats(User usr)
     {
     	Scanner sc = new Scanner(System.in);
+    	int answer, day, month, year;
+    	GregorianCalendar d1, d2;
+    	TimeUnit tU;
+    	ArrayList<String> types = Statistics.getCacheTypes();
+    	int[] total;
+    	
     	System.out.println("Escolha uma opcao: ");
         System.out.println("1 - Total de Caches");
-        System.out.println("2 - Caches num Entrevalo");
-        System.out.println("3 - Caches por Dia/Mes/Ano");
-        System.out.println("4 - Total num Entrevalo");
-    }
+        System.out.println("2 - Media de Caches por Dia/Mes/Ano");
+        System.out.println("3 - Total Global");
+        //System.out.println("4 - Caches por Tipo");
+        
+        answer = sc.nextInt();
+        
+        if(answer == 1)
+        {
+        	System.out.println("Escolha uma opcao: ");
+            System.out.println("1 - Total");
+            System.out.println("2 - Entrevalo");
+            
+            answer = sc.nextInt();
+            
+            if(answer == 1)
+            {
+            	System.out.println("Encontrou " + Statistics.getTotalCaches(activeUser) + " Caches");
+            }else if(answer == 2)
+            {
+            	 System.out.println("Data de Inicio");
+	        	 System.out.print("Dia: ");
+	             day = sc.nextInt();
+	             System.out.print("Mes: ");
+	             month = sc.nextInt();
+	             System.out.print("Ano: ");
+	             year = sc.nextInt();
+	             
+	             d1 = new GregorianCalendar(year, month - 1, day);
+	             
+	             System.out.println("Data de Fim");
+	        	 System.out.print("Dia: ");
+	             day = sc.nextInt();
+	             System.out.print("Mes: ");
+	             month = sc.nextInt();
+	             System.out.print("Ano: ");
+	             year = sc.nextInt();
+	             
+	             d2 = new GregorianCalendar(year, month - 1, day);
+	             
+	             System.out.println("Encontrou " + Statistics.getTotalCachesDate(usr, d1, d2) + " Caches no Intrevalo Especificado");
+            }
+        }else if(answer == 2)
+        {
+
+       	 	System.out.println("Data de Inicio");
+       	 	System.out.print("Dia: ");
+            day = sc.nextInt();
+            System.out.print("Mes: ");
+            month = sc.nextInt();
+            System.out.print("Ano: ");
+            year = sc.nextInt();
+            
+            d1 = new GregorianCalendar(year, month - 1, day);
+            
+            System.out.println("Data de Fim");
+       	 	System.out.print("Dia: ");
+            day = sc.nextInt();
+            System.out.print("Mes: ");
+            month = sc.nextInt();
+            System.out.print("Ano: ");
+            year = sc.nextInt();
+            
+            d2 = new GregorianCalendar(year, month - 1, day);
+            
+            System.out.println("Escolha uma opcao: ");
+            System.out.println("1 - Por Hora");
+            System.out.println("2 - Por Dia");
+            
+            answer = sc.nextInt();
+            
+            if(answer == 1)
+            {
+            	System.out.println("Encontrou " + Statistics.getNCaches(usr, d1, d2, TimeUnit.HOURS) + " Caches por Mes");
+            }else{
+            	System.out.println("Encontrou " + Statistics.getNCaches(usr, d1, d2, TimeUnit.DAYS) + " Caches por Mes");
+            }
+            
+        }else if(answer == 3)
+        {
+        	System.out.println("Escolha uma opcao: ");
+            System.out.println("1 - Total");
+            System.out.println("2 - Entrevalo");
+            
+            answer = sc.nextInt();
+            
+            if(answer == 1)
+            {
+            	total = Statistics.getTotalTypeTotal(usr);
+            	
+            }else{
+            	
+            	System.out.println("Data de Inicio");
+           	 	System.out.print("Dia: ");
+                day = sc.nextInt();
+                System.out.print("Mes: ");
+                month = sc.nextInt();
+                System.out.print("Ano: ");
+                year = sc.nextInt();
+                
+                d1 = new GregorianCalendar(year, month - 1, day);
+                
+                System.out.println("Data de Fim");
+           	 	System.out.print("Dia: ");
+                day = sc.nextInt();
+                System.out.print("Mes: ");
+                month = sc.nextInt();
+                System.out.print("Ano: ");
+                year = sc.nextInt();
+                
+                d2 = new GregorianCalendar(year, month - 1, day);
+                
+                System.out.println("Escolha uma opcao: ");
+                System.out.println("1 - Por Hora");
+                System.out.println("2 - Por Dia");
+                
+                answer = sc.nextInt();
+                
+                total = Statistics.getTypeTotalDate(usr, d1, d2);
+            }
+
+        	for(int i = 0; i < 7; i++)
+        	{
+        		System.out.println(total[i] + " Caches " + types.get(i));
+        	}
+        }
+}
     
     private void showStats()
     {
@@ -864,8 +999,10 @@ public class Menu {
     	{
     		case 1:
     			registerUser();
+    			break;
     		case 2:
     			deleteUser();
+    			break;
     		case 3:
     			manageReports();
     		default:
