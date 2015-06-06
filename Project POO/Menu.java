@@ -72,7 +72,7 @@ public class Menu {
         //System.out.print('\u000C');
     }
 
-    /*private int loginDialog() {
+    private int loginDialog() {
         String answer = null;
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Scanner sc = new Scanner(System.in);
@@ -128,7 +128,7 @@ public class Menu {
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (UserNotFoundException e) {
+            } catch (UserNotFoundException | UserAuthenticationFailedException e) {
                 activeUser = null;
                 System.out.println(e.getMessage());
             } catch (NoSuchAlgorithmException e) {
@@ -153,7 +153,7 @@ public class Menu {
                     return 1;
                 }
                 else return 2;
-            } catch (IOException e) {
+            } catch (IOException | UserAuthenticationFailedException e) {
                 e.printStackTrace();
             } catch (UserNotFoundException e) {
                 activeUser = null;
@@ -173,7 +173,7 @@ public class Menu {
                 return 2;
             }
         return 2;
-    }*/
+    }
 
     private void deleteUser()
     {
@@ -244,67 +244,6 @@ public class Menu {
         }
     }
     
-    private boolean loginDialog() {
-        String answer = null;
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        Scanner sc = new Scanner(System.in);
-        clearScreen();
-        System.out.printf("Utilizador Activo: %s\n\n", (isAuth ? activeUser.getEmail() : "Nenhum"));
-        System.out.println("\nEscolha uma opcao: ");
-        System.out.println("1 - Registar um novo Utilizador");
-        System.out.println("2 - Autenticar um Utilizador");
-        System.out.println("3 - Voltar ao Menu");
-        try {
-            answer = input.readLine();
-            if(answer.equals(""))
-            {
-            	answer = input.readLine();
-            }
-            //input.read();/*Gooble up the \n*/
-        } catch (IOException e) {
-        	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
-        }
-
-        if (answer.equals("1")) {
-            registerUser();
-
-        } else if (answer.equals("2")) {
-            String email, password;
-            clearScreen();
-            try {
-                System.out.println("Insira o Email: ");
-                email = input.readLine();
-                System.out.println("Insira a Password: ");
-                password = input.readLine();
-
-                activeUser = loginManager.authenticateUser(email, password);
-                if (activeUser != null) {
-                    System.out.printf("\nUtilizador %s autenticado;\n" +
-                            "\tNome: %s\n\n", activeUser.getEmail(), activeUser.getName());
-                    return true;
-                }
-                else return false;
-            } catch (UserNotFoundException e) {
-            	System.out.println(e.getMessage());
-            }catch (Exception e) {
-            	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
-            }
-        } else if (answer.equals("3")) {
-            return false;
-        } else
-        {
-            System.out.println("Input Invalido.");
-            
-            try {
-                System.in.read();
-            }
-            catch (IOException e) {
-                return false;
-            }
-        }
-
-        return false;
-    }
     
     private void listUsersActivities(User user) {
         TreeSet<Cache> activities;
@@ -1094,7 +1033,20 @@ public class Menu {
             System.out.println("Nenhum Utilizador Activo, deseja fazer login/registar (1) ou sair (2) : ");
             input = sc.nextInt();
             if (input == 1)
-                while(!loginDialog());
+            	while(r!=1){
+                    r = loginDialog();
+                    if(r == 3) 
+                        return true;
+                    if(r == 2){
+                        System.out.println("Input Invalido! Prima qualquer tecla para continuar...");
+                        try{
+                            System.in.read();
+                        }
+                        catch (IOException e) {
+                            return true;
+                        }
+                    }
+                }
             else if (input == 2) return false;
             else {
                 System.out.println("Input Invalido!");
