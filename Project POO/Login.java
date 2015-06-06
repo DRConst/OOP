@@ -57,7 +57,20 @@ public class Login implements Serializable
         else
             return false;
     }
-
+    
+    public void deleteUser(String email) throws UserNotFoundException
+    {
+    	if(users.containsKey(email))
+    	{
+    		users.remove(email);
+    		salts.remove(email);
+    		hashes.remove(email);
+    	}else
+    	{
+    		throw new UserNotFoundException("Utilizador " + email + " nao encontrado.");
+    	}
+    }
+    
     public User authenticateUser(String userName, String password) throws IOException, NoSuchAlgorithmException, UserNotFoundException {
         User usr;
         if(checkRegistration(userName, password)) {

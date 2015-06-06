@@ -173,6 +173,71 @@ public class Menu {
         return 2;
     }*/
 
+    private void deleteUser()
+    {
+    	String email;
+    	BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    	
+    	System.out.println("Insira o Email: ");
+        try {
+			loginManager.deleteUser(input.readLine());			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
+    
+    private void registerUser()
+    {
+    	BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    	Scanner sc = new Scanner(System.in);
+    	String email, password, name, gender, adress, admin;
+        int day, month, year;
+        GregorianCalendar DoB;
+        clearScreen();
+        try {
+            System.out.println("Insira o Email: ");
+            email = input.readLine();
+            System.out.println("Insira a Password: ");
+            password = input.readLine();
+            System.out.println("Insira os Detalhes do Utilizador");
+            System.out.println("Nome: ");
+            name = input.readLine();
+            System.out.println("Sexo: ");
+            gender = input.readLine();
+            System.out.println("Morada: ");
+            adress = input.readLine();
+            System.out.println("Data de Nascimento: ");
+            System.out.print("Dia: ");
+            day = sc.nextInt();
+            System.out.print("Mes: ");
+            month = sc.nextInt();
+            System.out.print("Ano: ");
+            year = sc.nextInt();
+            DoB = new GregorianCalendar(year, month, day);
+            loginManager.registerUser(email, password, name, gender, adress, DoB);
+            if (loginManager.getHashes().size() == 1 )
+            	activeUser = loginManager.authenticateUser(email, password);
+            if (loginManager.getHashes().size() == 1 || (activeUser != null && activeUser.isAdmin())) {
+                System.out.println("Tornar Administrador? (y/n)");
+                admin = input.readLine();
+
+                if (admin.equals("y"))
+                    activeUser.setAdmin(true);
+
+            }
+            //sc.close();
+            //input.close();
+            return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     private boolean loginDialog() {
         String answer = null;
@@ -196,45 +261,7 @@ public class Menu {
         }
 
         if (answer.equals("1")) {
-            String email, password, name, gender, adress, admin;
-            int day, month, year;
-            GregorianCalendar DoB;
-            clearScreen();
-            try {
-                System.out.println("Insira o Email: ");
-                email = input.readLine();
-                System.out.println("Insira a Password: ");
-                password = input.readLine();
-                System.out.println("Insira os Detalhes do Utilizador");
-                System.out.println("Nome: ");
-                name = input.readLine();
-                System.out.println("Sexo: ");
-                gender = input.readLine();
-                System.out.println("Morada: ");
-                adress = input.readLine();
-                System.out.println("Data de Nascimento: ");
-                System.out.print("Dia: ");
-                day = sc.nextInt();
-                System.out.print("Mes: ");
-                month = sc.nextInt();
-                System.out.print("Ano: ");
-                year = sc.nextInt();
-                DoB = new GregorianCalendar(year, month, day);
-                loginManager.registerUser(email, password, name, gender, adress, DoB);
-                activeUser = loginManager.authenticateUser(email, password);
-                if (loginManager.getHashes().size() == 1 || (activeUser != null && activeUser.isAdmin())) {
-                    System.out.println("Tornar Administrador? (y/n)");
-                    admin = input.readLine();
-
-                    if (admin.equals("y"))
-                        activeUser.setAdmin(true);
-
-                }
-                return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            registerUser();
 
         } else if (answer.equals("2")) {
             String email, password;
@@ -258,6 +285,7 @@ public class Menu {
         } else if (answer.equals("3")) {
             return false;
         } else
+        {
             System.out.println("Input Invalido.");
             
             try {
@@ -266,6 +294,8 @@ public class Menu {
             catch (IOException e) {
                 return false;
             }
+        }
+
         return false;
     }
     
@@ -547,7 +577,7 @@ public class Menu {
             }
             activeUser.registerCacheCreation(toRet);
             cacheStorage.saveCache(toRet);
-            System.out.println("O código da sua cache é " + code + "\n");
+            System.out.println("O codigo da sua cache e " + code + "\n");
             System.out.print("\nPrima qualquer tecla para continuar... ");
             System.in.read();
             System.in.read();
@@ -773,6 +803,77 @@ public class Menu {
         }
 
     }
+    private void showUserStats(User usr)
+    {
+    	Scanner sc = new Scanner(System.in);
+    	System.out.println("Escolha uma opcao: ");
+        System.out.println("1 - Total de Caches");
+        System.out.println("2 - Caches num Entrevalo");
+        System.out.println("3 - Caches por Dia/Mes/Ano");
+        System.out.println("4 - Total num Entrevalo");
+    }
+    
+    private void showStats()
+    {
+    	 Scanner sc = new Scanner(System.in);
+         ArrayList<User> friends;
+         int input;
+         int i;
+         clearScreen();
+         System.out.println("Escolha uma opcao: ");
+         System.out.println("1 - Ultimas Acividades do Proprio");
+         System.out.println("2 - Ultimas Acividades de um Amigo");
+
+         input = sc.nextInt();
+
+         if (input == 1)
+        	 showUserStats(activeUser);
+         else if (input == 2) {
+             friends = activeUser.getFriends();
+             if (friends != null) {
+                 System.out.println("Escolha o amigo: ");
+                 for (i = 0; i < friends.size(); i++) {
+                     System.out.printf("%d - %s, %s\n", i + 1, friends.get(i).getName(), friends.get(i).getEmail());
+                 }
+                 System.out.printf("%d - Sair\n", i + 1);
+                 input = sc.nextInt();
+                 if (input >= i + 1)
+                     return;
+                 else {
+                	 showUserStats(friends.get(input - 1));
+                 }
+
+             }
+         }
+
+    }
+    
+    private void adminMenu()
+    {
+    	Scanner sc = new Scanner(System.in);
+    	int input;
+    	
+    	System.out.println("Escolha uma opcao: ");
+    	System.out.println("1 - Criar Utilizadores");
+    	System.out.println("2 - Apagar Utilizadores");
+    	System.out.println("3 - Gerir Relatorios");
+    	
+    	input = sc.nextInt();
+    	
+    	switch(input)
+    	{
+    		case 1:
+    			registerUser();
+    		case 2:
+    			deleteUser();
+    		case 3:
+    			manageReports();
+    		default:
+    			break;
+    			
+    			
+    	}
+    }
 
     public boolean menuLoop()/*Returns whether app should continue or not */ {
         Scanner sc = new Scanner(System.in);
@@ -801,7 +902,7 @@ public class Menu {
         System.out.println("8 - Gerir Amigos");
 
         if (activeUser.isAdmin())
-            System.out.println("9 - Gerir Reports");
+            System.out.println("9 - Menu de Administrador");
 
         System.out.println("0 - Sair");
         input = sc.nextInt();
@@ -830,12 +931,13 @@ public class Menu {
                 displayActivities(activeUser);
                 break;
             case 7:
+            	showStats();
                 break;
             case 8:
                 manageFriends();
                 break;
             case 9:
-                manageReports();
+                adminMenu();
                 break;
 
             default:

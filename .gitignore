@@ -13,5 +13,7 @@ hs_err_pid*
 *.name
 *.iml
 *.xml
-*.saved
 *.DS_Store
+Project POO/.classpath
+Project POO/.project
+*.prefs
