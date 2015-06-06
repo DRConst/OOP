@@ -213,9 +213,9 @@ public class Event implements Serializable
 
     public String simulateStatisticWinner() throws NotActiveEventException
     {
-        if (!this.isActive())
+        if (this.isActive())
         {
-            int i=0, imax;
+            int i=0, imin;
             int[] times = new int[this.participants.size()];
 
             for (User u : this.participants)
@@ -225,12 +225,12 @@ public class Event implements Serializable
                 i++;
             }
 
-            imax=0;
+            imin=0;
             for (i=1; i<this.participants.size(); i++)
-                if (times[i] > times[imax])
-                    imax = i;
+                if (times[i] < times[imin])
+                    imin = i;
 
-            return this.participants.get(imax).getEmail();
+            return this.participants.get(imin).getEmail();
         }
         else
             throw new NotActiveEventException("Evento já está arquivado");
@@ -240,7 +240,7 @@ public class Event implements Serializable
     {
         TreeMap<String,Integer> times;
 
-        if (!this.isActive())
+        if (this.isActive())
         {
             int i=0;
             times = new TreeMap<>();

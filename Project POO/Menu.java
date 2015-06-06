@@ -16,6 +16,7 @@ public class Menu {
     private User activeUser;
     private CacheStorage cacheStorage;
     private ReportDB reportDB;
+    private EventDB eventDB;
 
     public Menu() {
 
@@ -47,6 +48,15 @@ public class Menu {
             reportDB = new ReportDB();
         } catch (ClassNotFoundException e) {
             reportDB = new ReportDB();
+        }
+
+        try {
+            eventDB = (EventDB) Serializer.readObject(EventDB.class.getName());
+        } catch (IOException e) {
+            System.out.println("Events Nao Encontrados");
+            eventDB = new EventDB();
+        } catch (ClassNotFoundException e) {
+            eventDB = new EventDB();
         }
 
     }
@@ -146,7 +156,7 @@ public class Menu {
                 activeUser = loginManager.authenticateUser(email, password);
                 if (activeUser != null) {
                     System.out.printf("Utilizador %s autenticado;\n"
-                            + "\tNome: %s", activeUser.getEmail(), activeUser.getName());
+                            + "\tNome: %s\n\n", activeUser.getEmail(), activeUser.getName());
                     return 1;
                 } else {
                     return 2;
@@ -949,6 +959,173 @@ public class Menu {
 
     }
 
+    public void registerInEvent()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String event;
+
+        try
+        {
+            System.out.print("Indique o evento em que se quer inscrever: ");
+            event = input.readLine();
+
+            eventDB.getEvent(event).registerParticipant(activeUser);
+        }
+        catch(IOException e) {
+
+        }
+        catch(NotActiveEventException e) {
+            System.out.println(e.getMessage());
+        }
+        catch(EventNotFoundException e) {
+            System.out.println("O evento não existe");
+        }
+    }
+
+    public void createEvent()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
+        String name, aux;
+        ArrayList<Cache> caches = new ArrayList<>();
+        Cache c;
+        int nLimit, nr;
+        double latitude, longitude;
+        int day, month, year;
+
+        try
+        {
+            System.out.print("Nome para o Evento: ");
+            name = input.readLine();
+
+            System.out.print("Indique o nr. de caches no evento: ");
+            nr = sc.nextInt();
+
+            for (int i=0; i<nr; i++)
+            {
+                System.out.println("Indique o código da " + (i+1) + "ª cache: ");
+                aux = input.readLine();
+                if ((c = cacheStorage.getCache(aux)) == null) {
+                    System.out.println("Cache nao Existente");
+                    i--;
+                }
+                else
+                    caches.add(c);
+            }
+ 
+            System.out.print("Indique o nr. max. de participantes: ");
+            nLimit = sc.nextInt();
+
+            System.out.print("Latitude: ");
+            latitude = sc.nextDouble();
+
+            System.out.print("Longitude: ");
+            longitude = sc.nextDouble();
+
+            System.out.print("Data de Inicio\n");
+
+            System.out.print("Dia: ");
+            day = sc.nextInt();
+
+            System.out.print("Mes: ");
+            month = sc.nextInt();
+
+            System.out.print("Ano: ");
+            year = sc.nextInt();
+
+            eventDB.saveEvent(new Event(name, caches, nLimit, latitude, longitude, year, month, day));
+        }
+        catch(IOException e) {
+
+        }
+    }
+
+    public void archiveEvent()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String aux;
+
+        try {
+            System.out.print("Indique o nome do evento a arquivar: ");
+            aux = input.readLine();
+
+            eventDB.getEvent(aux).archive();
+        }
+        catch (IOException e) {
+
+        }
+        catch(EventNotFoundException e) {
+            System.out.println("Evento não existe");
+        }
+    }
+
+    public void deleteEvent()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String aux;
+
+        try {
+            System.out.print("Indique o nome do evento a apagar: ");
+            aux = input.readLine();
+
+            eventDB.deleteEvent(aux);
+        }
+        catch(IOException e) {
+
+        }
+        catch(EventNotFoundException e) {
+            System.out.println("O evento não existe!!");
+        }
+    }
+
+    public void simulateEvent()
+    {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String aux;
+        TreeMap<String,Integer> times;
+        String winner = null;
+        int time = 0;
+
+        try 
+        {
+            System.out.print("Indique o nome do evento a simular: ");
+            aux = input.readLine();
+
+            times = (TreeMap<String,Integer>) eventDB.getEvent(aux).simulateTimes();
+
+            for (Map.Entry<String,Integer> t : times.entrySet())
+            {
+                if (winner == null)
+                {
+                    winner = t.getKey();
+                    time = t.getValue();
+                }
+                else 
+                {
+                    if (t.getValue() < time)
+                    {
+                        winner = t.getKey();
+                        time = t.getValue();
+                    }
+                }
+
+                System.out.println("Utilizador: " + t.getKey() + "\nTempo: " + t.getValue());
+            }
+            
+            System.out.println("\n\nO vencedor deste Evento será o " + winner + "\n\n");
+        }
+        catch(IOException e) {
+
+        }
+        catch(NotActiveEventException e) {
+            System.out.println("O evento já não está activo");
+        }
+        catch(EventNotFoundException e) {
+            System.out.println("O evento não existe");
+        }
+
+    }
+
     private void adminMenu() {
         Scanner sc = new Scanner(System.in);
         int input;
@@ -957,6 +1134,11 @@ public class Menu {
             System.out.println("1 - Criar Utilizadores");
             System.out.println("2 - Apagar Utilizadores");
             System.out.println("3 - Gerir Relatorios");
+            System.out.println("4 - Criar Evento");
+            System.out.println("5 - Arquivar Evento");
+            System.out.println("6 - Apagar Evento");
+            System.out.println("7 - Simular Evento");
+            System.out.println("0 - Menu Normal");
 
             input = sc.nextInt();
 
@@ -969,6 +1151,18 @@ public class Menu {
                     break;
                 case 3:
                     manageReports();
+                    break;
+                case 4:
+                    createEvent();
+                    break;
+                case 5:
+                    archiveEvent();
+                    break;
+                case 6:
+                    deleteEvent();
+                    break;
+                case 7:
+                    simulateEvent();
                 default:
                     return;
 
@@ -1018,9 +1212,10 @@ public class Menu {
         System.out.println("6 - Consultar Actividades de Descoberta");
         System.out.println("7 - Consultar Estatisticas");
         System.out.println("8 - Gerir Amigos");
+        System.out.println("9 - Inscrever num Evento");
 
         if (activeUser.isAdmin()) {
-            System.out.println("9 - Menu de Administrador");
+            System.out.println("10 - Menu de Administrador");
         }
 
         System.out.println("0 - Sair");
@@ -1057,6 +1252,9 @@ public class Menu {
                     manageFriends();
                     break;
                 case 9:
+                    registerInEvent();
+                    break;
+                case 10:
                     adminMenu();
                     break;
 
@@ -1081,5 +1279,6 @@ public class Menu {
         Serializer.writeObject(this.loginManager);
         Serializer.writeObject(this.cacheStorage);
         Serializer.writeObject(this.reportDB);
+        Serializer.writeObject(this.eventDB);
     }
 }
