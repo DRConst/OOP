@@ -67,11 +67,11 @@ public class Menu {
     }
 
     private void clearScreen() {
-        System.out.print('\u000C');
+        //System.out.print('\u000C');
     }
 
-    private int loginDialog() {
-        int answer = 0;
+    /*private int loginDialog() {
+        String answer = null;
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         Scanner sc = new Scanner(System.in);
         clearScreen();
@@ -81,13 +81,13 @@ public class Menu {
         System.out.println("2 - Autenticar um Utilizador");
         System.out.println("3 - Voltar ao Menu");
         try {
-            answer = input.read();
-            input.read();/*Gooble up the \n*/
+            answer = input.readLine();
+            //input.readLine();/*Gooble up the \n
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (answer == '1') {
+        if (answer.equals("1")) {
             String email, password, name, gender, adress, admin;
             int day, month, year;
             GregorianCalendar DoB;
@@ -135,7 +135,7 @@ public class Menu {
                 System.out.println(e.getMessage());
             }
 
-        } else if (answer == '2') {
+        } else if (answer.equals("2")) {
             String email, password;
             clearScreen();
             try {
@@ -160,7 +160,7 @@ public class Menu {
                 e.printStackTrace();
             }
             
-        } else if (answer == '3') {
+        } else if (answer.equals("3")) {
             return 3;
         } else
             
@@ -171,8 +171,104 @@ public class Menu {
                 return 2;
             }
         return 2;
-    }
+    }*/
 
+    
+    private boolean loginDialog() {
+        String answer = null;
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
+        clearScreen();
+        System.out.printf("Utilizador Activo: %s\n\n", (isAuth ? activeUser.getEmail() : "Nenhum"));
+        System.out.println("Escolha uma opcao: ");
+        System.out.println("1 - Registar um novo Utilizador");
+        System.out.println("2 - Autenticar um Utilizador");
+        System.out.println("3 - Voltar ao Menu");
+        try {
+            answer = input.readLine();
+            if(answer.equals(""))
+            {
+            	answer = input.readLine();
+            }
+            //input.read();/*Gooble up the \n*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (answer.equals("1")) {
+            String email, password, name, gender, adress, admin;
+            int day, month, year;
+            GregorianCalendar DoB;
+            clearScreen();
+            try {
+                System.out.println("Insira o Email: ");
+                email = input.readLine();
+                System.out.println("Insira a Password: ");
+                password = input.readLine();
+                System.out.println("Insira os Detalhes do Utilizador");
+                System.out.println("Nome: ");
+                name = input.readLine();
+                System.out.println("Sexo: ");
+                gender = input.readLine();
+                System.out.println("Morada: ");
+                adress = input.readLine();
+                System.out.println("Data de Nascimento: ");
+                System.out.print("Dia: ");
+                day = sc.nextInt();
+                System.out.print("Mes: ");
+                month = sc.nextInt();
+                System.out.print("Ano: ");
+                year = sc.nextInt();
+                DoB = new GregorianCalendar(year, month, day);
+                loginManager.registerUser(email, password, name, gender, adress, DoB);
+                activeUser = loginManager.authenticateUser(email, password);
+                if (loginManager.getHashes().size() == 1 || (activeUser != null && activeUser.isAdmin())) {
+                    System.out.println("Tornar Administrador? (y/n)");
+                    admin = input.readLine();
+
+                    if (admin.equals("y"))
+                        activeUser.setAdmin(true);
+
+                }
+                return true;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (answer.equals("2")) {
+            String email, password;
+            clearScreen();
+            try {
+                System.out.println("Insira o Email: ");
+                email = input.readLine();
+                System.out.println("Insira a Password: ");
+                password = input.readLine();
+
+                activeUser = loginManager.authenticateUser(email, password);
+                if (activeUser != null) {
+                    System.out.printf("Utilizador %s autenticado;\n" +
+                            "\tNome: %s", activeUser.getEmail(), activeUser.getName());
+                    return true;
+                }
+                else return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (answer.equals("3")) {
+            return false;
+        } else
+            System.out.println("Input Invalido.");
+            
+            try {
+                System.in.read();
+            }
+            catch (IOException e) {
+                return false;
+            }
+        return false;
+    }
+    
     private void listUsersActivities(User user) {
         TreeSet<Cache> activities;
         Cache c;
@@ -239,7 +335,7 @@ public class Menu {
 
     }
 
-    private void registerDiscovery() {
+    private void registerDiscovery() { //TODO: Discovery dates and log book entries
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String answer;
         System.out.println("Insira o Codigo da Cache: ");
@@ -300,7 +396,8 @@ public class Menu {
 
             type = sc.nextInt();
 
-
+            if(type == 0)
+            	return;
             System.out.println("Escolha o Tipo de Cache:");
             System.out.println("1 - Virtual");
             System.out.println("2 - Fisica");
@@ -411,7 +508,7 @@ public class Menu {
 
                 System.out.println("Insira o Numero de Perguntas Secundarias: ");
                 numLocks = sc.nextInt();
-                locs = new ArrayList<>(numLocks);
+                fLocs = new ArrayList<>(numLocks);
                 questions = new ArrayList<>(numLocks + 1);
 
                 for(int i = 0; i < numLocks; i++)
@@ -425,7 +522,7 @@ public class Menu {
                     System.out.println("Longitude: ");
                     tLon = sc.nextDouble();
 
-                    locs.add(new Location(tLat, tLon));
+                    fLocs.add(new FlexLocation(tLat, tLon, tLat, tLon));
                 }
 
             }
@@ -442,8 +539,9 @@ public class Menu {
                     break;
                 case 3:
                     toRet = (isPhysical == 1 ?
-                            new MysteryV(name, code, activeUser.getEmail(), desc, hints, regBook, lat,lon,date, d, mainQuestion, locs, questions) :
+                            new MysteryV(name, code, activeUser.getEmail(), desc, hints, regBook, lat,lon,date, d, mainQuestion, fLocs, questions) :
                             new MysteryP(name, code, activeUser.getEmail(), desc, hints, regBook, lat, lon, date, d, lat, lon, treasures, fLocs, questions));
+                    break;
                 default:
                     return;
             }
@@ -520,6 +618,7 @@ public class Menu {
         System.out.println("Escolha uma Opcao: ");
         System.out.println("1 - Remover Amigo");
         System.out.println("2 - Adicionar Amigo");
+        System.out.println("0 - Sair");
 
         try {
             answer = input.readLine();
@@ -542,7 +641,10 @@ public class Menu {
                 if (usr == null) {
                     System.out.println("Utilizador Nao Existe");
                     return;
-                } else activeUser.addFriend(usr, true);/*TODO: Force A Need For Requests??*/
+                } else{
+            		activeUser.addFriend(usr, true);/*TODO: Force A Need For Requests??*/
+            		usr.addFriend(activeUser, true);
+            	}
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -576,6 +678,7 @@ public class Menu {
             }
         }
         System.out.println("Escolha uma opcao: ");
+        
         System.out.println("0 - Sair");
 
         sc.nextInt();
@@ -606,12 +709,26 @@ public class Menu {
                     }else if(answer.equals("2"))
                     {
                         cacheStorage.deleteCache(input.readLine());
+                        activeUser.deleteCacheCreation(input.readLine());
                     }else
                     {
                         break;
                     }
                 }
             }
+            
+            System.out.println("1 - Escolher Cache");
+            System.out.println("0 - Sair");
+            answer = input.readLine();
+
+            if(answer.equals("1"))
+            {
+            	System.out.println("Insira o codigo da Cache");
+                cacheStorage.deleteCache(input.readLine());
+                activeUser.deleteCacheCreation(input.readLine());
+            }
+            
+            
         }catch (IOException e){}
     }
 
@@ -664,20 +781,7 @@ public class Menu {
             System.out.println("Nenhum Utilizador Activo, deseja fazer login/registar (1) ou sair (2) : ");
             input = sc.nextInt();
             if (input == 1)
-                while(r!=1){
-                    r = loginDialog();
-                    if(r == 3) 
-                        return true;
-                    if(r == 2){
-                        System.out.println("Input Invalido! Prima qualquer tecla para continuar...");
-                        try{
-                            System.in.read();
-                        }
-                        catch (IOException e) {
-                            return true;
-                        }
-                    }
-                }
+                while(!loginDialog());
             else if (input == 2) return false;
             else {
                 System.out.println("Input Invalido!");

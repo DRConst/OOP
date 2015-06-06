@@ -225,6 +225,23 @@ public class User implements Serializable {
         this.createdCaches.add(c);
     }
     
+    public void deleteCacheCreation(Cache c)
+    {
+    	this.createdCaches.remove(c);
+    }
+    
+    public void deleteCacheCreation(String code)
+    {
+    	for(Cache c : this.createdCaches)
+    	{
+    		if(c.getCode().equals(code))
+    		{
+    	    	this.createdCaches.remove(c);    	
+    			return;
+    		}		
+    	}
+    }
+    
     public Set<Cache> nCaches(GregorianCalendar lowerDate, GregorianCalendar topDate){
 	TreeSet<Cache> aux = new TreeSet<Cache>(new CacheComparatorByDate());
 	Set<Cache> res =  new TreeSet<Cache>( new CacheComparatorByDate());

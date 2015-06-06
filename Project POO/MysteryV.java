@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class MysteryV extends Virtual implements Serializable
 {
-    private HashMap<Location,String> tips;
+    private HashMap<FlexLocation,String> tips;
 
     public MysteryV() 
     {
@@ -19,38 +19,38 @@ public class MysteryV extends Virtual implements Serializable
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            GregorianCalendar date, Difficulty difficulty, String question, Map<Location,String> tips) 
+            GregorianCalendar date, Difficulty difficulty, String question, Map<FlexLocation,String> tips) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 date, difficulty, question);
         this.tips = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : tips.entrySet())
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
             int year, int month, int dayOfMonth, Difficulty difficulty, String question,
-            Map<Location,String> tips) 
+            Map<FlexLocation,String> tips) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayOfMonth, difficulty, question);
         this.tips = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : tips.entrySet())
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            GregorianCalendar date, Difficulty difficulty, String question, Collection<Location> locations, Collection<String> questions) 
+            GregorianCalendar date, Difficulty difficulty, String question, Collection<FlexLocation> FlexLocations, Collection<String> questions) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 date, difficulty, question);
         this.tips = new HashMap<>();
 
-        Iterator<Location> itl = locations.iterator();
+        Iterator<FlexLocation> itl = FlexLocations.iterator();
         Iterator<String> itq = questions.iterator();
 
         while(itl.hasNext() && itq.hasNext())
@@ -59,13 +59,13 @@ public class MysteryV extends Virtual implements Serializable
 
     public MysteryV(String name, String code, String owner, String description, String hints,
             Map<String, Register> regBook, double defaultLatitude, double defaultLongitude,
-            int year, int month, int dayOfMonth, Difficulty difficulty, String question, Collection<Location> locations, Collection<String> questions) 
+            int year, int month, int dayOfMonth, Difficulty difficulty, String question, Collection<FlexLocation> FlexLocations, Collection<String> questions) 
     {
         super(name, code, owner, description, hints, regBook, defaultLatitude, defaultLongitude,
                 year, month, dayOfMonth, difficulty, question);
         this.tips = new HashMap<>();
 
-        Iterator<Location> itl = locations.iterator();
+        Iterator<FlexLocation> itl = FlexLocations.iterator();
         Iterator<String> itq = questions.iterator();
 
         while(itl.hasNext() && itq.hasNext())
@@ -77,31 +77,31 @@ public class MysteryV extends Virtual implements Serializable
         super(m);
         this.tips = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : m.getTips().entrySet())
+        for (Map.Entry<FlexLocation,String> t : m.getTips().entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
-    public Map<Location,String> getTips() 
+    public Map<FlexLocation,String> getTips() 
     {    
-        HashMap<Location,String> aux = new HashMap<>();
+        HashMap<FlexLocation,String> aux = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : this.tips.entrySet())
+        for (Map.Entry<FlexLocation,String> t : this.tips.entrySet())
             aux.put(t.getKey().clone(), t.getValue());
 
         return aux;
     }
 
-    private void setTips(Map<Location,String> tips)
+    private void setTips(Map<FlexLocation,String> tips)
     {
         this.tips = new HashMap<>();
 
-        for (Map.Entry<Location,String> t : tips.entrySet())
+        for (Map.Entry<FlexLocation,String> t : tips.entrySet())
             this.tips.put(t.getKey().clone(), t.getValue());
     }
 
-    public void addIntermidiatePoint(String question, Location location) 
+    public void addIntermidiatePoint(String question, FlexLocation FlexLocation) 
     {
-        this.tips.put(location,question);
+        this.tips.put(FlexLocation,question);
     }
 
     public int hashCode() {
@@ -122,7 +122,7 @@ public class MysteryV extends Virtual implements Serializable
                 return false;
             }
 
-            for (Location l : m.getTips().keySet()) {
+            for (FlexLocation l : m.getTips().keySet()) {
                 if (!this.tips.containsKey(l))
                     return false;
             }
