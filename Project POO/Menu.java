@@ -685,7 +685,7 @@ public class Menu {
                     return;
                 } else{
             		activeUser.addFriend(usr, true);/*TODO: Force A Need For Requests??*/
-            		usr.addFriend(activeUser, true);
+            		//usr.addFriend(activeUser, true);
             	}
             }
         } catch (IOException e) {
