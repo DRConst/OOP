@@ -26,8 +26,7 @@ public class Menu {
         } catch (IOException e) {
             System.out.println("Logins Nao Encontrados");
             loginManager = new Login();
-        } catch (ClassNotFoundException e) {/**/
-            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             loginManager = new Login();
         }
 
@@ -39,7 +38,7 @@ public class Menu {
             System.out.println("Caches Nao Encontradas");
             cacheStorage = new CacheStorage();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        	cacheStorage = new CacheStorage();
         }
 
         try {
@@ -48,7 +47,7 @@ public class Menu {
             System.out.println("Reports Nao Encontrados");
             reportDB = new ReportDB();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        	reportDB = new ReportDB();
         }
 
     }
@@ -233,8 +232,11 @@ public class Menu {
             //input.close();
             return;
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (UserNotFoundException e) {
+        	 System.out.println(e.getMessage());
+        } 
+        catch (IOException | NoSuchAlgorithmException e) {
+            System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
         }
     }
     
@@ -256,7 +258,7 @@ public class Menu {
             }
             //input.read();/*Gooble up the \n*/
         } catch (IOException e) {
-            e.printStackTrace();
+        	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
         }
 
         if (answer.equals("1")) {
@@ -278,8 +280,10 @@ public class Menu {
                     return true;
                 }
                 else return false;
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (UserNotFoundException e) {
+            	System.out.println(e.getMessage());
+            }catch (Exception e) {
+            	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
             }
         } else if (answer.equals("3")) {
             return false;
@@ -392,7 +396,7 @@ public class Menu {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
         }
     }
 
@@ -591,7 +595,7 @@ public class Menu {
             System.in.read();
         } 
         catch (IOException e){
-            e.printStackTrace();
+        	System.out.println("Ocorreu um Erro, Por Favor Tente de Novo");
         }
     }
 
