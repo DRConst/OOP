@@ -656,8 +656,17 @@ public class Menu {
         } else {
             Iterator<Cache> it = acts.iterator();
             while (it.hasNext() && cnt-- > 0) {
-                System.out.println(it.next().toString());/*TODO: Beautify*/
+                System.out.println(it.next().toStringSmall());/*TODO: Beautify*/
             }
+        }
+        
+        try
+        {
+            System.out.println("\nPrima qualquer tecla para continuar...");
+        	System.in.read();
+        }catch(IOException e)
+        {
+        	
         }
     }
 
@@ -1000,6 +1009,15 @@ public class Menu {
         		System.out.println(total[i] + " Caches " + types.get(i));
         	}
         }
+        
+        try
+        {
+            System.out.println("\nPrima qualquer tecla para continuar...");
+        	System.in.read();
+        }catch(IOException e)
+        {
+        	
+        }
 }
     
     private void showStats()
@@ -1041,7 +1059,7 @@ public class Menu {
     {
     	Scanner sc = new Scanner(System.in);
     	int input;
-    	while(1)
+    	while(true)
     	{
     		System.out.println("Escolha uma opcao: ");
         	System.out.println("1 - Criar Utilizadores");
